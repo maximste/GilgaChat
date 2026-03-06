@@ -10,4 +10,5 @@ export default defineConfig({
     open: true,
     port: PORT,
   },
+  assetsInclude: ['**/*.hbs']
 })
