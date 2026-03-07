@@ -1,5 +1,7 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { AuthForm } from './components/AuthForm/AuthForm';
+import { NotFoundPage } from './components/NotFoundPage/NotFoundPage';
+import { ServerErrorPage } from './components/ServerErrorPage/ServerErrorPage';
 import { ProfilePage } from './components/ProfilePage/ProfilePage';
 import { RegisterForm } from './components/RegisterForm/RegisterForm';
 import { MainLayout } from './layout/main/MainLayout';
@@ -37,11 +39,6 @@ class App {
         href: '#register',
         text: 'Sign up',
         className: 'main-layout__sign-up',
-      },
-      profileLink: {
-        href: '#profile',
-        text: 'Profile',
-        className: 'main-layout__profile',
       },
       content: '',
     });
@@ -83,8 +80,14 @@ class App {
         phone: '+1 (555) 123-4567',
       });
       profilePage.render();
+    } else if (hash === '#404') {
+      const notFoundPage = new NotFoundPage(this.layoutContent);
+      notFoundPage.render();
+    } else if (hash === '#500') {
+      const serverErrorPage = new ServerErrorPage(this.layoutContent);
+      serverErrorPage.render();
     } else {
-      this.layoutContent.innerHTML = '<p class="main-layout__welcome">Welcome to GilgaChat. <a href="#auth" class="link">Sign in</a>, <a href="#register" class="link">Sign up</a>, or <a href="#profile" class="link">Profile</a>.</p>';
+      this.layoutContent.innerHTML = '<p class="main-layout__welcome">Welcome to GilgaChat. <a href="#auth" class="link">Sign in</a>, <a href="#register" class="link">Sign up</a>, <a href="#profile" class="link">Profile</a>. <a href="#404" class="link">See 404 page</a>, <a href="#500" class="link">See 500 page</a>.</p>';
     }
   }
 }
