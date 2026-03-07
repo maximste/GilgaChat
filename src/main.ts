@@ -104,7 +104,12 @@ class App {
       const serverErrorPage = new ServerErrorPage(this.layoutContent);
       serverErrorPage.render();
     } else {
-      this.layoutContent.innerHTML = '<p class="main-layout__welcome">Welcome to GilgaChat. <a href="#messenger" class="link">Messenger</a>, <a href="#auth" class="link">Sign in</a>, <a href="#register" class="link">Sign up</a>, <a href="#profile" class="link">Profile</a>. <a href="#404" class="link">See 404 page</a>, <a href="#500" class="link">See 500 page</a>.</p>';
+      this.layoutContent.innerHTML = `
+        <div class="main-layout__welcome-block">
+          <p class="main-layout__welcome-notice">This is a temporary page for demonstrating the project’s laid-out pages.</p>
+          <p class="main-layout__welcome">Go to: <a href="#messenger" class="link">Messenger</a>, <a href="#auth" class="link">Sign in</a>, <a href="#register" class="link">Sign up</a>, <a href="#profile" class="link">Profile</a>, <a href="#404" class="link">404</a>, <a href="#500" class="link">500</a>.</p>
+        </div>
+      `;
     }
   }
 }
