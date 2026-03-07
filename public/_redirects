@@ -1,2 +1,0 @@
-# SPA fallback: serve index.html for routes (static files like /assets/* are served first)
-/*    /index.html   200
