@@ -1,10 +1,12 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { AuthForm } from './components/AuthForm/AuthForm';
+import { MainLayout } from './layout/main/MainLayout';
+import { MessengerLayout } from './layout/messenger/MessengerLayout';
+import { NoChatStub } from './components/NoChatStub/NoChatStub';
 import { NotFoundPage } from './components/NotFoundPage/NotFoundPage';
-import { ServerErrorPage } from './components/ServerErrorPage/ServerErrorPage';
 import { ProfilePage } from './components/ProfilePage/ProfilePage';
 import { RegisterForm } from './components/RegisterForm/RegisterForm';
-import { MainLayout } from './layout/main/MainLayout';
+import { ServerErrorPage } from './components/ServerErrorPage/ServerErrorPage';
 import './style.scss';
 
 class App {
@@ -53,9 +55,24 @@ class App {
 
   // TODO: временное решение до внедрения роутинга
   private renderCurrentView(): void {
-    if (!this.layoutContent) return;
+    const container = document.getElementById('app');
+    if (!container) return;
 
     const hash = window.location.hash;
+
+    if (hash === '#messenger') {
+      const layout = new MessengerLayout();
+      container.innerHTML = layout.render();
+      const contentEl = document.getElementById('messenger-content');
+      if (contentEl) new NoChatStub(contentEl).render();
+      this.layoutContent = null;
+      return;
+    }
+
+    if (!this.layoutContent) {
+      this.renderLayout();
+    }
+    if (!this.layoutContent) return;
 
     if (hash === '#auth') {
       const authForm = new AuthForm(this.layoutContent, {
@@ -87,7 +104,7 @@ class App {
       const serverErrorPage = new ServerErrorPage(this.layoutContent);
       serverErrorPage.render();
     } else {
-      this.layoutContent.innerHTML = '<p class="main-layout__welcome">Welcome to GilgaChat. <a href="#auth" class="link">Sign in</a>, <a href="#register" class="link">Sign up</a>, <a href="#profile" class="link">Profile</a>. <a href="#404" class="link">See 404 page</a>, <a href="#500" class="link">See 500 page</a>.</p>';
+      this.layoutContent.innerHTML = '<p class="main-layout__welcome">Welcome to GilgaChat. <a href="#messenger" class="link">Messenger</a>, <a href="#auth" class="link">Sign in</a>, <a href="#register" class="link">Sign up</a>, <a href="#profile" class="link">Profile</a>. <a href="#404" class="link">See 404 page</a>, <a href="#500" class="link">See 500 page</a>.</p>';
     }
   }
 }
