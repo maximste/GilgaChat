@@ -5,6 +5,14 @@ import { RegisterForm } from './components/RegisterForm/RegisterForm';
 import { MainLayout } from './layout/main/MainLayout';
 import './style.scss';
 
+function showError(message: string): void {
+  const app = document.getElementById('app');
+  if (app) {
+    app.innerHTML = `<p style="padding:2rem;color:#fff;font-family:sans-serif;">App error: ${message}</p>`;
+  }
+  console.error('[GilgaChat]', message);
+}
+
 class App {
   private layoutContent: HTMLElement | null = null;
 
@@ -14,11 +22,16 @@ class App {
 
   private init(): void {
     const run = (): void => {
-      this.renderLayout();
-      this.setupNavigation();
-      this.renderCurrentView();
+      try {
+        this.renderLayout();
+        this.setupNavigation();
+        this.renderCurrentView();
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        showError(msg);
+        throw err;
+      }
     };
-    // If script loads after DOM is ready (e.g. production bundle), DOMContentLoaded already fired
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', run);
     } else {
@@ -29,7 +42,7 @@ class App {
   private renderLayout(): void {
     const container = document.getElementById('app');
     if (!container) {
-      console.error('App container not found');
+      showError('App container #app not found');
       return;
     }
 
@@ -54,6 +67,9 @@ class App {
 
     container.innerHTML = layout.render();
     this.layoutContent = document.getElementById('layout-content');
+    if (!this.layoutContent) {
+      showError('Layout content #layout-content not found');
+    }
   }
 
   private setupNavigation(): void {
@@ -95,4 +111,9 @@ class App {
   }
 }
 
-new App();
+try {
+  new App();
+} catch (err) {
+  const msg = err instanceof Error ? err.message : String(err);
+  showError(msg);
+}
