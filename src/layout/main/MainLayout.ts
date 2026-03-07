@@ -7,6 +7,7 @@ import './MainLayout.scss';
 export interface MainLayoutProps {
   signInLink: LinkProps;
   signUpLink: LinkProps;
+  profileLink: LinkProps;
   content?: string;
 }
 
