@@ -55,6 +55,10 @@ The current version focuses on the **auth page** (login form) and a set of UI pr
 - **CI:** GitHub Actions (`.github/workflows/tests.yml`)
 - **Deployment:** Netlify (`https://gilgachat.netlify.app/`, `dist/` as publish directory)
 
+## Design & Prototypes
+
+- Main design and interactive prototypes are in Figma: [GilgaChat UI](https://www.figma.com/design/sbXZfnJcFjbmh9L6nxRv7W/GilgaChat?node-id=13-9452&t=vIzquu2G5jxpVV9o-1)
+
 ## Getting Started
 
 ### Prerequisites
