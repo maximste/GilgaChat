@@ -13,11 +13,17 @@ class App {
   }
 
   private init(): void {
-    document.addEventListener('DOMContentLoaded', () => {
+    const run = (): void => {
       this.renderLayout();
       this.setupNavigation();
       this.renderCurrentView();
-    });
+    };
+    // If script loads after DOM is ready (e.g. production bundle), DOMContentLoaded already fired
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run);
+    } else {
+      run();
+    }
   }
 
   private renderLayout(): void {
