@@ -1,0 +1,261 @@
+@use '../../styles/variables' as *;
+
+.messenger-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background-color: $background-color;
+}
+
+.messenger-sidebar {
+  width: 280px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  background-color: $background-color-on-surface-black;
+  border-right: 1px solid $border-color-dark;
+}
+
+.messenger-sidebar__top {
+  padding: $gap-size-12;
+  display: flex;
+  flex-direction: column;
+  gap: $gap-size-12;
+  flex-shrink: 0;
+}
+
+.messenger-sidebar__app-title {
+  display: flex;
+  align-items: center;
+  gap: $gap-size-8;
+  width: 100%;
+  padding: $gap-size-8 0;
+  background: none;
+  border: none;
+  font-size: $font-size-14;
+  font-weight: 700;
+  color: $text-color-primary;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    color: $text-color-primary;
+    opacity: 0.9;
+  }
+}
+
+.messenger-sidebar__chevron {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.messenger-sidebar__search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.messenger-sidebar__search-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 12px;
+  color: $text-color-placeholder;
+  pointer-events: none;
+}
+
+.messenger-sidebar__search {
+  width: 100%;
+  padding: 8px 10px 8px 32px;
+  background-color: $background-color-input;
+  border: none;
+  border-radius: $border-radius-6;
+  font-size: $font-size-14;
+  color: $text-color-primary;
+  outline: none;
+
+  &::placeholder {
+    color: $text-color-placeholder;
+  }
+}
+
+.messenger-sidebar__nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 $gap-size-12 $gap-size-12;
+}
+
+.messenger-sidebar__section {
+  margin-bottom: $gap-size-12;
+}
+
+.messenger-sidebar__section-head {
+  width: 100%;
+  padding: $gap-size-8 0;
+  background: none;
+  border: none;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: $text-color-secondary;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    color: $text-color-primary;
+  }
+}
+
+.messenger-sidebar__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.messenger-sidebar__list li {
+  margin: 0;
+}
+
+.messenger-sidebar__item {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: $gap-size-8;
+  padding: $gap-size-8;
+  background: none;
+  border: none;
+  border-radius: $border-radius-6;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.messenger-sidebar__item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.messenger-sidebar__item-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: $font-size-14;
+  font-weight: 500;
+  color: $text-color-primary;
+  line-height: 1.3;
+}
+
+.messenger-sidebar__item-meta {
+  font-size: 12px;
+  color: $text-color-secondary;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.messenger-sidebar__item-avatar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $background-color-input;
+  border-radius: 50%;
+  font-size: 14px;
+  color: $text-color-secondary;
+
+  &--user {
+    // Аватар пользователя (пустой круг или позже — фото)
+  }
+}
+
+.messenger-sidebar__status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+
+  &--green {
+    background-color: $color-success;
+  }
+
+  &--yellow {
+    background-color: #b8a200;
+  }
+
+  &--gray {
+    background-color: $text-color-placeholder;
+  }
+}
+
+.messenger-sidebar__user {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: $gap-size-8;
+  padding: $gap-size-12;
+  border-top: 1px solid $border-color-dark;
+  background-color: $background-color-on-surface-black;
+}
+
+.messenger-sidebar__user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: $background-color-input;
+  flex-shrink: 0;
+}
+
+.messenger-sidebar__user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.messenger-sidebar__user-name {
+  display: block;
+  font-size: $font-size-14;
+  font-weight: 600;
+  color: $text-color-primary;
+}
+
+.messenger-sidebar__user-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: $text-color-secondary;
+  margin-top: 2px;
+}
+
+.messenger-sidebar__user-settings {
+  padding: $gap-size-8;
+  color: $text-color-secondary;
+  text-decoration: none;
+  border-radius: $border-radius-6;
+  transition: color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    color: $text-color-primary;
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.messenger-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: $background-color;
+}

@@ -24,3 +24,6 @@ export {
 };
 export { RegisterForm } from './RegisterForm/RegisterForm';
 export { ProfilePage } from './ProfilePage/ProfilePage';
+export { NoChatStub } from './NoChatStub/NoChatStub';
+export { NotFoundPage } from './NotFoundPage/NotFoundPage';
+export { ServerErrorPage } from './ServerErrorPage/ServerErrorPage';
