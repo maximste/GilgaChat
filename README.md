@@ -1,72 +1,73 @@
 <h1 align="center">GilgaChat</h1>
 
-Modern messenger UI built with TypeScript, Handlebars, and Vite.  
-This repository contains the front‑end for GilgaChat, starting with an authentication screen and a small reusable component library that can be extended into a full messenger interface.
+Современный интерфейс мессенджера на TypeScript, Handlebars и Vite.  
+Репозиторий содержит фронтенд GilgaChat: экран авторизации, переиспользуемые компоненты и страницы, которые можно развивать в полноценный мессенджер.
 
 ---
 
-## Overview
+## Обзор
 
-GilgaChat is an educational/front‑end project that demonstrates how to build a small component system without a heavy framework.  
-Instead of React/Vue, it uses:
+GilgaChat — учебный фронтенд-проект, в котором показано, как собрать небольшую компонентную систему без тяжёлого фреймворка.  
+Вместо React/Vue используются:
 
-- **TypeScript** for type safety.
-- **Handlebars** for templating and partials.
-- **Vite** as the build and dev server.
-- **SCSS** for styling.
+- **TypeScript** — типизация.
+- **Handlebars** — шаблоны и партиалы.
+- **Vite** — сборка и dev-сервер.
+- **SCSS** — стили.
 
-The current version focuses on the **auth page** (login form) and a set of UI primitives (button, input, label, link, form field) that can be reused across other screens.
+В приложении реализована **навигация по hash** и есть **главная страница** (демо с ссылками), **layout мессенджера** (сайдбар и заглушка), формы **входа** и **регистрации**, страница **профиля**, страницы ошибок **404** и **500** — всё на базе переиспользуемых UI-компонентов.
 
-## Features
+## Возможности
 
-- **Authentication layout**
-  - Centered auth window with title and subtitle.
-  - Email/password form and submit button.
-  - “Forgot password?” link.
+- **Главная страница**
+  - Временное сообщение о демо и ссылки на все сверстанные страницы: Мессенджер, Вход, Регистрация, Профиль, 404, 500.
 
-- **Reusable UI components**
-  - `Button` – semantic `<button>` with configurable text, type, and classes.
-  - `Input` – typed text/email/password inputs with validation flags.
-  - `Label` – accessible labels bound to inputs via `for`/`id`.
-  - `Link` – styled navigation links.
-  - `FormField` – composition component that renders a label + input pair.
+- **Layout мессенджера** (`#messenger`)
+  - Слева: сайдбар с названием приложения и выпадающим меню, поиском, списком **личных сообщений** (аватар, имя, превью последнего сообщения, индикатор статуса), списком **групп** (иконка, название, превью) и блоком текущего пользователя (имя, статус, ссылка на настройки).
+  - Справа: заглушка **NoChatStub** («Чат не выбран» — место под будущий экран переписки).
 
-- **Component templates**
-  - Each component has:
-    - a TypeScript class (`src/components/*/*.ts`),
-    - a Handlebars template (`.hbs`),
-    - and a SCSS file for styles.
+- **Авторизация и профиль**
+  - **Вход** (`#auth`) — форма входа с заголовком, полями email/пароль и ссылкой «Забыли пароль?».
+  - **Регистрация** (`#register`) — форма регистрации.
+  - **Профиль** (`#profile`) — карточка профиля и блок с данными (демо-данные).
 
-- **Fast local development**
-  - Vite dev server with hot reload.
-  - TypeScript compilation and bundling.
+- **Страницы ошибок**
+  - **404** (`#404`) — «Oops! You're Lost in Cyberspace» с изображением, подсказками и кнопками «Take Me Home» / «Go Back».
+  - **500** (`#500`) — «Houston, we have a problem!» с карточками статуса и кнопками «Try Again» / «Go Home».
 
-- **Ready for CI and deployment**
-  - GitHub Actions workflow for sprint tests.
-  - Netlify configuration publishing `dist/`.
+- **Переиспользуемые UI-компоненты**
+  - `Button`, `Input`, `Label`, `Link`, `FormField` — базовые компоненты для форм и layout’ов.
+  - У каждого: класс на TypeScript, шаблон Handlebars (`.hbs`), стили SCSS.
 
-## Tech Stack
+- **Layout’ы**
+  - **MainLayout** — шапка (GilgaChat, Вход / Регистрация) и область контента для авторизации, профиля, ошибок и главной.
+  - **MessengerLayout** — сайдбар и основная область (например, NoChatStub или будущий экран чата).
 
-- **Language:** TypeScript
-- **Bundler/Dev server:** Vite
-- **Templating:** Handlebars
-- **Styles:** SCSS
-- **Env management:** dotenv (for future configuration)
-- **CI:** GitHub Actions (`.github/workflows/tests.yml`)
-- **Deployment:** Netlify (`https://gilgachat.netlify.app/`, `dist/` as publish directory)
+- **Разработка и деплой**
+  - Dev-сервер Vite с hot reload, сборка TypeScript + Vite.
+  - Netlify: публикация из `dist/`, `public/_redirects` для SPA, `public/_headers` для кэша.
+  - GitHub Actions для CI (тесты по спринтам).
 
-## Design & Prototypes
+## Стек
 
-- Main design and interactive prototypes are in Figma: [GilgaChat UI](https://www.figma.com/design/sbXZfnJcFjbmh9L6nxRv7W/GilgaChat?node-id=13-9452&t=vIzquu2G5jxpVV9o-1)
+- **Язык:** TypeScript
+- **Сборка и dev-сервер:** Vite
+- **Шаблоны:** Handlebars
+- **Стили:** SCSS
+- **Деплой:** Netlify (`https://gilgachat.netlify.app/`, каталог публикации `dist/`)
 
-## Getting Started
+## Дизайн и прототипы
 
-### Prerequisites
+- Макет в Figma: [GilgaChat UI](https://www.figma.com/design/sbXZfnJcFjbmh9L6nxRv7W/GilgaChat?node-id=13-9452&t=vIzquu2G5jxpVV9o-1)
 
-- **Node.js**: 22.x (recommended, matches CI configuration)
-- **npm**: comes with Node.js
+## Начало работы
 
-### Installation
+### Требования
+
+- **Node.js**: 22.x (рекомендуется, совпадает с настройками CI)
+- **npm**: поставляется с Node.js
+
+### Установка
 
 ```bash
 git clone https://github.com/maximste/GilgaChat.git
@@ -74,96 +75,105 @@ cd GilgaChat
 npm install
 ```
 
-### Available Scripts
+### Скрипты
 
-Run a local development server:
+Запуск dev-сервера:
 
 ```bash
 npm run dev
 ```
 
-Create a production build:
+Сборка для продакшена:
 
 ```bash
 npm run build
 ```
 
-Preview the production build locally:
+Локальный просмотр продакшен-сборки:
 
 ```bash
 npm run preview
 ```
 
-Build and then preview in one command:
+Сборка и просмотр одной командой:
 
 ```bash
 npm run start
 ```
 
-## Project Structure
+## Структура проекта
 
 ```text
 .
-├── index.html               # Root HTML shell used by Vite
+├── index.html               # Корневой HTML (точка входа Vite)
+├── public
+│   ├── _headers             # Заголовки кэша и безопасности для Netlify
+│   ├── _redirects           # SPA: /* → /index.html 200
+│   └── images/              # Статика (например, изображение для 404)
 ├── src
-│   ├── main.ts              # App entry, mounts AuthForm into #app
-│   ├── style.scss           # Global styles
+│   ├── main.ts              # Точка входа: роутинг по hash, MainLayout / MessengerLayout, экраны
+│   ├── style.scss           # Глобальные стили
 │   ├── components
-│   │   ├── AuthForm/        # Auth page layout and form
-│   │   ├── Button/          # Button component (TS + HBS + SCSS)
-│   │   ├── Input/           # Input component (TS + HBS + SCSS)
-│   │   ├── Label/           # Label component (TS + HBS + SCSS)
-│   │   ├── Link/            # Link component (TS + HBS + SCSS)
-│   │   └── FormField/       # Composite label+input field
+│   │   ├── AuthForm/        # Форма входа
+│   │   ├── RegisterForm/    # Форма регистрации
+│   │   ├── ProfilePage/     # Карточка и данные профиля
+│   │   ├── NotFoundPage/    # Страница 404
+│   │   ├── ServerErrorPage/ # Страница 500
+│   │   ├── NoChatStub/      # Заглушка «Чат не выбран»
+│   │   ├── Button/          # Кнопка (TS + HBS + SCSS)
+│   │   ├── Input/           # Поле ввода
+│   │   ├── Label/           # Подпись
+│   │   ├── Link/            # Ссылка
+│   │   └── FormField/       # Подпись + поле ввода
 │   ├── layout
-│   │   └── main/            # Main layout templates/styles (WIP)
-│   ├── types/               # Shared TypeScript types for components
-│   └── utils/mydash/        # Utility helpers (e.g., first/last)
-├── vite.config.ts           # Vite configuration
-├── netlify.toml             # Netlify deploy configuration
-└── .github/workflows/       # CI pipeline for tests
+│   │   ├── main/            # MainLayout (шапка + контент: авторизация, профиль, ошибки, главная)
+│   │   └── messenger/       # MessengerLayout (сайдбар + основная область)
+│   ├── styles/              # Общие SCSS (цвета, типографика, отступы, переменные)
+│   ├── types/               # Общие типы TypeScript
+│   └── utils/mydash/        # Вспомогательные функции
+├── vite.config.ts           # Конфиг Vite (base, build, outDir: dist)
+├── netlify.toml             # Netlify: команда сборки, каталог публикации dist
+└── .github/workflows/       # CI (например, тесты по спринтам)
 ```
 
-## How It Works
+## Как устроено
 
-- `src/main.ts` listens for `DOMContentLoaded`, finds the `#app` container, and renders an `AuthForm` instance into it.
-- `AuthForm`:
-  - instantiates `Label`, `Input`, `Button`, `Link`, and `FormField` components,
-  - registers Handlebars partials for all component templates,
-  - compiles `AuthForm.hbs` and injects the resulting HTML into the container.
-- `FormField` receives `label` and `input` props, and its Handlebars template includes the `Label` and `Input` partials inside a single wrapper `<div>`.
+- В `src/main.ts` подписаны события `DOMContentLoaded` и `hashchange`; в зависимости от `window.location.hash` выбирается нужный layout и экран.
+- **Роутинг:**
+  - `#messenger` → полностью **MessengerLayout** (сайдбар и **NoChatStub** в основной области).
+  - `#auth`, `#register`, `#profile`, `#404`, `#500` → **MainLayout** с **AuthForm**, **RegisterForm**, **ProfilePage**, **NotFoundPage** или **ServerErrorPage** в области контента.
+  - Без hash или неизвестный hash → MainLayout с **главной** (демо-сообщение и ссылки).
+- При переходе с `#messenger` на другой маршрут корень перерисовывается с MainLayout, чтобы отображались нужная шапка и контент.
+- Компоненты (AuthForm, ProfilePage и др.) регистрируют партиалы Handlebars, компилируют свой шаблон `.hbs` с пропсами и вставляют HTML в элемент контента layout’а. Логика интерфейса — в классах TypeScript, разметка — в шаблонах Handlebars.
 
-This architecture keeps UI logic in TypeScript classes, while markup remains in declarative Handlebars templates.
+## Разработка и соглашения
 
-## Development & Conventions
+- Проект изначально был учебным по спринтам, поэтому ,elen встречаться ветки вроде `sprint_1`, `sprint_2` и т.п.
+- Workflow GitHub Actions запускает автоматические тесты для этих веток при pull request в `main`.
+- Для своей разработки или open-source можно оставить этот workflow или настроить свою стратегию веток.
 
-- The project originated as a sprint‑based educational assignment, so you may see references to branches like `sprint_1`, `sprint_2`, etc.
-- The existing GitHub Actions workflow runs automated tests for these sprint branches when pull requests target `main`.
-- For personal or open‑source development, you can keep this workflow or adjust it to your own branching strategy.
+## Деплой
 
-## Deployment
+В репозитории есть конфигурация для Netlify:
 
-The repository includes Netlify configuration:
-
-- Build the project locally:
+- Соберите проект локально:
 
   ```bash
   npm run build
   ```
 
-- The production assets will be generated in the `dist/` directory.
-- On Netlify, set the **publish directory** to `dist` (matching `netlify.toml`).
+- Результат сборки попадает в `dist/`. Содержимое `public/` (например, `_redirects`, `_headers`, `images/`) копируется в `dist/`, чтобы Netlify применил редиректы для SPA и заголовки кэша.
+- В настройках Netlify укажите **каталог публикации** `dist` (как в `netlify.toml`).
 
-You can also host the contents of `dist/` on any static hosting service (GitHub Pages, Vercel static export, nginx, etc.).
+Раздавать можно и вручную: содержимое `dist/` подойдёт для любого статического хостинга (GitHub Pages, Vercel, nginx и т.д.).
 
-## Roadmap / Ideas
+## Планы
 
-- Implement registration and password‑recovery screens.
-- Build the main messenger interface (chat list, conversation view, message input).
-- Add form validation and error states.
-- Integrate with a real back‑end API for authentication and chat data.
+- **Сделано:** экран регистрации, страница профиля, 404/500, layout мессенджера (сайдбар и заглушка), роутинг по hash, редиректы и заголовки для Netlify.
+- **Дальше:** полноценный экран чата в основной области мессенджера (сообщения, поле ввода), валидация форм и обработка ошибок, восстановление пароля.
+- **Позже:** бэкенд-API для авторизации и чата.
 
-## License
+## Лицензия
 
-This project is currently provided for educational purposes and does not yet include an explicit open‑source license.  
-If you plan to use it in production or as a base for an open‑source project, please add a license file (for example, MIT) that matches your needs.
+Проект создан в учебных целях и пока не содержит явной open-source лицензии.  
+Если планируете использовать его в продакшене или как основу для open-source проекта, добавьте файл лицензии (например, MIT) по своему выбору.
