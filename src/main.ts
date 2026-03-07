@@ -61,6 +61,11 @@ class App {
         text: 'Sign up',
         className: 'main-layout__sign-up',
       },
+      profileLink: {
+        href: '#profile',
+        text: 'Profile',
+        className: 'main-layout__profile',
+      },
       content: '',
     });
 
