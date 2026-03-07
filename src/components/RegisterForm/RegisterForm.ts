@@ -113,16 +113,17 @@ export class RegisterForm {
     });
 
     this.formFields = [
-      new FormField({ label: loginLabel.getData(), input: loginInput.getData(), className: fieldClass }),
-      new FormField({ label: emailLabel.getData(), input: emailInput.getData(), className: fieldClass }),
-      new FormField({ label: nameLabel.getData(), input: nameInput.getData(), className: fieldClass }),
-      new FormField({ label: surnameLabel.getData(), input: surnameInput.getData(), className: fieldClass }),
-      new FormField({ label: phoneLabel.getData(), input: phoneInput.getData(), className: fieldClass }),
-      new FormField({ label: passwordLabel.getData(), input: passwordInput.getData(), className: fieldClass }),
+      new FormField({ label: loginLabel.getData(), input: loginInput.getData(), className: fieldClass, icon: 'fa-solid fa-user' }),
+      new FormField({ label: emailLabel.getData(), input: emailInput.getData(), className: fieldClass, icon: 'fa-solid fa-envelope' }),
+      new FormField({ label: nameLabel.getData(), input: nameInput.getData(), className: fieldClass, icon: 'fa-solid fa-user' }),
+      new FormField({ label: surnameLabel.getData(), input: surnameInput.getData(), className: fieldClass, icon: 'fa-solid fa-user' }),
+      new FormField({ label: phoneLabel.getData(), input: phoneInput.getData(), className: fieldClass, icon: 'fa-solid fa-phone' }),
+      new FormField({ label: passwordLabel.getData(), input: passwordInput.getData(), className: fieldClass, icon: 'fa-solid fa-lock' }),
       new FormField({
         label: confirmPasswordLabel.getData(),
         input: confirmPasswordInput.getData(),
         className: fieldClass,
+        icon: 'fa-solid fa-lock',
       }),
     ];
 
