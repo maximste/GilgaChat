@@ -15,10 +15,12 @@ export {
   ButtonTemplate,
   FormField,
   FormFieldTemplate,
-  Input, 
+  Input,
   InputTemplate,
   Label,
   LabelTemplate,
   Link,
-  LinkTemplate
+  LinkTemplate,
 };
+export { RegisterForm } from './RegisterForm/RegisterForm';
+export { ProfilePage } from './ProfilePage/ProfilePage';

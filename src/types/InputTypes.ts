@@ -10,6 +10,7 @@ interface InputProps {
   name: string;
   required?: boolean;
   className?: string;
-};
+  placeholder?: string;
+}
 
 export type { InputProps, InputType };

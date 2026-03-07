@@ -75,12 +75,14 @@ export class AuthForm {
       label: this.emailLabel.getData(),
       input: this.emailInput.getData(),
       className: 'login-form__field',
+      icon: 'fa-solid fa-envelope',
     });
 
     this.passwordFormField = new FormField({
       label: this.passwordLabel.getData(),
       input: this.passwordInput.getData(),
       className: 'login-form__field',
+      icon: 'fa-solid fa-lock',
     });
 
     this.restorePasswordLink = new Link({
