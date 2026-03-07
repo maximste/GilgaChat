@@ -1,174 +1,24 @@
-$background-color: #313338;
-$background-color-on-surface-black: #2B2D31;
-$background-color-input: #1E1F22;
+@use 'styles/variables' as *;
 
-$text-color-placeholder: #80848E;
-$text-color-primary: #DBDEE1;
-$text-color-secondary: #B5BAC1;
-
-$color-accent: #5865F2;
-$color-accent-dark: #424CB5;
-$color-success: green;
-$color-error: red;
-
-$border-color-dark: #1E1F22;
-
-$font-size-14: 14px;
-$font-size-24: 24px;
-
-$line-height-32: 32px;
-$line-height-20: 20px;
-
-$border-radius-8: 8px;
-$border-radius-6: 6px;
-
-$padding-32: 32px;
-
-$gap-size-8: 8px;
-$gap-size-12: 12px;
-$gap-size-32: 32px;
-
-
+// General / global styles
 .body {
-	margin: 0;
-	background-color: $background-color;
-	height: 100vh;
+  margin: 0;
+  background-color: $background-color;
+  height: 100vh;
 }
-    
+
 .app {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
 }
-  
-  // Общие стили для link
+
 .link {
-	color: $color-accent;
+  color: $color-accent;
 
-	&:hover {
-		text-decoration: underline;
-	}
-}
-
-// Общие стили для полей форм
-.form-field {
-	display: flex;
-	flex-direction: column;
-	gap: $gap-size-8;
-	width: 100%;
-
-	&__label {
-		font-size: $font-size-14;
-		line-height: $line-height-20;
-		color: $text-color-primary;
-	}
-
-	&__input {
-		font-size: $font-size-14;
-		line-height: $line-height-20;
-		color: $text-color-primary;
-		background-color: $background-color-input;
-		border: none;
-		border-radius: $border-radius-6;
-		padding: 8px 16px;
-	
-		&:focus-visible,
-		&:focus {
-			outline: 1px solid $color-accent;
-		}
-	
-		&--error {
-			border: 1px solid $color-error;
-		}
-	
-		&--success {
-			border: 1px solid $color-success;
-		}
-	}
-}
-  
-.auth-window {
-	width: 386px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: $gap-size-32;
-	border: 1px solid $border-color-dark;
-	background-color: $background-color-on-surface-black;
-	border-radius: $border-radius-8;
-	padding: $padding-32;
-	box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .25);
-
-	&__header {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: $gap-size-8;
-	}
-
-	&__icon {
-		width: 64px;
-		height: 64px;
-		border-radius: 32px;
-		background-color: $color-accent;
-	}
-	
-	&__title {
-		color: $text-color-primary;
-		font-size: $font-size-24;
-		line-height: $line-height-32;
-		margin: 0;
-		font-weight: 700;
-	}
-	
-	&__sub-title {
-		color: $text-color-secondary;
-		font-size: $font-size-14;
-	}
-}
-    
-.login-form {
-	display: flex;
-	flex-direction: column;
-	align-items: start;
-	gap: $gap-size-12;
-	align-self: start;
-	width: 100%;
-
-	&__footer {
-		display: flex;
-		flex-direction: column;
-		gap: $gap-size-12;
-		width: 100%;
-	}
-	
-	&__link {
-		text-decoration:none;
-		font-size: $font-size-14;
-		line-height: $line-height-20;
-	}
-
-	&__submit-btn {
-		background-color: $color-accent;
-		color: $text-color-primary;
-	
-		&:hover {
-			background-color: $color-accent-dark;
-		}
-	}
-}
-
-.button {
-	border-radius: $border-radius-6;
-	font-size: $font-size-14;
-	line-height: $line-height-20;
-	padding: 8px 16px;
-	border: none;
-	transition: background-color ease-in-out .25s;
-
-	&:hover {
-		cursor: pointer;
-	}
+  &:hover {
+    text-decoration: underline;
+  }
 }
