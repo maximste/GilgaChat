@@ -13,6 +13,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: 'index.html',
+      output: {
+        // Use lowercase hashes so asset URLs match filenames on case-sensitive servers (e.g. Netlify/Linux)
+        hashCharacters: 'base36',
+      },
     },
     outDir: 'dist',
   },
