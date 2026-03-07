@@ -2,11 +2,13 @@ import { Button } from './Button/Button';
 import { FormField } from './FormField/FormField';
 import { Input } from './Input/Input';
 import { Label } from './Label/Label';
+import { Link } from './Link/Link';
 
 import ButtonTemplate from './Button/Button.hbs?raw';
 import InputTemplate from './Input/Input.hbs?raw';
 import LabelTemplate from './Label/Label.hbs?raw';
 import FormFieldTemplate from './FormField/FormField.hbs?raw';
+import LinkTemplate from './Link/Link.hbs?raw';
 
 export {
   Button,
@@ -16,5 +18,7 @@ export {
   Input, 
   InputTemplate,
   Label,
-  LabelTemplate
+  LabelTemplate,
+  Link,
+  LinkTemplate
 };
