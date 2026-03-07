@@ -23,3 +23,4 @@ export {
   LinkTemplate,
 };
 export { RegisterForm } from './RegisterForm/RegisterForm';
+export { ProfilePage } from './ProfilePage/ProfilePage';

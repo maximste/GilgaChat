@@ -1,4 +1,6 @@
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { AuthForm } from './components/AuthForm/AuthForm';
+import { ProfilePage } from './components/ProfilePage/ProfilePage';
 import { RegisterForm } from './components/RegisterForm/RegisterForm';
 import { MainLayout } from './layout/main/MainLayout';
 import './style.scss';
@@ -36,6 +38,11 @@ class App {
         text: 'Sign up',
         className: 'main-layout__sign-up',
       },
+      profileLink: {
+        href: '#profile',
+        text: 'Profile',
+        className: 'main-layout__profile',
+      },
       content: '',
     });
 
@@ -65,8 +72,19 @@ class App {
         subtitle: 'Sign up to get started',
       });
       registerForm.render();
+    } else if (hash === '#profile') {
+      const profilePage = new ProfilePage(this.layoutContent, {
+        name: 'John Smith',
+        username: '@johnsmith',
+        login: 'johnsmith',
+        email: 'john.smith@example.com',
+        firstName: 'John',
+        surname: 'Smith',
+        phone: '+1 (555) 123-4567',
+      });
+      profilePage.render();
     } else {
-      this.layoutContent.innerHTML = '<p class="main-layout__welcome">Welcome to GilgaChat. <a href="#auth" class="link">Sign in</a> or <a href="#register" class="link">Sign up</a> to continue.</p>';
+      this.layoutContent.innerHTML = '<p class="main-layout__welcome">Welcome to GilgaChat. <a href="#auth" class="link">Sign in</a>, <a href="#register" class="link">Sign up</a>, or <a href="#profile" class="link">Profile</a>.</p>';
     }
   }
 }
