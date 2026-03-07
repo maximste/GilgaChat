@@ -10,6 +10,8 @@ import {
   InputTemplate,
   Label,
   LabelTemplate,
+  Link,
+  LinkTemplate
 } from '..';
 
 import './AuthForm.scss'
@@ -29,12 +31,13 @@ export class AuthForm {
   private passwordInput: Input;
   private emailFormField: FormField;
   private passwordFormField: FormField;
+  private restorePasswordLink: Link;
 
   constructor(container: HTMLElement, props: AuthFormProps) {
     this.container = container;
     this.props = props;
 
-    this.emailLabel = new Label ({
+    this.emailLabel = new Label({
       text: 'Email',
       for: 'userEmail',
       className: 'login-form__label',
@@ -46,7 +49,7 @@ export class AuthForm {
       className: 'login-form__label',
     });
 
-    this.emailInput = new Input ({
+    this.emailInput = new Input({
       id: 'userEmail',
       type: 'email',
       name: 'email',
@@ -54,7 +57,7 @@ export class AuthForm {
       className: "login-form__input",
     });
 
-    this.passwordInput = new Input ({
+    this.passwordInput = new Input({
       id: 'userPassword',
       type: 'password',
       name: 'password',
@@ -62,7 +65,7 @@ export class AuthForm {
       className: "login-form__input",
     });
 
-    this.signInButton = new Button ({
+    this.signInButton = new Button({
       type: 'submit',
       text: 'Sign In',
       className: 'login-form__submit-btn',
@@ -79,6 +82,12 @@ export class AuthForm {
       input: this.passwordInput.getData(),
       className: 'login-form__field',
     });
+
+    this.restorePasswordLink = new Link({
+      text: 'Forgot password?',
+      href: '/recovery',
+      className: 'login-form__link',
+    });
   }
   
   public render(): void {
@@ -86,6 +95,7 @@ export class AuthForm {
     Handlebars.registerPartial("Input", InputTemplate);
     Handlebars.registerPartial("Label", LabelTemplate);
     Handlebars.registerPartial("FormField", FormFieldTemplate);
+    Handlebars.registerPartial("Link", LinkTemplate);
 
     const compiledTemplate = Handlebars.compile(template)({
       title: this.props.title,
@@ -93,6 +103,7 @@ export class AuthForm {
       signInButton: this.signInButton.getData(),
       emailFormField: this.emailFormField.getData(),
       passwordFormField: this.passwordFormField.getData(),
+      restorePasswordLink: this.restorePasswordLink.getData(),
     });
 
     this.container.innerHTML = compiledTemplate;

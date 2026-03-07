@@ -1,4 +1,4 @@
-import { AuthForm } from './pages/Auth/AuthForm'
+import { AuthForm } from './components/AuthForm/AuthForm'
 import './style.scss'
 
 class App {
