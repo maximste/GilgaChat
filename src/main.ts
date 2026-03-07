@@ -24,6 +24,7 @@ class App {
 
     this.authForm = new AuthForm(container, {
       title: 'Welcome back',
+      subtitle: 'Sign in to continue to GilgaChat',
     })
 
     this.authForm.render();
