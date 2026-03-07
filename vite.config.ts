@@ -6,6 +6,7 @@ dotenv.config();
 const PORT = process.env.PORT ? +process.env.PORT : 8000;
 
 export default defineConfig({
+  base: '/',
   server: {
     open: true,
     port: PORT,
