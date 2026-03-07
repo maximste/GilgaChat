@@ -6,9 +6,19 @@ dotenv.config();
 const PORT = process.env.PORT ? +process.env.PORT : 8000;
 
 export default defineConfig({
+  base: '/',
   server: {
     open: true,
     port: PORT,
   },
-  assetsInclude: ['**/*.hbs']
+  build: {
+    rollupOptions: {
+      input: 'static/index.html',
+      output: {
+        hashCharacters: 'base36',
+      },
+    },
+    outDir: 'dist',
+  },
+  assetsInclude: ['**/*.hbs'],
 })
