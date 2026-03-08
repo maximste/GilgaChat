@@ -51,20 +51,10 @@ class App {
     }
 
     const layout = new MainLayout({
-      signInLink: {
-        href: '#auth',
-        text: 'Sign in',
-        className: 'main-layout__sign-in',
-      },
-      signUpLink: {
-        href: '#register',
-        text: 'Sign up',
-        className: 'main-layout__sign-up',
-      },
-      profileLink: {
-        href: '#profile',
-        text: 'Profile',
-        className: 'main-layout__profile',
+      goBackLink: {
+        href: '#',
+        text: 'Go back',
+        className: 'main-layout__go-back',
       },
       content: '',
     });
