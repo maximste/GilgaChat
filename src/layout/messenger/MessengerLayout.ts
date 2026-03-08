@@ -1,6 +1,8 @@
 import Handlebars from 'handlebars';
 
 import template from './MessengerLayout.hbs?raw';
+import { LinkTemplate } from '../../components';
+import type { LinkProps } from '../../types';
 
 import './MessengerLayout.scss';
 
@@ -19,6 +21,7 @@ export interface GroupItem {
 
 export interface MessengerLayoutProps {
   appTitle: string;
+  topLinks: LinkProps[];
   currentUser: {
     firstName: string;
     lastName: string;
@@ -28,6 +31,13 @@ export interface MessengerLayoutProps {
   groups: GroupItem[];
   content?: string;
 }
+
+const defaultTopLinks: LinkProps[] = [
+  { href: '#auth', text: 'Sign in', className: 'messenger-sidebar__top-link' },
+  { href: '#register', text: 'Sign up', className: 'messenger-sidebar__top-link' },
+  { href: '#404', text: '404', className: 'messenger-sidebar__top-link' },
+  { href: '#500', text: '500', className: 'messenger-sidebar__top-link' },
+];
 
 const defaultDirectMessages: DirectMessageItem[] = [
   { firstName: 'Sarah', lastName: 'Chen', preview: 'typing...', statusType: 'green' },
@@ -45,6 +55,7 @@ class MessengerLayout {
   constructor(props: Partial<MessengerLayoutProps> = {}) {
     this.props = {
       appTitle: props.appTitle ?? 'Messenger',
+      topLinks: props.topLinks ?? defaultTopLinks,
       currentUser: props.currentUser ?? {
         firstName: 'Alex',
         lastName: 'Morgan',
@@ -57,6 +68,7 @@ class MessengerLayout {
   }
 
   public render(): string {
+    Handlebars.registerPartial('Link', LinkTemplate);
     return Handlebars.compile(template)(this.props);
   }
 }
