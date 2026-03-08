@@ -167,6 +167,14 @@ npm run start
 
 Раздавать можно и вручную: содержимое `dist/` подойдёт для любого статического хостинга (GitHub Pages, Vercel, nginx и т.д.).
 
+### GitHub Pages (автодеплой из ветки deploy)
+
+1. В репозитории: **Settings → Pages**.
+2. В блоке **Build and deployment** выберите **Source: GitHub Actions**.
+3. Ветка **deploy**: при каждом пуше в неё workflow `.github/workflows/deploy-pages.yml` запускает сборку на GitHub (Node.js 22, `npm ci`, `npm run build`) и публикует каталог `dist/` на GitHub Pages.
+
+Сайт будет доступен по адресу вида `https://<username>.github.io/<repo>/`. Для SPA важно задать **base** в `vite.config.ts` равным `'/<repo>/'` (например, `'/GilgaChat/'`), иначе маршруты по hash и статика будут отдаваться с неправильного пути.
+
 ## Планы
 
 - **Сделано:** экран регистрации, страница профиля, 404/500, layout мессенджера (сайдбар и заглушка), роутинг по hash, редиректы и заголовки для Netlify.
