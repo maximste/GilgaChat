@@ -41,9 +41,23 @@
   line-height: 1.3;
 }
 
-.server-error__emoji {
-  display: inline-block;
+.server-error__icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
   margin-left: 0.25em;
+
+  .fa-fire {
+    color: #e25822;
+  }
+
+  .fa-rocket {
+    color: #5865f2;
+  }
+
+  .fa-screwdriver-wrench {
+    color: #94a3b8;
+  }
 }
 
 .server-error__message {
@@ -79,6 +93,22 @@
 
 .server-error__status-icon {
   font-size: 1.5em;
+
+  i {
+    display: inline-block;
+  }
+}
+
+.server-error__status:nth-child(1) .server-error__status-icon {
+  color: #e25822;
+}
+
+.server-error__status:nth-child(2) .server-error__status-icon {
+  color: #22c55e;
+}
+
+.server-error__status:nth-child(3) .server-error__status-icon {
+  color: #eab308;
 }
 
 .server-error__status-label {
