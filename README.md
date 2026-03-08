@@ -29,9 +29,9 @@ GilgaChat — учебный фронтенд-проект, в котором п
   - Справа: заглушка **NoChatStub** («Чат не выбран» — место под будущий экран переписки).
 
 - **Авторизация и профиль**
-  - **Вход** (`#auth`) — форма входа с заголовком, полями email/пароль и ссылкой «Забыли пароль?».
-  - **Регистрация** (`#register`) — форма регистрации.
-  - **Профиль** (`#profile`) — карточка профиля и блок с данными (демо-данные).
+  - **Вход** (`#auth`) — форма входа с логотипом, полями email/пароль и ссылкой «Забыли пароль?».
+  - **Регистрация** (`#register`) — форма регистрации (login, display_name, email, имя, фамилия, телефон, пароль).
+  - **Профиль** (`#profile`) — карточка профиля, блок Profile Information (login, display name, email, имя, фамилия, телефон). Кнопка «Edit Profile» открывает форму редактирования (данные пользователя и опционально смена пароля: current password, new password).
 
 - **Страницы ошибок**
   - **404** (`#404`) — «Oops! You're Lost in Cyberspace» с изображением, подсказками и кнопками «Take Me Home» / «Go Back».
@@ -109,14 +109,15 @@ npm run start
 .
 ├── index.html               # Корневой HTML (точка входа Vite)
 ├── public
-│   └── images/              # Статика (например, изображение для 404)
+│   └── images/              # Статика (логотип, изображение для 404)
 ├── src
 │   ├── main.ts              # Точка входа: роутинг по hash, MainLayout / MessengerLayout, экраны
 │   ├── style.scss           # Глобальные стили
 │   ├── components
 │   │   ├── AuthForm/        # Форма входа
-│   │   ├── RegisterForm/    # Форма регистрации
-│   │   ├── ProfilePage/     # Карточка и данные профиля
+│   │   ├── RegisterForm/    # Форма регистрации (login, display_name, email, имя, фамилия, телефон, пароль)
+│   │   ├── ProfilePage/     # Карточка профиля и блок Profile Information (Edit Profile, Logout)
+│   │   ├── EditProfileForm/ # Форма редактирования профиля (данные + old_password, new_password)
 │   │   ├── NotFoundPage/    # Страница 404
 │   │   ├── ServerErrorPage/ # Страница 500
 │   │   ├── NoChatStub/      # Заглушка «Чат не выбран»
@@ -131,9 +132,9 @@ npm run start
 │   ├── styles/              # Общие SCSS (цвета, типографика, отступы, переменные)
 │   ├── types/               # Общие типы TypeScript
 │   └── utils/mydash/        # Вспомогательные функции
-├── vite.config.ts           # Конфиг Vite (base, build, outDir: dist)
+├── vite.config.ts           # Конфиг Vite (base, build, preview port: 3000)
 ├── netlify.toml             # Netlify: команда сборки, каталог публикации dist
-└── .github/workflows/       # CI (например, тесты по спринтам)
+└── .github/workflows/       # CI (тесты по спринтам)
 ```
 
 ## Как устроено
@@ -144,7 +145,7 @@ npm run start
   - `#auth`, `#register`, `#profile`, `#404`, `#500` → **MainLayout** с **AuthForm**, **RegisterForm**, **ProfilePage**, **NotFoundPage** или **ServerErrorPage** в области контента.
   - Без hash или неизвестный hash → MainLayout с **главной** (демо-сообщение и ссылки).
 - При переходе с `#messenger` на другой маршрут корень перерисовывается с MainLayout, чтобы отображались нужная шапка и контент.
-- Компоненты (AuthForm, ProfilePage и др.) регистрируют партиалы Handlebars, компилируют свой шаблон `.hbs` с пропсами и вставляют HTML в элемент контента layout’а. Логика интерфейса — в классах TypeScript, разметка — в шаблонах Handlebars.
+- Компоненты (AuthForm, RegisterForm, ProfilePage, EditProfileForm и др.) регистрируют партиалы Handlebars, компилируют свой шаблон `.hbs` с пропсами и вставляют HTML в элемент контента layout’а. Логика интерфейса — в классах TypeScript, разметка — в шаблонах Handlebars. Форма редактирования профиля рендерится по клику на «Edit Profile» в область контента профиля.
 
 ## Разработка и соглашения
 
