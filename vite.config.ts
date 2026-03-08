@@ -11,6 +11,9 @@ export default defineConfig({
     open: true,
     port: PORT,
   },
+  preview: {
+    port: PORT,
+  },
   build: {
     rollupOptions: {
       input: 'index.html',
