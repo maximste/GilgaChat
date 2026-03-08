@@ -108,6 +108,7 @@ class App {
       const profilePage = new ProfilePage(this.layoutContent, {
         name: 'John Smith',
         username: '@johnsmith',
+        displayName: 'John Smith',
         login: 'johnsmith',
         email: 'john.smith@example.com',
         firstName: 'John',

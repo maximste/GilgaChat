@@ -1,13 +1,14 @@
 import Handlebars from 'handlebars';
 
 import template from './ProfilePage.hbs?raw';
-import { Button, ButtonTemplate, LinkTemplate } from '..';
+import { Button, ButtonTemplate, EditProfileForm, LinkTemplate } from '..';
 
 import './ProfilePage.scss';
 
 export interface ProfilePageProps {
   name: string;
   username: string;
+  displayName: string;
   login: string;
   email: string;
   firstName: string;
@@ -20,7 +21,6 @@ export class ProfilePage {
   private props: ProfilePageProps;
   private backLink: { href: string; text: string; className: string };
   private editProfileButton: Button;
-  private changePasswordButton: Button;
   private logoutButton: Button;
 
   constructor(container: HTMLElement, props: ProfilePageProps) {
@@ -39,12 +39,6 @@ export class ProfilePage {
       className: 'profile-page__btn profile-page__btn--primary',
     });
 
-    this.changePasswordButton = new Button({
-      type: 'button',
-      text: 'Change Password',
-      className: 'profile-page__btn profile-page__btn--secondary',
-    });
-
     this.logoutButton = new Button({
       type: 'button',
       text: 'Logout',
@@ -60,10 +54,30 @@ export class ProfilePage {
       ...this.props,
       backLink: this.backLink,
       editProfileButton: this.editProfileButton.getData(),
-      changePasswordButton: this.changePasswordButton.getData(),
       logoutButton: this.logoutButton.getData(),
     });
 
     this.container.innerHTML = compiledTemplate;
+
+    const contentEl = this.container.querySelector('.profile-page__content');
+    this.container.querySelector('.profile-page__btn--primary')?.addEventListener('click', () => {
+      if (!contentEl || !(contentEl instanceof HTMLElement)) return;
+      const editForm = new EditProfileForm(
+        contentEl,
+        {
+          login: this.props.login,
+          displayName: this.props.displayName,
+          email: this.props.email,
+          firstName: this.props.firstName,
+          surname: this.props.surname,
+          phone: this.props.phone,
+        },
+        {
+          onCancel: () => this.render(),
+          onSave: () => this.render(),
+        }
+      );
+      editForm.render();
+    });
   }
 }
