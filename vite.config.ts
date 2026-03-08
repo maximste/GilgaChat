@@ -13,7 +13,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      input: 'static/index.html',
+      input: 'index.html',
       output: {
         hashCharacters: 'base36',
       },
