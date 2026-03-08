@@ -37,6 +37,11 @@ jobs:
             cp static/index.html index.html
           fi
 
+      - name: Use root index.html in Vite config
+        run: |
+          sed -i "s|'static/index.html'|'index.html'|g" vite.config.ts
+          sed -i 's|"static/index.html"|"index.html"|g' vite.config.ts
+
       - name: Build
         run: npm run build
         env:
