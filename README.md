@@ -3,6 +3,8 @@
 Современный интерфейс мессенджера на TypeScript, Handlebars и Vite.  
 Репозиторий содержит фронтенд GilgaChat: экран авторизации, переиспользуемые компоненты и страницы, которые можно развивать в полноценный мессенджер.
 
+**Демо:** [https://maximste.github.io/GilgaChat/](https://maximste.github.io/GilgaChat/)
+
 ---
 
 ## Обзор
@@ -45,7 +47,7 @@ GilgaChat — учебный фронтенд-проект, в котором п
 
 - **Разработка и деплой**
   - Dev-сервер Vite с hot reload, сборка TypeScript + Vite.
-  - Netlify: публикация из `dist/`, `public/_redirects` для SPA, `public/_headers` для кэша.
+  - Netlify: публикация из `dist/`.
   - GitHub Actions для CI (тесты по спринтам).
 
 ## Стек
@@ -54,7 +56,7 @@ GilgaChat — учебный фронтенд-проект, в котором п
 - **Сборка и dev-сервер:** Vite
 - **Шаблоны:** Handlebars
 - **Стили:** SCSS
-- **Деплой:** Netlify (`https://gilgachat.netlify.app/`, каталог публикации `dist/`)
+- **Деплой:** [GitHub Pages](https://maximste.github.io/GilgaChat/) (актуальная версия). Netlify (`https://gilgachat.netlify.app/`) — неактуальная версия; проект на Netlify не деплоится из-за проблем с работой сервиса.
 
 ## Дизайн и прототипы
 
@@ -107,8 +109,6 @@ npm run start
 .
 ├── index.html               # Корневой HTML (точка входа Vite)
 ├── public
-│   ├── _headers             # Заголовки кэша и безопасности для Netlify
-│   ├── _redirects           # SPA: /* → /index.html 200
 │   └── images/              # Статика (например, изображение для 404)
 ├── src
 │   ├── main.ts              # Точка входа: роутинг по hash, MainLayout / MessengerLayout, экраны
@@ -148,13 +148,13 @@ npm run start
 
 ## Разработка и соглашения
 
-- Проект изначально был учебным по спринтам, поэтому ,elen встречаться ветки вроде `sprint_1`, `sprint_2` и т.п.
+- Проект изначально был учебным по спринтам, поэтому могут встречаться ветки вроде `sprint_1`, `sprint_2` и т.п.
 - Workflow GitHub Actions запускает автоматические тесты для этих веток при pull request в `main`.
 - Для своей разработки или open-source можно оставить этот workflow или настроить свою стратегию веток.
 
 ## Деплой
 
-В репозитории есть конфигурация для Netlify:
+Актуальная версия проекта раздаётся с **GitHub Pages** (см. раздел ниже). Конфигурация для Netlify в репозитории сохранена, но из-за проблем с работой сервиса Netlify проект там не деплоится; ссылка [gilgachat.netlify.app](https://gilgachat.netlify.app/) может вести на неактуальную версию.
 
 - Соберите проект локально:
 
@@ -162,10 +162,8 @@ npm run start
   npm run build
   ```
 
-- Результат сборки попадает в `dist/`. Содержимое `public/` (например, `_redirects`, `_headers`, `images/`) копируется в `dist/`, чтобы Netlify применил редиректы для SPA и заголовки кэша.
-- В настройках Netlify укажите **каталог публикации** `dist` (как в `netlify.toml`).
-
-Раздавать можно и вручную: содержимое `dist/` подойдёт для любого статического хостинга (GitHub Pages, Vercel, nginx и т.д.).
+- Результат сборки попадает в `dist/`. Содержимое `public/` (например, `images/`) копируется в `dist/`.
+- Раздавать можно вручную: содержимое `dist/` подойдёт для любого статического хостинга (GitHub Pages, Vercel, nginx и т.д.).
 
 ### GitHub Pages (автодеплой из ветки deploy)
 
