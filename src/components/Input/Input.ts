@@ -2,8 +2,6 @@ import Handlebars from 'handlebars';
 import template from './Input.hbs?raw';
 import type { InputProps } from '../../types';
 
-import './Input.scss';
-
 class Input {
   private props: InputProps;
   

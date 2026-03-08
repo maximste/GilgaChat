@@ -1,6 +1,5 @@
 import Handlebars from 'handlebars';
 import template from './Label.hbs?raw';
-import './Label.scss';
 import type { LabelProps } from '../../types';
 
 class Label {
