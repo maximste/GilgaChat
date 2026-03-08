@@ -36,6 +36,13 @@ jobs:
         env:
           BASE_PATH: /GilgaChat/
 
+      - name: Ensure index.html at dist root
+        run: |
+          if [ -f dist/static/index.html ]; then
+            mv dist/static/index.html dist/index.html
+            rm -rf dist/static
+          fi
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
