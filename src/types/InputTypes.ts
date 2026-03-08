@@ -8,6 +8,7 @@ interface InputProps {
   id: string;
   type: InputType;
   name: string;
+  value?: string;
   required?: boolean;
   className?: string;
   placeholder?: string;

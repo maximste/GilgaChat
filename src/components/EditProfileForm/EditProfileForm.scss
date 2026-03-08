@@ -1,0 +1,62 @@
+@use '../../styles/variables' as *;
+
+.edit-profile {
+  background-color: $background-color-on-surface-black;
+  border: 1px solid $border-color-dark;
+  border-radius: $border-radius-8;
+  padding: $padding-32;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.edit-profile__header {
+  margin-bottom: $gap-size-24;
+}
+
+.edit-profile__title {
+  margin: 0;
+  font-size: $font-size-24;
+  font-weight: 700;
+  color: $text-color-primary;
+}
+
+.edit-profile__form {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-size-12;
+  width: 100%;
+}
+
+.edit-profile__field {
+  width: 100%;
+}
+
+.edit-profile__input {
+  width: 100%;
+}
+
+.edit-profile__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $gap-size-12;
+  margin-top: $gap-size-8;
+}
+
+.edit-profile__btn {
+  &--primary {
+    background-color: $color-accent;
+    color: $text-color-primary;
+
+    &:hover {
+      background-color: $color-accent-dark;
+    }
+  }
+
+  &--secondary {
+    background-color: $background-color-input;
+    color: $text-color-primary;
+
+    &:hover {
+      filter: brightness(0.95);
+    }
+  }
+}

@@ -23,6 +23,7 @@ export {
   LinkTemplate,
 };
 export { RegisterForm } from './RegisterForm/RegisterForm';
+export { EditProfileForm } from './EditProfileForm/EditProfileForm';
 export { ProfilePage } from './ProfilePage/ProfilePage';
 export { NoChatStub } from './NoChatStub/NoChatStub';
 export { NotFoundPage } from './NotFoundPage/NotFoundPage';

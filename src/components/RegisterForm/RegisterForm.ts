@@ -48,6 +48,16 @@ export class RegisterForm {
       className: inputClass,
     });
 
+    const displayNameLabel = new Label({ text: 'Display name', for: 'userDisplayName', className: labelClass });
+    const displayNameInput = new Input({
+      id: 'userDisplayName',
+      type: 'text',
+      name: 'display_name',
+      required: true,
+      placeholder: 'Display name',
+      className: inputClass,
+    });
+
     const emailLabel = new Label({ text: 'Email', for: 'userEmail', className: labelClass });
     const emailInput = new Input({
       id: 'userEmail',
@@ -114,6 +124,7 @@ export class RegisterForm {
 
     this.formFields = [
       new FormField({ label: loginLabel.getData(), input: loginInput.getData(), className: fieldClass, icon: 'fa-solid fa-user' }),
+      new FormField({ label: displayNameLabel.getData(), input: displayNameInput.getData(), className: fieldClass, icon: 'fa-solid fa-user' }),
       new FormField({ label: emailLabel.getData(), input: emailInput.getData(), className: fieldClass, icon: 'fa-solid fa-envelope' }),
       new FormField({ label: nameLabel.getData(), input: nameInput.getData(), className: fieldClass, icon: 'fa-solid fa-user' }),
       new FormField({ label: surnameLabel.getData(), input: surnameInput.getData(), className: fieldClass, icon: 'fa-solid fa-user' }),
@@ -163,12 +174,13 @@ export class RegisterForm {
       title: this.props.title,
       subtitle: this.props.subtitle,
       loginFormField: this.formFields[0].getData(),
-      emailFormField: this.formFields[1].getData(),
-      nameFormField: this.formFields[2].getData(),
-      surnameFormField: this.formFields[3].getData(),
-      phoneFormField: this.formFields[4].getData(),
-      passwordFormField: this.formFields[5].getData(),
-      confirmPasswordFormField: this.formFields[6].getData(),
+      displayNameFormField: this.formFields[1].getData(),
+      emailFormField: this.formFields[2].getData(),
+      nameFormField: this.formFields[3].getData(),
+      surnameFormField: this.formFields[4].getData(),
+      phoneFormField: this.formFields[5].getData(),
+      passwordFormField: this.formFields[6].getData(),
+      confirmPasswordFormField: this.formFields[7].getData(),
       createAccountButton: this.createAccountButton.getData(),
       signInLink: this.signInLink.getData(),
       termsLink: this.termsLink.getData(),
