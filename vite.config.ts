@@ -11,5 +11,14 @@ export default defineConfig({
     open: true,
     port: PORT,
   },
-  assetsInclude: ['**/*.hbs']
+  build: {
+    rollupOptions: {
+      input: 'index.html',
+      output: {
+        hashCharacters: 'base36',
+      },
+    },
+    outDir: 'dist',
+  },
+  assetsInclude: ['**/*.hbs'],
 })
