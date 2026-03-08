@@ -86,8 +86,9 @@ class App {
     if (!container) return;
 
     const hash = window.location.hash;
+    const isMessengerView = hash === '' || hash === '#messenger';
 
-    if (hash === '#messenger') {
+    if (isMessengerView) {
       const layout = new MessengerLayout();
       container.innerHTML = layout.render();
       const contentEl = document.getElementById('messenger-content');
@@ -131,12 +132,13 @@ class App {
       const serverErrorPage = new ServerErrorPage(this.layoutContent);
       serverErrorPage.render();
     } else {
-      this.layoutContent.innerHTML = `
-        <div class="main-layout__welcome-block">
-          <p class="main-layout__welcome-notice">This is a temporary page for demonstrating the project’s laid-out pages.</p>
-          <p class="main-layout__welcome">Go to: <a href="#messenger" class="link">Messenger</a>, <a href="#auth" class="link">Sign in</a>, <a href="#register" class="link">Sign up</a>, <a href="#profile" class="link">Profile</a>, <a href="#404" class="link">404</a>, <a href="#500" class="link">500</a>.</p>
-        </div>
-      `;
+      // Unknown hash — show messenger as default
+      const layout = new MessengerLayout();
+      container.innerHTML = layout.render();
+      const contentEl = document.getElementById('messenger-content');
+      if (contentEl) new NoChatStub(contentEl).render();
+      this.layoutContent = null;
+      return;
     }
   }
 }

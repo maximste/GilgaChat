@@ -1,6 +1,11 @@
 <div class="messenger-layout">
   <aside class="messenger-sidebar">
     <div class="messenger-sidebar__top">
+      <nav class="messenger-sidebar__top-links">
+        {{#each topLinks}}
+        {{> Link}}
+        {{/each}}
+      </nav>
       <button type="button" class="messenger-sidebar__app-title" aria-haspopup="listbox" aria-expanded="false">
         {{appTitle}}
         <i class="fa-solid fa-chevron-down messenger-sidebar__chevron" aria-hidden="true"></i>
