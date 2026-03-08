@@ -19,11 +19,25 @@
     gap: $gap-size-8;
   }
 
-  &__icon {
+  &__icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 64px;
     height: 64px;
-    border-radius: 32px;
-    background-color: $color-accent;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.06),
+      0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  &__icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    display: block;
   }
 
   &__title {
