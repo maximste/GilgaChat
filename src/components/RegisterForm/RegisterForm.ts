@@ -62,7 +62,7 @@ export class RegisterForm {
     const nameInput = new Input({
       id: 'userName',
       type: 'text',
-      name: 'name',
+      name: 'first_name',
       required: true,
       placeholder: 'Enter your name',
       className: inputClass,
@@ -72,7 +72,7 @@ export class RegisterForm {
     const surnameInput = new Input({
       id: 'userSurname',
       type: 'text',
-      name: 'surname',
+      name: 'second_name',
       required: true,
       placeholder: 'Enter your surname',
       className: inputClass,
@@ -106,7 +106,7 @@ export class RegisterForm {
     const confirmPasswordInput = new Input({
       id: 'userConfirmPassword',
       type: 'password',
-      name: 'confirmPassword',
+      name: 'password_confirm',
       required: true,
       placeholder: 'Confirm your password',
       className: inputClass,
