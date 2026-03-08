@@ -5,9 +5,7 @@ import type { LinkProps } from '../../types';
 import './MainLayout.scss';
 
 export interface MainLayoutProps {
-  signInLink: LinkProps;
-  signUpLink: LinkProps;
-  profileLink: LinkProps;
+  goBackLink: LinkProps;
   content?: string;
 }
 
