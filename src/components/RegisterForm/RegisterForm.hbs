@@ -1,5 +1,5 @@
 <section class="layout">
-  <section class="auth-window">
+  <section class="auth-window auth-window--register">
     <header class="auth-window__header">
       <span class="auth-window__icon-wrap">
         <img src="images/logo.png" alt="GilgaChat" class="auth-window__icon" width="64" height="64" />
@@ -9,18 +9,27 @@
     </header>
 
     <form id="registerForm" class="register-form" action="/register" method="POST">
-      {{> FormField loginFormField }}
-      {{> FormField displayNameFormField }}
-      {{> FormField emailFormField }}
-      {{> FormField nameFormField }}
-      {{> FormField surnameFormField }}
-      {{> FormField phoneFormField }}
-      {{> FormField passwordFormField }}
-      {{> FormField confirmPasswordFormField }}
+      <section class="register-form__section" aria-labelledby="register-account-heading">
+        <h3 id="register-account-heading" class="register-form__section-title">Account</h3>
+        {{> FormField emailFormField }}
+        {{> FormField loginFormField }}
+        {{> FormField passwordFormField }}
+        {{> FormField confirmPasswordFormField }}
+      </section>
+      <section class="register-form__section register-form__section--with-divider" aria-labelledby="register-profile-heading">
+        <h3 id="register-profile-heading" class="register-form__section-title">Profile</h3>
+        {{> FormField nameFormField }}
+        {{> FormField surnameFormField }}
+        {{> FormField displayNameFormField }}
+        {{> FormField phoneFormField }}
+      </section>
 
       <footer class="register-form__footer">
-        {{> Button createAccountButton }}
-        <p class="register-form__sign-in-text">Already have an account? {{> Link signInLink }}</p>
+        <div class="register-form__actions">
+          {{> Button createAccountButton }}
+          <span class="register-form__actions-separator">or</span>
+          <a href="{{signInLink.href}}" class="register-form__btn register-form__btn--secondary">{{signInLink.text}}</a>
+        </div>
       </footer>
     </form>
   </section>

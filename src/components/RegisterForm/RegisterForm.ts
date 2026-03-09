@@ -84,7 +84,7 @@ export class RegisterForm {
       type: 'text',
       name: 'second_name',
       required: true,
-      placeholder: 'Enter your surname',
+      placeholder: 'Surname',
       className: inputClass,
     });
 
@@ -94,7 +94,7 @@ export class RegisterForm {
       type: 'tel',
       name: 'phone',
       required: true,
-      placeholder: 'Enter your phone number',
+      placeholder: 'Phone number',
       className: inputClass,
     });
 
@@ -104,7 +104,7 @@ export class RegisterForm {
       type: 'password',
       name: 'password',
       required: true,
-      placeholder: 'Enter your password',
+      placeholder: 'Password',
       className: inputClass,
     });
 
@@ -118,7 +118,7 @@ export class RegisterForm {
       type: 'password',
       name: 'password_confirm',
       required: true,
-      placeholder: 'Confirm your password',
+      placeholder: 'Confirm password',
       className: inputClass,
     });
 
@@ -141,7 +141,7 @@ export class RegisterForm {
     this.createAccountButton = new Button({
       type: 'submit',
       text: 'Create Account',
-      className: 'register-form__submit-btn',
+      className: 'register-form__btn register-form__btn--primary',
     });
 
     this.signInLink = new Link({
