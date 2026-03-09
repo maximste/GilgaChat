@@ -1,4 +1,5 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import '@fontsource/inter';
 import { AuthForm } from './components/AuthForm/AuthForm';
 import { MainLayout } from './layout/main/MainLayout';
 import { MessengerLayout } from './layout/messenger/MessengerLayout';
