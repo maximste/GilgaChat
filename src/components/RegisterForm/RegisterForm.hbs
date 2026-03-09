@@ -1,0 +1,27 @@
+<section class="layout">
+  <section class="auth-window">
+    <header class="auth-window__header">
+      <span class="auth-window__icon-wrap">
+        <img src="images/logo.png" alt="GilgaChat" class="auth-window__icon" width="64" height="64" />
+      </span>
+      <h2 class="auth-window__title">{{title}}</h2>
+      <span class="auth-window__sub-title">{{subtitle}}</span>
+    </header>
+
+    <form id="registerForm" class="register-form" action="/register" method="POST">
+      {{> FormField loginFormField }}
+      {{> FormField displayNameFormField }}
+      {{> FormField emailFormField }}
+      {{> FormField nameFormField }}
+      {{> FormField surnameFormField }}
+      {{> FormField phoneFormField }}
+      {{> FormField passwordFormField }}
+      {{> FormField confirmPasswordFormField }}
+
+      <footer class="register-form__footer">
+        {{> Button createAccountButton }}
+        <p class="register-form__sign-in-text">Already have an account? {{> Link signInLink }}</p>
+      </footer>
+    </form>
+  </section>
+</section>
