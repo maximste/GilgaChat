@@ -12,7 +12,7 @@ import './style.scss';
 function showError(message: string): void {
   const app = document.getElementById('app');
   if (app) {
-    app.innerHTML = `<p style="padding:2rem;color:#fff;font-family:sans-serif;">App error: ${message}</p>`;
+    app.innerHTML = `<p class="app-error">App error: ${message}</p>`;
   }
   console.error('[GilgaChat]', message);
 }
