@@ -17,7 +17,7 @@
 }
 
 .messenger-sidebar__top {
-  padding: $gap-size-12;
+  padding: $spacing-12;
   display: flex;
   flex-direction: column;
   gap: $gap-size-12;
@@ -44,7 +44,7 @@
   align-items: center;
   gap: $gap-size-8;
   width: 100%;
-  padding: $gap-size-8 0;
+  padding: $spacing-8 0;
   background: none;
   border: none;
   font-size: $font-size-14;
@@ -80,7 +80,7 @@
 
 .messenger-sidebar__search {
   width: 100%;
-  padding: 8px 10px 8px 32px;
+  padding: $spacing-8 $spacing-10 $spacing-8 $spacing-32;
   background-color: $background-color-input;
   border: none;
   border-radius: $border-radius-6;
@@ -96,16 +96,16 @@
 .messenger-sidebar__nav {
   flex: 1;
   overflow-y: auto;
-  padding: 0 $gap-size-12 $gap-size-12;
+  padding: 0 $spacing-12 $spacing-12;
 }
 
 .messenger-sidebar__section {
-  margin-bottom: $gap-size-12;
+  margin-bottom: $spacing-12;
 }
 
 .messenger-sidebar__section-head {
   width: 100%;
-  padding: $gap-size-8 0;
+  padding: $spacing-8 0;
   background: none;
   border: none;
   font-size: 11px;
@@ -135,7 +135,7 @@
   display: flex;
   align-items: flex-start;
   gap: $gap-size-8;
-  padding: $gap-size-8;
+  padding: $spacing-8;
   background: none;
   border: none;
   border-radius: $border-radius-6;
@@ -220,7 +220,7 @@
   display: flex;
   align-items: center;
   gap: $gap-size-8;
-  padding: $gap-size-12;
+  padding: $spacing-12;
   border-top: 1px solid $border-color-dark;
   background-color: $background-color-on-surface-black;
 }
@@ -255,7 +255,7 @@
 }
 
 .messenger-sidebar__user-settings {
-  padding: $gap-size-8;
+  padding: $spacing-8;
   color: $text-color-secondary;
   text-decoration: none;
   border-radius: $border-radius-6;

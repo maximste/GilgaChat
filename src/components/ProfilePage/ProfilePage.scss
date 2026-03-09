@@ -19,7 +19,7 @@
 .profile-page__theme-btn {
   background: none;
   border: none;
-  padding: $gap-size-8;
+  padding: $spacing-8;
   cursor: pointer;
   color: $text-color-secondary;
   font-size: $font-size-24;
@@ -44,7 +44,7 @@
   background-color: $background-color-on-surface-black;
   border: 1px solid $border-color-dark;
   border-radius: $border-radius-8;
-  padding: $padding-32;
+  padding: $spacing-32;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
@@ -88,19 +88,19 @@
   display: flex;
   flex-wrap: wrap;
   gap: $gap-size-12;
-  margin-top: $gap-size-8;
+  margin-top: $spacing-8;
 }
 
 .profile-info {
   background-color: $background-color-on-surface-black;
   border: 1px solid $border-color-dark;
   border-radius: $border-radius-8;
-  padding: $padding-32;
+  padding: $spacing-32;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 .profile-info__title {
-  margin: 0 0 $gap-size-12;
+  margin: 0 0 $spacing-12;
   font-size: $font-size-24;
   line-height: $line-height-32;
   font-weight: 700;
@@ -134,7 +134,7 @@
   color: $text-color-primary;
   background-color: $background-color-input;
   border-radius: $border-radius-6;
-  padding: 8px 16px;
+  padding: $spacing-8 $spacing-16;
 }
 
 .profile-info__icon {

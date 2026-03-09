@@ -5,7 +5,7 @@
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
-  padding: $gap-size-32;
+  padding: $spacing-32;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -98,7 +98,7 @@
   display: inline-flex;
   align-items: center;
   gap: $gap-size-8;
-  padding: 12px 20px;
+  padding: $spacing-12 $spacing-20;
   font-size: $font-size-14;
   font-weight: 600;
   text-decoration: none;
