@@ -1,10 +1,17 @@
 @use 'styles/variables' as *;
 
 // General / global styles
+.app-error {
+  padding: 2rem;
+  color: $text-color-primary;
+  font-family: Inter, system-ui, sans-serif;
+}
+
 .body {
   margin: 0;
   background-color: $background-color;
   height: 100vh;
+  font-family: Inter, system-ui, sans-serif;
 }
 
 .app {

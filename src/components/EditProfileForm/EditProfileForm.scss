@@ -1,15 +1,16 @@
-@use '../../styles/variables' as *;
+@use 'styles/variables' as *;
+@use 'styles/buttons' as *;
 
 .edit-profile {
   background-color: $background-color-on-surface-black;
   border: 1px solid $border-color-dark;
   border-radius: $border-radius-8;
-  padding: $padding-32;
+  padding: $spacing-32;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 .edit-profile__header {
-  margin-bottom: $gap-size-24;
+  margin-bottom: $spacing-24;
 }
 
 .edit-profile__title {
@@ -38,25 +39,15 @@
   display: flex;
   flex-wrap: wrap;
   gap: $gap-size-12;
-  margin-top: $gap-size-8;
+  margin-top: $spacing-8;
 }
 
 .edit-profile__btn {
   &--primary {
-    background-color: $color-accent;
-    color: $text-color-primary;
-
-    &:hover {
-      background-color: $color-accent-dark;
-    }
+    @extend %btn-primary;
   }
 
   &--secondary {
-    background-color: $background-color-input;
-    color: $text-color-primary;
-
-    &:hover {
-      filter: brightness(0.95);
-    }
+    @extend %btn-secondary;
   }
 }

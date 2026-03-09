@@ -1,7 +1,7 @@
 import Handlebars from 'handlebars';
 import template from './MainLayout.hbs?raw';
-import { LinkTemplate } from '../../components';
-import type { LinkProps } from '../../types';
+import { LinkTemplate } from '@/components';
+import type { LinkProps } from '@/types';
 import './MainLayout.scss';
 
 export interface MainLayoutProps {

@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars';
 import template from './Label.hbs?raw';
-import type { LabelProps } from '../../types';
+import type { LabelProps } from '@/types';
 
 class Label {
   private props: LabelProps;

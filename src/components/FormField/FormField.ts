@@ -1,9 +1,9 @@
 import Handlebars from 'handlebars';
 import template from './FormField.hbs?raw';
 import './FormField.scss';
-import type { InputProps, LabelProps } from '../../types';
-import InputTemplate from '../Input/Input.hbs?raw';
-import LabelTemplate from '../Label/Label.hbs?raw';
+import type { InputProps, LabelProps } from '@/types';
+import InputTemplate from '@/components/Input/Input.hbs?raw';
+import LabelTemplate from '@/components/Label/Label.hbs?raw';
 
 interface FormFieldProps {
   input: InputProps;

@@ -1,0 +1,30 @@
+@use 'variables' as *;
+
+// Placeholder selectors for button variants — use @extend %btn-primary etc. in components.
+%btn-primary {
+  background-color: $color-accent;
+  color: $text-color-primary;
+
+  &:hover {
+    background-color: $color-accent-dark;
+  }
+}
+
+%btn-secondary {
+  background-color: $button-bg-secondary;
+  color: $text-color-primary;
+  border: 1px solid $button-border-secondary;
+
+  &:hover {
+    background-color: $button-bg-secondary-hover;
+  }
+}
+
+%btn-danger {
+  background-color: $color-danger;
+  color: #fff;
+
+  &:hover {
+    background-color: $button-danger-hover;
+  }
+}

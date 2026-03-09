@@ -1,8 +1,8 @@
 import Handlebars from 'handlebars';
 
 import template from './MessengerLayout.hbs?raw';
-import { LinkTemplate } from '../../components';
-import type { LinkProps } from '../../types';
+import { LinkTemplate } from '@/components';
+import type { LinkProps } from '@/types';
 
 import './MessengerLayout.scss';
 

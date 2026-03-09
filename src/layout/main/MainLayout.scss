@@ -1,4 +1,4 @@
-@use '../../styles/variables' as *;
+@use 'styles/variables' as *;
 
 .main-layout {
   display: flex;
@@ -15,7 +15,7 @@
   justify-content: space-between;
   width: 100%;
   max-width: 1200px;
-  padding: $gap-size-12 $padding-32;
+  padding: $spacing-12 $spacing-32;
   box-sizing: border-box;
 }
 
@@ -39,7 +39,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: $gap-size-32;
+  padding: $spacing-32;
   box-sizing: border-box;
 }
 
@@ -49,7 +49,7 @@
 }
 
 .main-layout__welcome-notice {
-  margin: 0 0 $gap-size-12;
+  margin: 0 0 $spacing-12;
   font-size: $font-size-14;
   line-height: 1.5;
   color: $text-color-secondary;
