@@ -4,91 +4,39 @@
 .not-found {
   position: relative;
   width: 100%;
-  max-width: 640px;
+  max-width: 480px;
   margin: 0 auto;
-  padding: $spacing-32;
+  padding: $spacing-24;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: $gap-size-32;
+  gap: $gap-size-24;
   text-align: center;
 }
 
-.not-found__bg-number {
-  position: absolute;
-  top: -0.2em;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: clamp(6rem, 20vw, 12rem);
+.not-found__title {
+  margin: 0;
+  font-size: clamp(4rem, 15vw, 8rem);
   font-weight: 700;
   line-height: 1;
-  color: rgba($color-accent, 0.12);
-  pointer-events: none;
-  user-select: none;
+  color: $color-accent;
 }
 
-.not-found__title {
-  position: relative;
+.not-found__subtitle {
   margin: 0;
   font-size: $font-size-24;
-  font-weight: 700;
-  color: $text-color-primary;
-  line-height: 1.3;
+  font-weight: 600;
+  color: $text-color-secondary;
 }
 
 .not-found__message {
-  position: relative;
   margin: 0;
   font-size: $font-size-14;
   line-height: 1.5;
   color: $text-color-secondary;
 }
 
-.not-found__emoji {
-  display: inline-block;
-  margin-left: 0.25em;
-}
-
-.not-found__image-wrap {
-  position: relative;
-  width: 100%;
-  border-radius: $border-radius-8;
-  overflow: hidden;
-  background-color: $background-color-on-surface-black;
-}
-
-.not-found__image {
-  display: block;
-  width: 100%;
-  height: auto;
-  vertical-align: middle;
-}
-
-.not-found__reasons {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: $gap-size-12;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.not-found__reason {
-  display: flex;
-  align-items: center;
-  gap: $gap-size-8;
-  font-size: $font-size-14;
-  color: $text-color-secondary;
-}
-
-.not-found__reason-icon {
-  font-size: 1.2em;
-}
-
 .not-found__actions {
-  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -119,17 +67,4 @@
   &--secondary {
     @extend %btn-secondary;
   }
-}
-
-.not-found__quote {
-  position: relative;
-  margin: 0;
-  font-size: $font-size-12;
-  font-style: italic;
-  color: $text-color-secondary;
-  opacity: 0.9;
-}
-
-.not-found__quote-mark {
-  color: $color-error;
 }
