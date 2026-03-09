@@ -1,4 +1,5 @@
 @use '../../styles/variables' as *;
+@use '../../styles/buttons' as *;
 
 .auth-window--register {
   width: 580px;
@@ -75,25 +76,14 @@
     transition: background-color 0.15s, filter 0.15s;
 
     &--primary {
+      @extend %btn-primary;
       flex: 1;
       min-width: 10rem;
-      background-color: $color-accent;
-      color: $text-color-primary;
-
-      &:hover {
-        background-color: $color-accent-dark;
-      }
     }
 
     &--secondary {
+      @extend %btn-secondary;
       flex: 0 0 auto;
-      background-color: $button-bg-secondary;
-      color: $text-color-primary;
-      border: 1px solid $button-border-secondary;
-
-      &:hover {
-        background-color: $button-bg-secondary-hover;
-      }
     }
   }
 

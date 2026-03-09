@@ -1,4 +1,5 @@
 @use '../../styles/variables' as *;
+@use '../../styles/buttons' as *;
 
 .auth-window {
   width: 386px;
@@ -76,11 +77,6 @@
   }
 
   &__submit-btn {
-    background-color: $color-accent;
-    color: $text-color-primary;
-
-    &:hover {
-      background-color: $color-accent-dark;
-    }
+    @extend %btn-primary;
   }
 }

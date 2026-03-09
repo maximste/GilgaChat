@@ -184,7 +184,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $background-color-input;
+  background-color: $background-color-surface;
   border-radius: 50%;
   font-size: 14px;
   color: $text-color-secondary;
@@ -211,7 +211,7 @@
   }
 
   &--gray {
-    background-color: $text-color-placeholder;
+    background-color: $color-muted;
   }
 }
 
@@ -229,7 +229,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-color: $background-color-input;
+  background-color: $background-color-surface;
   flex-shrink: 0;
 }
 

@@ -1,4 +1,5 @@
 @use '../../styles/variables' as *;
+@use '../../styles/buttons' as *;
 
 .server-error {
   width: 100%;
@@ -149,21 +150,11 @@
   }
 
   &--primary {
-    background-color: $color-accent;
-    color: $text-color-primary;
-
-    &:hover {
-      filter: brightness(1.1);
-    }
+    @extend %btn-primary;
   }
 
   &--secondary {
-    background-color: $background-color-on-surface-black;
-    color: $text-color-primary;
-
-    &:hover {
-      filter: brightness(1.08);
-    }
+    @extend %btn-secondary;
   }
 }
 

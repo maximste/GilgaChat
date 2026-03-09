@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use '../../styles/variables' as *;
+@use '../../styles/buttons' as *;
 
 .profile-page {
   width: 100%;
@@ -132,7 +133,7 @@
   font-size: $font-size-14;
   line-height: $line-height-20;
   color: $text-color-primary;
-  background-color: $background-color-input;
+  background-color: $background-color-surface;
   border-radius: $border-radius-6;
   padding: $spacing-8 $spacing-16;
 }
@@ -147,30 +148,15 @@
 
 .profile-page__btn {
   &--primary {
-    background-color: $color-accent;
-    color: $text-color-primary;
-
-    &:hover {
-      background-color: $color-accent-dark;
-    }
+    @extend %btn-primary;
   }
 
   &--secondary {
-    background-color: $background-color-input;
-    color: $text-color-primary;
-
-    &:hover {
-      background-color: color.adjust($background-color-input, $lightness: -4%);
-    }
+    @extend %btn-secondary;
   }
 
   &--danger {
-    background-color: $color-danger;
-    color: #fff;
-
-    &:hover {
-      background-color: color.adjust($color-danger, $lightness: -8%);
-    }
+    @extend %btn-danger;
   }
 }
 
