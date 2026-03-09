@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars';
 import template from './Link.hbs?raw';
-import type { LinkProps } from '../../types';
+import type { LinkProps } from '@/types';
 
 class Link {
   private props: LinkProps;
