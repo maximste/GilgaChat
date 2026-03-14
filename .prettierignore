@@ -1,0 +1,10 @@
+*.hbs
+build/
+.github/
+.vite/
+.vscode/
+node_modules/
+.gitignore
+*.toml
+tsconfig*
+vite.config.*
