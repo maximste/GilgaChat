@@ -1,0 +1,64 @@
+@use 'shared/styles/variables' as *;
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-size-8;
+  width: 100%;
+
+  &__input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: $spacing-10;
+    background-color: $background-color-input;
+    border-radius: $border-radius-6;
+    padding-left: $spacing-12;
+
+    &:focus-within {
+      outline: 1px solid $color-accent;
+      outline-offset: -1px;
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    text-align: center;
+    color: $text-color-secondary;
+    font-size: $font-size-14;
+  }
+
+  &__label {
+    font-size: $font-size-14;
+    line-height: $line-height-20;
+    color: $text-color-primary;
+  }
+
+  &__input {
+    font-size: $font-size-14;
+    line-height: $line-height-20;
+    color: $text-color-primary;
+    background-color: transparent;
+    border: none;
+    border-radius: $border-radius-6;
+    padding: $spacing-8 $spacing-16;
+    flex: 1;
+    min-width: 0;
+
+    &:focus {
+      outline: none;
+    }
+
+    &--with-icon {
+      padding-left: 0;
+    }
+
+    &--error {
+      border: 1px solid $color-error;
+    }
+
+    &--success {
+      border: 1px solid $color-success;
+    }
+  }
+}

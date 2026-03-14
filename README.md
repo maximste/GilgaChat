@@ -19,6 +19,8 @@ GilgaChat — учебный фронтенд-проект, в котором п
 
 В приложении реализована **навигация по hash** и есть **главная страница** (демо с ссылками), **layout мессенджера** (сайдбар и заглушка), формы **входа** и **регистрации**, страница **профиля**, страницы ошибок **404** и **500** — всё на базе переиспользуемых UI-компонентов.
 
+**Архитектура:** проект организован по [Feature-Sliced Design (FSD)](https://feature-sliced.design/). Описание слоёв, правил импортов и точки входа — в [docs/FSD.md](docs/FSD.md).
+
 ## Возможности
 
 - **Главная страница**
@@ -103,49 +105,40 @@ npm run preview
 npm run start
 ```
 
-## Структура проекта
+## Структура проекта (FSD)
 
 ```text
 .
-├── index.html               # Корневой HTML (точка входа Vite)
+├── index.html               # Подключение src/app/index.ts
 ├── public
 │   └── images/              # Статика (логотип, изображение для 404)
 ├── src
-│   ├── main.ts              # Точка входа: роутинг по hash, MainLayout / MessengerLayout, экраны
-│   ├── style.scss           # Глобальные стили
-│   ├── components
-│   │   ├── AuthForm/        # Форма входа
-│   │   ├── RegisterForm/    # Форма регистрации (login, display_name, email, имя, фамилия, телефон, пароль)
-│   │   ├── ProfilePage/     # Карточка профиля и блок Profile Information (Edit Profile, Logout)
-│   │   ├── EditProfileForm/ # Форма редактирования профиля (данные + old_password, new_password)
-│   │   ├── NotFoundPage/    # Страница 404
-│   │   ├── ServerErrorPage/ # Страница 500
-│   │   ├── NoChatStub/      # Заглушка «Чат не выбран»
-│   │   ├── Button/          # Кнопка (TS + HBS + SCSS)
-│   │   ├── Input/           # Поле ввода
-│   │   ├── Label/           # Подпись
-│   │   ├── Link/            # Ссылка
-│   │   └── FormField/       # Подпись + поле ввода
-│   ├── layout
-│   │   ├── main/            # MainLayout (шапка + контент: авторизация, профиль, ошибки, главная)
-│   │   └── messenger/       # MessengerLayout (сайдбар + основная область)
-│   ├── styles/              # Общие SCSS (цвета, типографика, отступы, переменные)
-│   ├── types/               # Общие типы TypeScript
-│   └── utils/mydash/        # Вспомогательные функции
+│   ├── app/                 # Точка входа, роутинг по hash, класс App
+│   ├── pages/               # Страницы: auth, register, profile, messenger, not-found, server-error
+│   ├── widgets/             # main-layout, messenger-layout, no-chat-stub
+│   ├── features/            # auth, registration, edit-profile
+│   ├── entities/            # user (заглушка)
+│   └── shared/
+│       ├── ui/              # button, input, label, link, form-field
+│       ├── styles/          # variables, global, _colors, _buttons, …
+│       └── lib/             # types, utils (mydash)
+├── docs/
+│   └── FSD.md               # Описание архитектуры FSD
 ├── vite.config.ts           # Конфиг Vite (base, build, preview port: 3000)
 ├── netlify.toml             # Netlify: команда сборки, каталог публикации dist
 └── .github/workflows/       # CI (тесты по спринтам)
 ```
 
+Подробнее — в [docs/FSD.md](docs/FSD.md).
+
 ## Как устроено
 
-- В `src/main.ts` подписаны события `DOMContentLoaded` и `hashchange`; в зависимости от `window.location.hash` выбирается нужный layout и экран.
+- Точка входа — `src/app/index.ts`: подключаются глобальные стили и создаётся экземпляр `App`. В `App` подписаны события `DOMContentLoaded` и `hashchange`; по `window.location.hash` вызывается соответствующая страница из `pages/`.
 - **Роутинг:**
-  - `#messenger` → полностью **MessengerLayout** (сайдбар и **NoChatStub** в основной области).
-  - `#auth`, `#register`, `#profile`, `#404`, `#500` → **MainLayout** с **AuthForm**, **RegisterForm**, **ProfilePage**, **NotFoundPage** или **ServerErrorPage** в области контента.
-  - Без hash или неизвестный hash → MainLayout с **главной** (демо-сообщение и ссылки).
-- При переходе с `#messenger` на другой маршрут корень перерисовывается с MainLayout, чтобы отображались нужная шапка и контент.
-- Компоненты (AuthForm, RegisterForm, ProfilePage, EditProfileForm и др.) регистрируют партиалы Handlebars, компилируют свой шаблон `.hbs` с пропсами и вставляют HTML в элемент контента layout’а. Логика интерфейса — в классах TypeScript, разметка — в шаблонах Handlebars. Форма редактирования профиля рендерится по клику на «Edit Profile» в область контента профиля.
+  - `#messenger` или пустой hash → **renderMessengerPage** (MessengerLayout + NoChatStub).
+  - `#auth`, `#register`, `#profile`, `#404`, `#500` → сначала рендерится **MainLayout**, затем в область контента вызывается **renderAuthPage**, **renderRegisterPage**, **renderProfilePage**, **renderNotFoundPage** или **renderServerErrorPage**.
+  - Неизвестный hash → снова **renderMessengerPage**.
+- При переходе с `#messenger` на другой маршрут корень перерисовывается с MainLayout. Компоненты (формы, страницы) используют Handlebars-партиалы и классы на TypeScript; форма редактирования профиля рендерится по клику на «Edit Profile» внутри области контента профиля.
 
 ## Разработка и соглашения
 

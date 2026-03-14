@@ -1,0 +1,31 @@
+@use 'variables' as *;
+
+// General / global styles
+.app-error {
+  padding: 2rem;
+  color: $text-color-primary;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.body {
+  margin: 0;
+  background-color: $background-color;
+  height: 100vh;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.app {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.link {
+  color: $color-accent;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

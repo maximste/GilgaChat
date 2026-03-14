@@ -1,0 +1,70 @@
+@use 'shared/styles/variables' as *;
+@use 'shared/styles/buttons' as *;
+
+.not-found {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: $spacing-24;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $gap-size-24;
+  text-align: center;
+}
+
+.not-found__title {
+  margin: 0;
+  font-size: clamp(4rem, 15vw, 8rem);
+  font-weight: 700;
+  line-height: 1;
+  color: $color-accent;
+}
+
+.not-found__subtitle {
+  margin: 0;
+  font-size: $font-size-24;
+  font-weight: 600;
+  color: $text-color-secondary;
+}
+
+.not-found__message {
+  margin: 0;
+  font-size: $font-size-14;
+  line-height: 1.5;
+  color: $text-color-secondary;
+}
+
+.not-found__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $gap-size-12;
+}
+
+.not-found__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $gap-size-8;
+  padding: $spacing-12 $spacing-20;
+  font-size: $font-size-14;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  border-radius: $border-radius-6;
+  cursor: pointer;
+  transition: filter 0.15s ease, background-color 0.15s ease;
+
+  i {
+    font-size: 1em;
+  }
+
+  &--primary {
+    @extend %btn-primary;
+  }
+
+  &--secondary {
+    @extend %btn-secondary;
+  }
+}
