@@ -16,7 +16,7 @@
     "format:fix": "prettier --write .",
     "lint:css": "stylelint **/*.css",
     "lint": "npm run lint:eslint && npm run lint:stylelint",
-    "lint:fix": "npm run lint:eslint:write && npm run lint:stylelint:write",
+    "lint:fix": "npm run ****format:fix && npm run lint:eslint:write && npm run lint:stylelint:write",
     "lint:eslint": "eslint . --cache",
     "lint:eslint:write": "eslint . --fix",
     "lint:stylelint": "stylelint **/*.scss --cache",
