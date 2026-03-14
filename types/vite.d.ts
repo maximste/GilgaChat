@@ -1,7 +1,7 @@
-declare module '*.hbs' {
-  import type { TemplateDelegate } from 'handlebars';
+declare module "*.hbs" {
+  import type { TemplateDelegate } from "handlebars";
   const template: TemplateDelegate;
   export default template;
 }
 
-declare module '@fontsource/inter';
+declare module "@fontsource/inter";

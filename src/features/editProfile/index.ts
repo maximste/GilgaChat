@@ -1,1 +1,5 @@
-export { EditProfileForm, type EditProfileFormProps, type EditProfileFormCallbacks } from './ui/EditProfileForm';
+export {
+  EditProfileForm,
+  type EditProfileFormProps,
+  type EditProfileFormCallbacks,
+} from "./ui/EditProfileForm";

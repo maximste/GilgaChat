@@ -1,6 +1,6 @@
-import Handlebars from 'handlebars';
+import Handlebars from "handlebars";
 
-import template from './RegisterForm.hbs?raw';
+import template from "./RegisterForm.hbs?raw";
 import {
   Button,
   ButtonTemplate,
@@ -12,9 +12,9 @@ import {
   LabelTemplate,
   Link,
   LinkTemplate,
-} from '@/shared/ui';
+} from "@/shared/ui";
 
-import './RegisterForm.scss';
+import "./RegisterForm.scss";
 
 interface RegisterFormProps {
   title: string;
@@ -34,141 +34,204 @@ export class RegisterForm {
     this.container = container;
     this.props = props;
 
-    const fieldClass = 'register-form__field';
-    const labelClass = 'register-form__label';
-    const inputClass = 'register-form__input';
+    const fieldClass = "register-form__field";
+    const labelClass = "register-form__label";
+    const inputClass = "register-form__input";
 
-    const loginLabel = new Label({ text: 'Login', for: 'userLogin', className: labelClass });
+    const loginLabel = new Label({
+      text: "Login",
+      for: "userLogin",
+      className: labelClass,
+    });
     const loginInput = new Input({
-      id: 'userLogin',
-      type: 'text',
-      name: 'login',
+      id: "userLogin",
+      type: "text",
+      name: "login",
       required: true,
-      placeholder: 'Choose a login',
+      placeholder: "Choose a login",
       className: inputClass,
     });
 
-    const displayNameLabel = new Label({ text: 'Display name', for: 'userDisplayName', className: labelClass });
+    const displayNameLabel = new Label({
+      text: "Display name",
+      for: "userDisplayName",
+      className: labelClass,
+    });
     const displayNameInput = new Input({
-      id: 'userDisplayName',
-      type: 'text',
-      name: 'display_name',
+      id: "userDisplayName",
+      type: "text",
+      name: "display_name",
       required: true,
-      placeholder: 'Display name',
+      placeholder: "Display name",
       className: inputClass,
     });
 
-    const emailLabel = new Label({ text: 'Email', for: 'userEmail', className: labelClass });
+    const emailLabel = new Label({
+      text: "Email",
+      for: "userEmail",
+      className: labelClass,
+    });
     const emailInput = new Input({
-      id: 'userEmail',
-      type: 'email',
-      name: 'email',
+      id: "userEmail",
+      type: "email",
+      name: "email",
       required: true,
-      placeholder: 'you@example.com',
+      placeholder: "you@example.com",
       className: inputClass,
     });
 
-    const nameLabel = new Label({ text: 'Name', for: 'userName', className: labelClass });
+    const nameLabel = new Label({
+      text: "Name",
+      for: "userName",
+      className: labelClass,
+    });
     const nameInput = new Input({
-      id: 'userName',
-      type: 'text',
-      name: 'first_name',
+      id: "userName",
+      type: "text",
+      name: "first_name",
       required: true,
-      placeholder: 'Enter your name',
+      placeholder: "Enter your name",
       className: inputClass,
     });
 
-    const surnameLabel = new Label({ text: 'Surname', for: 'userSurname', className: labelClass });
+    const surnameLabel = new Label({
+      text: "Surname",
+      for: "userSurname",
+      className: labelClass,
+    });
     const surnameInput = new Input({
-      id: 'userSurname',
-      type: 'text',
-      name: 'second_name',
+      id: "userSurname",
+      type: "text",
+      name: "second_name",
       required: true,
-      placeholder: 'Surname',
+      placeholder: "Surname",
       className: inputClass,
     });
 
-    const phoneLabel = new Label({ text: 'Phone', for: 'userPhone', className: labelClass });
+    const phoneLabel = new Label({
+      text: "Phone",
+      for: "userPhone",
+      className: labelClass,
+    });
     const phoneInput = new Input({
-      id: 'userPhone',
-      type: 'tel',
-      name: 'phone',
+      id: "userPhone",
+      type: "tel",
+      name: "phone",
       required: true,
-      placeholder: 'Phone number',
+      placeholder: "Phone number",
       className: inputClass,
     });
 
-    const passwordLabel = new Label({ text: 'Password', for: 'userPassword', className: labelClass });
+    const passwordLabel = new Label({
+      text: "Password",
+      for: "userPassword",
+      className: labelClass,
+    });
     const passwordInput = new Input({
-      id: 'userPassword',
-      type: 'password',
-      name: 'password',
+      id: "userPassword",
+      type: "password",
+      name: "password",
       required: true,
-      placeholder: 'Password',
+      placeholder: "Password",
       className: inputClass,
     });
 
     const confirmPasswordLabel = new Label({
-      text: 'Confirm Password',
-      for: 'userConfirmPassword',
+      text: "Confirm Password",
+      for: "userConfirmPassword",
       className: labelClass,
     });
     const confirmPasswordInput = new Input({
-      id: 'userConfirmPassword',
-      type: 'password',
-      name: 'password_confirm',
+      id: "userConfirmPassword",
+      type: "password",
+      name: "password_confirm",
       required: true,
-      placeholder: 'Confirm password',
+      placeholder: "Confirm password",
       className: inputClass,
     });
 
     this.formFields = [
-      new FormField({ label: loginLabel.getData(), input: loginInput.getData(), className: fieldClass, icon: 'fa-solid fa-user' }),
-      new FormField({ label: displayNameLabel.getData(), input: displayNameInput.getData(), className: fieldClass, icon: 'fa-solid fa-user' }),
-      new FormField({ label: emailLabel.getData(), input: emailInput.getData(), className: fieldClass, icon: 'fa-solid fa-envelope' }),
-      new FormField({ label: nameLabel.getData(), input: nameInput.getData(), className: fieldClass, icon: 'fa-solid fa-user' }),
-      new FormField({ label: surnameLabel.getData(), input: surnameInput.getData(), className: fieldClass, icon: 'fa-solid fa-user' }),
-      new FormField({ label: phoneLabel.getData(), input: phoneInput.getData(), className: fieldClass, icon: 'fa-solid fa-phone' }),
-      new FormField({ label: passwordLabel.getData(), input: passwordInput.getData(), className: fieldClass, icon: 'fa-solid fa-lock' }),
+      new FormField({
+        label: loginLabel.getData(),
+        input: loginInput.getData(),
+        className: fieldClass,
+        icon: "fa-solid fa-user",
+      }),
+      new FormField({
+        label: displayNameLabel.getData(),
+        input: displayNameInput.getData(),
+        className: fieldClass,
+        icon: "fa-solid fa-user",
+      }),
+      new FormField({
+        label: emailLabel.getData(),
+        input: emailInput.getData(),
+        className: fieldClass,
+        icon: "fa-solid fa-envelope",
+      }),
+      new FormField({
+        label: nameLabel.getData(),
+        input: nameInput.getData(),
+        className: fieldClass,
+        icon: "fa-solid fa-user",
+      }),
+      new FormField({
+        label: surnameLabel.getData(),
+        input: surnameInput.getData(),
+        className: fieldClass,
+        icon: "fa-solid fa-user",
+      }),
+      new FormField({
+        label: phoneLabel.getData(),
+        input: phoneInput.getData(),
+        className: fieldClass,
+        icon: "fa-solid fa-phone",
+      }),
+      new FormField({
+        label: passwordLabel.getData(),
+        input: passwordInput.getData(),
+        className: fieldClass,
+        icon: "fa-solid fa-lock",
+      }),
       new FormField({
         label: confirmPasswordLabel.getData(),
         input: confirmPasswordInput.getData(),
         className: fieldClass,
-        icon: 'fa-solid fa-lock',
+        icon: "fa-solid fa-lock",
       }),
     ];
 
     this.createAccountButton = new Button({
-      type: 'submit',
-      text: 'Create Account',
-      className: 'register-form__btn register-form__btn--primary',
+      type: "submit",
+      text: "Create Account",
+      className: "register-form__btn register-form__btn--primary",
     });
 
     this.signInLink = new Link({
-      text: 'Sign in',
-      href: '#auth',
-      className: 'register-form__link',
+      text: "Sign in",
+      href: "#auth",
+      className: "register-form__link",
     });
 
     this.termsLink = new Link({
-      text: 'Terms of Service',
-      href: '#terms',
-      className: 'register-form__link',
+      text: "Terms of Service",
+      href: "#terms",
+      className: "register-form__link",
     });
 
     this.privacyLink = new Link({
-      text: 'Privacy Policy',
-      href: '#privacy',
-      className: 'register-form__link',
+      text: "Privacy Policy",
+      href: "#privacy",
+      className: "register-form__link",
     });
   }
 
   public render(): void {
-    Handlebars.registerPartial('Button', ButtonTemplate);
-    Handlebars.registerPartial('Input', InputTemplate);
-    Handlebars.registerPartial('Label', LabelTemplate);
-    Handlebars.registerPartial('FormField', FormFieldTemplate);
-    Handlebars.registerPartial('Link', LinkTemplate);
+    Handlebars.registerPartial("Button", ButtonTemplate);
+    Handlebars.registerPartial("Input", InputTemplate);
+    Handlebars.registerPartial("Label", LabelTemplate);
+    Handlebars.registerPartial("FormField", FormFieldTemplate);
+    Handlebars.registerPartial("Link", LinkTemplate);
 
     const compiledTemplate = Handlebars.compile(template)({
       title: this.props.title,

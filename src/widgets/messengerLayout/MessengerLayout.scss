@@ -1,4 +1,4 @@
-@use 'shared/styles/variables' as *;
+@use "shared/styles/variables" as *;
 
 .messenger-layout {
   display: flex;
@@ -259,7 +259,9 @@
   color: $text-color-secondary;
   text-decoration: none;
   border-radius: $border-radius-6;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
 
   &:hover {
     color: $text-color-primary;

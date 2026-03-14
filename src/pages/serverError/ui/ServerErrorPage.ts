@@ -1,8 +1,8 @@
-import Handlebars from 'handlebars';
+import Handlebars from "handlebars";
 
-import template from './ServerErrorPage.hbs?raw';
+import template from "./ServerErrorPage.hbs?raw";
 
-import './ServerErrorPage.scss';
+import "./ServerErrorPage.scss";
 
 export class ServerErrorPage {
   private container: HTMLElement;
@@ -14,13 +14,17 @@ export class ServerErrorPage {
   public render(): void {
     this.container.innerHTML = Handlebars.compile(template)({});
 
-    this.container.querySelector('[data-go-home]')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location.hash = '';
-    });
+    this.container
+      .querySelector("[data-go-home]")
+      ?.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.location.hash = "";
+      });
 
-    this.container.querySelector('[data-try-again]')?.addEventListener('click', () => {
-      window.location.reload();
-    });
+    this.container
+      .querySelector("[data-try-again]")
+      ?.addEventListener("click", () => {
+        window.location.reload();
+      });
   }
 }

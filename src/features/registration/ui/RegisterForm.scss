@@ -1,5 +1,5 @@
-@use 'shared/styles/variables' as *;
-@use 'shared/styles/buttons' as *;
+@use "shared/styles/variables" as *;
+@use "shared/styles/buttons" as *;
 
 .auth-window--register {
   width: 580px;
@@ -73,7 +73,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.15s, filter 0.15s;
+    transition:
+      background-color 0.15s,
+      filter 0.15s;
 
     &--primary {
       @extend %btn-primary;

@@ -1,9 +1,9 @@
-import Handlebars from 'handlebars';
-import template from './FormField.hbs?raw';
-import './FormField.scss';
-import type { InputProps, LabelProps } from '@/shared/lib/types';
-import InputTemplate from '../input/Input.hbs?raw';
-import LabelTemplate from '../label/Label.hbs?raw';
+import Handlebars from "handlebars";
+import template from "./FormField.hbs?raw";
+import "./FormField.scss";
+import type { InputProps, LabelProps } from "@/shared/lib/types";
+import InputTemplate from "../input/Input.hbs?raw";
+import LabelTemplate from "../label/Label.hbs?raw";
 
 interface FormFieldProps {
   input: InputProps;
@@ -16,13 +16,21 @@ interface FormFieldProps {
 class FormField {
   private props: FormFieldProps;
 
-  constructor(props: FormFieldProps){
+  constructor(props: FormFieldProps) {
     this.props = props;
   }
 
   public getData(): FormFieldProps {
     const input = this.props.icon
-      ? { ...this.props.input, className: [this.props.input.className, 'form-field__input--with-icon'].filter(Boolean).join(' ') }
+      ? {
+          ...this.props.input,
+          className: [
+            this.props.input.className,
+            "form-field__input--with-icon",
+          ]
+            .filter(Boolean)
+            .join(" "),
+        }
       : this.props.input;
     return { ...this.props, input };
   }
@@ -33,6 +41,6 @@ class FormField {
     const data = this.getData();
     return Handlebars.compile(template)(data);
   }
-};
+}
 
 export { FormField };

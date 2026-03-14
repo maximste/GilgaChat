@@ -1,11 +1,11 @@
-import Handlebars from 'handlebars';
-import template from './Input.hbs?raw';
-import type { InputProps } from '@/shared/lib/types';
+import Handlebars from "handlebars";
+import template from "./Input.hbs?raw";
+import type { InputProps } from "@/shared/lib/types";
 
 class Input {
   private props: InputProps;
 
-  constructor(props: InputProps){
+  constructor(props: InputProps) {
     this.props = props;
   }
 
@@ -16,6 +16,6 @@ class Input {
   public render(props: InputProps): string {
     return Handlebars.compile(template)(props);
   }
-};
+}
 
 export { Input };

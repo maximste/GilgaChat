@@ -1,8 +1,8 @@
-import Handlebars from 'handlebars';
+import Handlebars from "handlebars";
 
-import template from './NotFoundPage.hbs?raw';
+import template from "./NotFoundPage.hbs?raw";
 
-import './NotFoundPage.scss';
+import "./NotFoundPage.scss";
 
 export class NotFoundPage {
   private container: HTMLElement;
@@ -14,17 +14,21 @@ export class NotFoundPage {
   public render(): void {
     this.container.innerHTML = Handlebars.compile(template)({});
 
-    this.container.querySelector('[data-go-home]')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location.hash = '';
-    });
+    this.container
+      .querySelector("[data-go-home]")
+      ?.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.location.hash = "";
+      });
 
-    this.container.querySelector('[data-go-back]')?.addEventListener('click', () => {
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.hash = '';
-      }
-    });
+    this.container
+      .querySelector("[data-go-back]")
+      ?.addEventListener("click", () => {
+        if (window.history.length > 1) {
+          window.history.back();
+        } else {
+          window.location.hash = "";
+        }
+      });
   }
 }

@@ -1,1 +1,1 @@
-export { MainLayout, type MainLayoutProps } from './MainLayout';
+export { MainLayout, type MainLayoutProps } from "./MainLayout";

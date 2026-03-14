@@ -1,8 +1,8 @@
-import Handlebars from 'handlebars';
+import Handlebars from "handlebars";
 
-import template from './NoChatStub.hbs?raw';
+import template from "./NoChatStub.hbs?raw";
 
-import './NoChatStub.scss';
+import "./NoChatStub.scss";
 
 export class NoChatStub {
   private container: HTMLElement;

@@ -1,8 +1,8 @@
-import Handlebars from 'handlebars';
-import template from './MainLayout.hbs?raw';
-import { LinkTemplate } from '@/shared/ui';
-import type { LinkProps } from '@/shared/lib/types';
-import './MainLayout.scss';
+import Handlebars from "handlebars";
+import template from "./MainLayout.hbs?raw";
+import { LinkTemplate } from "@/shared/ui";
+import type { LinkProps } from "@/shared/lib/types";
+import "./MainLayout.scss";
 
 export interface MainLayoutProps {
   goBackLink: LinkProps;
@@ -15,12 +15,12 @@ class MainLayout {
   constructor(props: MainLayoutProps) {
     this.props = {
       ...props,
-      content: props.content ?? '',
+      content: props.content ?? "",
     };
   }
 
   public render(): string {
-    Handlebars.registerPartial('Link', LinkTemplate);
+    Handlebars.registerPartial("Link", LinkTemplate);
     return Handlebars.compile(template)(this.props);
   }
 }

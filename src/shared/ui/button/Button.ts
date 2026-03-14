@@ -1,18 +1,18 @@
-import Handlebars from 'handlebars';
-import template from './Button.hbs?raw';
-import './Button.scss';
+import Handlebars from "handlebars";
+import template from "./Button.hbs?raw";
+import "./Button.scss";
 
 interface ButtonProps {
-  type: 'reset' | 'submit' | 'button'
+  type: "reset" | "submit" | "button";
   text: string;
   disabled?: boolean;
-  className?: string
-};
+  className?: string;
+}
 
 class Button {
   private props: ButtonProps;
 
-  constructor(props: ButtonProps){
+  constructor(props: ButtonProps) {
     this.props = props;
   }
 
@@ -23,6 +23,6 @@ class Button {
   public render(props: ButtonProps): string {
     return Handlebars.compile(template)(props);
   }
-};
+}
 
 export { Button };
