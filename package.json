@@ -14,13 +14,8 @@
     "start": "npm run build && npm run preview",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
-    "lint:css": "stylelint **/*.css",
-    "lint": "npm run lint:eslint && npm run lint:stylelint",
-    "lint:fix": "npm run ****format:fix && npm run lint:eslint:write && npm run lint:stylelint:write",
-    "lint:eslint": "eslint . --cache",
-    "lint:eslint:write": "eslint . --fix",
-    "lint:stylelint": "stylelint **/*.scss --cache",
-    "lint:stylelint:write": "stylelint **/*.scss --fix",
+    "lint": "eslint . --cache && stylelint \"**/*.scss\" --cache",
+    "lint:fix": "npm run format:fix && eslint . --fix && stylelint \"**/*.scss\" --fix",
     "prepare": "husky"
   },
   "devDependencies": {
