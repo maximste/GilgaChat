@@ -1,6 +1,5 @@
-import Handlebars from "handlebars";
-
 import template from "./NoChatStub.hbs?raw";
+import Handlebars from "handlebars";
 
 import "./NoChatStub.scss";
 

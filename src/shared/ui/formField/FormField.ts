@@ -1,9 +1,11 @@
-import Handlebars from "handlebars";
-import template from "./FormField.hbs?raw";
-import "./FormField.scss";
 import type { InputProps, LabelProps } from "@/shared/lib/types";
+
 import InputTemplate from "../input/Input.hbs?raw";
 import LabelTemplate from "../label/Label.hbs?raw";
+import template from "./FormField.hbs?raw";
+import Handlebars from "handlebars";
+
+import "./FormField.scss";
 
 interface FormFieldProps {
   input: InputProps;
@@ -32,6 +34,7 @@ class FormField {
             .join(" "),
         }
       : this.props.input;
+
     return { ...this.props, input };
   }
 
@@ -39,6 +42,7 @@ class FormField {
     Handlebars.registerPartial("Input", InputTemplate);
     Handlebars.registerPartial("Label", LabelTemplate);
     const data = this.getData();
+
     return Handlebars.compile(template)(data);
   }
 }

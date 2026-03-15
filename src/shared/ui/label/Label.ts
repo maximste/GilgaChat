@@ -1,6 +1,7 @@
-import Handlebars from "handlebars";
-import template from "./Label.hbs?raw";
 import type { LabelProps } from "@/shared/lib/types";
+
+import template from "./Label.hbs?raw";
+import Handlebars from "handlebars";
 
 class Label {
   private props: LabelProps;

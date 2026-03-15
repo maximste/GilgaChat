@@ -13,5 +13,6 @@ export function renderAuthPage(
     title: props.title ?? "Welcome back",
     subtitle: props.subtitle ?? "Sign in to continue to GilgaChat",
   });
+
   form.render();
 }

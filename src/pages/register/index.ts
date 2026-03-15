@@ -13,5 +13,6 @@ export function renderRegisterPage(
     title: props.title ?? "Create Account",
     subtitle: props.subtitle ?? "Sign up to get started",
   });
+
   form.render();
 }

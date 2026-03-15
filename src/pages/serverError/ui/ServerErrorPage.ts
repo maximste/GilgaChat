@@ -1,6 +1,5 @@
-import Handlebars from "handlebars";
-
 import template from "./ServerErrorPage.hbs?raw";
+import Handlebars from "handlebars";
 
 import "./ServerErrorPage.scss";
 

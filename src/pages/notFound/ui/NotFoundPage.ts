@@ -1,6 +1,5 @@
-import Handlebars from "handlebars";
-
 import template from "./NotFoundPage.hbs?raw";
+import Handlebars from "handlebars";
 
 import "./NotFoundPage.scss";
 

@@ -1,5 +1,6 @@
-import Handlebars from "handlebars";
 import template from "./Button.hbs?raw";
+import Handlebars from "handlebars";
+
 import "./Button.scss";
 
 interface ButtonProps {

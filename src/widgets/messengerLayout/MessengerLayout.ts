@@ -1,8 +1,8 @@
-import Handlebars from "handlebars";
+import type { LinkProps } from "@/shared/lib/types";
+import { LinkTemplate } from "@/shared/ui";
 
 import template from "./MessengerLayout.hbs?raw";
-import { LinkTemplate } from "@/shared/ui";
-import type { LinkProps } from "@/shared/lib/types";
+import Handlebars from "handlebars";
 
 import "./MessengerLayout.scss";
 
@@ -91,6 +91,7 @@ class MessengerLayout {
 
   public render(): string {
     Handlebars.registerPartial("Link", LinkTemplate);
+
     return Handlebars.compile(template)(this.props);
   }
 }

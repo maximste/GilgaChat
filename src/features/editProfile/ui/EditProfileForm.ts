@@ -1,6 +1,3 @@
-import Handlebars from "handlebars";
-
-import template from "./EditProfileForm.hbs?raw";
 import {
   Button,
   ButtonTemplate,
@@ -11,6 +8,9 @@ import {
   Label,
   LabelTemplate,
 } from "@/shared/ui";
+
+import template from "./EditProfileForm.hbs?raw";
+import Handlebars from "handlebars";
 
 import "./EditProfileForm.scss";
 
@@ -32,16 +32,27 @@ export interface EditProfileFormCallbacks {
 
 export class EditProfileForm {
   private container: HTMLElement;
+
   private callbacks: EditProfileFormCallbacks;
+
   private loginFormField: InstanceType<typeof FormField>;
+
   private displayNameFormField: InstanceType<typeof FormField>;
+
   private emailFormField: InstanceType<typeof FormField>;
+
   private firstNameFormField: InstanceType<typeof FormField>;
+
   private secondNameFormField: InstanceType<typeof FormField>;
+
   private phoneFormField: InstanceType<typeof FormField>;
+
   private oldPasswordFormField: InstanceType<typeof FormField>;
+
   private newPasswordFormField: InstanceType<typeof FormField>;
+
   private cancelButton: InstanceType<typeof Button>;
+
   private saveButton: InstanceType<typeof Button>;
 
   constructor(
@@ -273,6 +284,7 @@ export class EditProfileForm {
             (form.elements.namedItem("new_password") as HTMLInputElement)
               .value || undefined,
         };
+
         this.callbacks.onSave?.(data);
       });
   }

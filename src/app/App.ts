@@ -1,13 +1,14 @@
-import { MainLayout } from "@/widgets/mainLayout";
 import { renderAuthPage } from "@/pages/auth";
-import { renderRegisterPage } from "@/pages/register";
-import { renderProfilePage } from "@/pages/profile";
 import { renderMessengerPage } from "@/pages/messenger";
 import { renderNotFoundPage } from "@/pages/notFound";
+import { renderProfilePage } from "@/pages/profile";
+import { renderRegisterPage } from "@/pages/register";
 import { renderServerErrorPage } from "@/pages/serverError";
+import { MainLayout } from "@/widgets/mainLayout";
 
 function showError(message: string): void {
   const app = document.getElementById("app");
+
   if (app) {
     app.innerHTML = `<p class="app-error">App error: ${message}</p>`;
   }
@@ -40,10 +41,12 @@ export class App {
         this.renderCurrentView();
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
+
         showError(msg);
         throw err;
       }
     };
+
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", run);
     } else {
@@ -53,8 +56,10 @@ export class App {
 
   private renderLayout(): void {
     const container = document.getElementById("app");
+
     if (!container) {
       showError("App container #app not found");
+
       return;
     }
 
@@ -80,6 +85,7 @@ export class App {
 
   private renderCurrentView(): void {
     const container = document.getElementById("app");
+
     if (!container) return;
 
     const hash = window.location.hash;
@@ -88,6 +94,7 @@ export class App {
     if (isMessengerView) {
       renderMessengerPage(container);
       this.layoutContent = null;
+
       return;
     }
 

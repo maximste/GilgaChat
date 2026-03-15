@@ -1,6 +1,7 @@
-import Handlebars from "handlebars";
-import template from "./Input.hbs?raw";
 import type { InputProps } from "@/shared/lib/types";
+
+import template from "./Input.hbs?raw";
+import Handlebars from "handlebars";
 
 class Input {
   private props: InputProps;

@@ -1,5 +1,5 @@
 export {
   EditProfileForm,
-  type EditProfileFormProps,
   type EditProfileFormCallbacks,
+  type EditProfileFormProps,
 } from "./ui/EditProfileForm";

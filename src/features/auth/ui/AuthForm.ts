@@ -1,6 +1,3 @@
-import Handlebars from "handlebars";
-
-import template from "./AuthForm.hbs?raw";
 import {
   Button,
   ButtonTemplate,
@@ -14,6 +11,9 @@ import {
   LinkTemplate,
 } from "@/shared/ui";
 
+import template from "./AuthForm.hbs?raw";
+import Handlebars from "handlebars";
+
 import "./AuthForm.scss";
 
 interface AuthFormProps {
@@ -23,14 +23,23 @@ interface AuthFormProps {
 
 export class AuthForm {
   private container: HTMLElement;
+
   private props: AuthFormProps;
+
   private signInButton: InstanceType<typeof Button>;
+
   private emailLabel: InstanceType<typeof Label>;
+
   private emailInput: InstanceType<typeof Input>;
+
   private passwordLabel: InstanceType<typeof Label>;
+
   private passwordInput: InstanceType<typeof Input>;
+
   private emailFormField: InstanceType<typeof FormField>;
+
   private passwordFormField: InstanceType<typeof FormField>;
+
   private restorePasswordLink: InstanceType<typeof Link>;
 
   constructor(container: HTMLElement, props: AuthFormProps) {

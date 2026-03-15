@@ -1,6 +1,3 @@
-import Handlebars from "handlebars";
-
-import template from "./RegisterForm.hbs?raw";
 import {
   Button,
   ButtonTemplate,
@@ -14,6 +11,9 @@ import {
   LinkTemplate,
 } from "@/shared/ui";
 
+import template from "./RegisterForm.hbs?raw";
+import Handlebars from "handlebars";
+
 import "./RegisterForm.scss";
 
 interface RegisterFormProps {
@@ -23,11 +23,17 @@ interface RegisterFormProps {
 
 export class RegisterForm {
   private container: HTMLElement;
+
   private props: RegisterFormProps;
+
   private createAccountButton: InstanceType<typeof Button>;
+
   private signInLink: InstanceType<typeof Link>;
+
   private termsLink: InstanceType<typeof Link>;
+
   private privacyLink: InstanceType<typeof Link>;
+
   private formFields: InstanceType<typeof FormField>[];
 
   constructor(container: HTMLElement, props: RegisterFormProps) {

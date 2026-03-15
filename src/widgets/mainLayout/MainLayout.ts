@@ -1,7 +1,9 @@
-import Handlebars from "handlebars";
-import template from "./MainLayout.hbs?raw";
-import { LinkTemplate } from "@/shared/ui";
 import type { LinkProps } from "@/shared/lib/types";
+import { LinkTemplate } from "@/shared/ui";
+
+import template from "./MainLayout.hbs?raw";
+import Handlebars from "handlebars";
+
 import "./MainLayout.scss";
 
 export interface MainLayoutProps {
@@ -21,6 +23,7 @@ class MainLayout {
 
   public render(): string {
     Handlebars.registerPartial("Link", LinkTemplate);
+
     return Handlebars.compile(template)(this.props);
   }
 }

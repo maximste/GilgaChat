@@ -1,6 +1,6 @@
 export {
-  MessengerLayout,
-  type MessengerLayoutProps,
   type DirectMessageItem,
   type GroupItem,
+  MessengerLayout,
+  type MessengerLayoutProps,
 } from "./MessengerLayout";

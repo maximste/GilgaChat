@@ -1,8 +1,8 @@
-import Handlebars from "handlebars";
+import { EditProfileForm } from "@/features/editProfile";
+import { Button, ButtonTemplate, LinkTemplate } from "@/shared/ui";
 
 import template from "./ProfilePage.hbs?raw";
-import { Button, ButtonTemplate, LinkTemplate } from "@/shared/ui";
-import { EditProfileForm } from "@/features/editProfile";
+import Handlebars from "handlebars";
 
 import "./ProfilePage.scss";
 
@@ -19,9 +19,13 @@ export interface ProfilePageProps {
 
 export class ProfilePage {
   private container: HTMLElement;
+
   private props: ProfilePageProps;
+
   private backLink: { href: string; text: string; className: string };
+
   private editProfileButton: InstanceType<typeof Button>;
+
   private logoutButton: InstanceType<typeof Button>;
 
   constructor(container: HTMLElement, props: ProfilePageProps) {
@@ -61,6 +65,7 @@ export class ProfilePage {
     this.container.innerHTML = compiledTemplate;
 
     const contentEl = this.container.querySelector(".profile-page__content");
+
     this.container
       .querySelector(".profile-page__btn--primary")
       ?.addEventListener("click", () => {
@@ -80,6 +85,7 @@ export class ProfilePage {
             onSave: () => this.render(),
           },
         );
+
         editForm.render();
       });
   }
