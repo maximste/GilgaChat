@@ -3,7 +3,7 @@ export default {
   extends: [
     "stylelint-config-standard",
     "stylelint-config-standard-scss",
-    "stylelint-config-idiomatic-order"
+    "stylelint-config-idiomatic-order",
   ],
   plugins: ["stylelint-order"],
   rules: {

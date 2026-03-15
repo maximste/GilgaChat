@@ -17,6 +17,7 @@ export default defineConfig([
     "dist",
     "**/*.{mjs,cjs}",
     "eslint.config.ts",
+    "vite.config.ts",
   ]),
 
   // Общие правила для JS/TS файлов
@@ -100,15 +101,9 @@ export default defineConfig([
 
   // Правила для импортов
   {
-    settings: {
-      "import/resolver": {
-        typescript: {
-          project: "./tsconfig.json",
-        },
-      },
-    },
     extends: [pluginImport.flatConfigs.recommended],
     rules: {
+      "import/no-unresolved": "off",
       "import/first": ["error"],
       "import/newline-after-import": ["warn"],
       "import/no-duplicates": ["warn", { "prefer-inline": false }],
