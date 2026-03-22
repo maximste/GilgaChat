@@ -1,0 +1,31 @@
+@use "shared/styles/variables" as *;
+
+.message-composer {
+  width: 100%;
+}
+
+.message-composer__row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: $spacing-12;
+}
+
+.message-composer__field {
+  min-width: 0;
+  flex: 1;
+  margin: 0;
+}
+
+.message-composer__input-shell {
+  align-items: center;
+  padding-right: $spacing-8;
+  padding-left: $spacing-16;
+}
+
+.message-composer__textarea {
+  padding-top: $spacing-12;
+  padding-bottom: $spacing-12;
+  line-height: 1.35;
+  resize: none;
+}
