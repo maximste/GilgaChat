@@ -5,9 +5,13 @@ import "./Button.scss";
 
 export interface ButtonProps {
   type: "reset" | "submit" | "button";
-  text: string;
+  text?: string;
   disabled?: boolean;
   className?: string;
+  leftSection?: string;
+  rightSection?: string;
+  ariaHaspopup?: string;
+  ariaExpanded?: string | boolean;
 }
 
 type ButtonBlockProps = ButtonProps & BlockOwnProps;

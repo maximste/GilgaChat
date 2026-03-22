@@ -1,14 +1,22 @@
 @use "shared/styles/variables" as *;
 
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: $spacing-8 $spacing-16;
   border: none;
   border-radius: $border-radius-6;
   font-size: $font-size-14;
+  gap: $gap-size-8;
   line-height: $line-height-20;
   transition: background-color ease-in-out 0.25s;
 
   &:hover {
     cursor: pointer;
   }
+}
+
+.button__label {
+  display: inline-block;
 }
