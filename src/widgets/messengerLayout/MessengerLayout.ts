@@ -1,39 +1,23 @@
-import type { LinkProps } from "@/shared/lib/types";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
+import type {
+  DirectMessageItem,
+  GroupItem,
+  SidebarProps,
+} from "@/widgets/sidebar";
 
 import template from "./MessengerLayout.hbs?raw";
 
 import "./MessengerLayout.scss";
 
-export interface DirectMessageItem {
-  firstName: string;
-  lastName: string;
-  preview: string;
-  statusType: "green" | "yellow" | "gray";
-}
+export type { DirectMessageItem, GroupItem };
 
-export interface GroupItem {
-  name: string;
-  preview: string;
-  iconClass: string;
-}
-
-export interface MessengerLayoutProps {
-  appTitle: string;
-  topLinks: LinkProps[];
-  currentUser: {
-    firstName: string;
-    lastName: string;
-    status: string;
-  };
-  directMessages: DirectMessageItem[];
-  groups: GroupItem[];
+export interface MessengerLayoutProps extends SidebarProps {
   content?: string;
 }
 
 type MessengerLayoutBlockProps = MessengerLayoutProps & BlockOwnProps;
 
-const defaultTopLinks: LinkProps[] = [
+const defaultTopLinks: SidebarProps["topLinks"] = [
   { href: "#auth", text: "Sign in", className: "messenger-sidebar__top-link" },
   {
     href: "#register",

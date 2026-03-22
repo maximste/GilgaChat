@@ -3,4 +3,5 @@ import type { LabelProps } from "./LabelTypes";
 import type { LinkProps } from "./LinkTypes";
 import type { TextareaProps } from "./TextareaTypes";
 
+export type { ChatTimelineItem } from "./ChatTimelineTypes";
 export type { InputProps, InputType, LabelProps, LinkProps, TextareaProps };
