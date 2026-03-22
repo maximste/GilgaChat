@@ -1,5 +1,5 @@
 import { renderAuthPage } from "@/pages/auth";
-import { setupMessengerNoChatStub } from "@/pages/messenger";
+import { setupMessengerChatPage } from "@/pages/messenger";
 import { renderNotFoundPage } from "@/pages/notFound";
 import { renderProfilePage } from "@/pages/profile";
 import { renderRegisterPage } from "@/pages/register";
@@ -114,7 +114,7 @@ export class App {
       return;
     }
 
-    setupMessengerNoChatStub();
+    setupMessengerChatPage();
     this.layoutContent = null;
   }
 

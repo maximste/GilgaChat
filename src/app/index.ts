@@ -1,9 +1,18 @@
+import { registerComponent } from "@/shared/ui/block";
+import { MessageComposer } from "@/widgets/messageComposer";
+import { NoChatStub } from "@/widgets/noChatStub";
+import { Sidebar } from "@/widgets/sidebar";
+
 import "@/shared/ui/block/registerBlocks";
 import "@fontsource/inter";
 import { App } from "./App";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "@/shared/styles/global.scss";
+
+registerComponent(MessageComposer);
+registerComponent(NoChatStub);
+registerComponent(Sidebar);
 
 try {
   new App();
