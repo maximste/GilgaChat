@@ -1,23 +1,34 @@
 import Handlebars from "handlebars";
 
-export default abstract class Block<Props extends object> {
+interface BlockOwnProps {
+  __children?: Array<{
+    component: Block<object>;
+    embed(node: DocumentFragment): void;
+  }>;
+  __refs?: Record<string, Element>;
+}
+
+type EventListType = Partial<
+  Record<keyof HTMLElementEventMap, (e: Event) => void>
+>;
+
+export default abstract class Block<
+  Props extends BlockOwnProps = BlockOwnProps,
+> {
   protected abstract template: string;
 
   protected props = {} as Props;
 
   private domElement: Element | null = null;
 
+  protected children: Block<object>[] = [];
+
+  protected refs: Record<string, Element> = {};
+
+  protected events: EventListType = {};
+
   constructor(props: Props = {} as Props) {
     this.props = props;
-  }
-
-  private compile(): Element | null {
-    const html = Handlebars.compile(this.template)(this.props);
-    const templateElement = document.createElement("template");
-
-    templateElement.innerHTML = html;
-
-    return templateElement.content.firstElementChild;
   }
 
   public element(): Element | null {
@@ -28,32 +39,51 @@ export default abstract class Block<Props extends object> {
     return this.domElement;
   }
 
-  /** Метод для переопределения в классе-наследнике */
-  protected componentDidMount() {
-    /** В базовом классе здесь ничего нет */
+  public setProps(props: Partial<Props>) {
+    this.props = {
+      ...this.props,
+      ...props,
+      __children: [],
+      __refs: {},
+    } as Props;
+    this.render();
   }
 
-  /** Метод для общей mount-логики и вызова componentDidMount */
-  private mountComponent() {
-    /** Здесь можно будет реализовать общую для всех компонентов логику */
+  protected componentDidMount() {}
 
-    /** Вызов метода, который мог быть переопределён в классе-наследнике */
+  private mountComponent() {
+    this.attachListeners();
     this.componentDidMount();
   }
 
-  /** Метод для переопределения в классе-наследнике */
-  protected componentWillUnmount() {
-    /** В базовом классе здесь ничего нет */
+  protected componentWillUnmount() {}
+
+  private unmountComponent() {
+    if (this.domElement) {
+      this.children.reverse().forEach((child) => child.unmountComponent());
+
+      this.componentWillUnmount();
+      this.removeListeners();
+    }
   }
 
-  /** Метод для общей unmount-логики и вызова componentWillUnmount */
-  private unmountComponent() {
-    /** Проверка наличия элемента, нужно для первого рендера */
-    if (this.domElement) {
-      /** Вызов метода, который мог быть переопределён в классе-наследнике */
-      this.componentWillUnmount();
+  private attachListeners() {
+    for (const eventName in this.events) {
+      const eventCallback = this.events[eventName as keyof HTMLElementEventMap];
 
-      /** Здесь можно будет реализовать общую для всех компонентов логику */
+      if (typeof eventCallback == "function" && this.domElement) {
+        this.domElement.addEventListener(eventName, eventCallback);
+      }
+    }
+  }
+
+  private removeListeners() {
+    for (const eventName in this.events) {
+      const eventCallback = this.events[eventName as keyof HTMLElementEventMap];
+
+      if (typeof eventCallback === "function" && this.domElement) {
+        this.domElement.removeEventListener(eventName, eventCallback);
+      }
     }
   }
 
@@ -64,14 +94,40 @@ export default abstract class Block<Props extends object> {
     if (this.domElement && fragment) {
       this.domElement.replaceWith(fragment);
     }
-
     this.domElement = fragment;
     this.mountComponent();
   }
 
-  public setProps(props: Partial<Props>) {
-    this.props = { ...this.props, ...props };
-    this.render();
+  private compile(): Element | null {
+    const html = Handlebars.compile(this.template)(this.props);
+    const templateElement = document.createElement("template");
+
+    templateElement.innerHTML = html;
+    const fragment = templateElement.content;
+
+    if (this.props.__children) {
+      this.children = this.props.__children.map((child) => child.component);
+
+      this.props.__children.forEach((child) => {
+        child.embed(fragment);
+      });
+    }
+
+    const defaultRefs = this.props?.__refs ?? {};
+
+    this.refs = Array.from(fragment.querySelectorAll("[ref]")).reduce(
+      (list, element) => {
+        const key = element.getAttribute("ref") as string;
+
+        list[key] = element as HTMLElement;
+        element.removeAttribute("ref");
+
+        return list;
+      },
+      defaultRefs,
+    );
+
+    return templateElement.content.firstElementChild;
   }
 }
 
