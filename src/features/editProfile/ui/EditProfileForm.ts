@@ -1,3 +1,8 @@
+import {
+  editProfileFormValidators,
+  handleValidatedSubmit,
+  runFieldValidatorOnFocusOut,
+} from "@/shared/lib/validation";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 import type { ButtonProps } from "@/shared/ui/button/Button";
 import type { FormFieldProps } from "@/shared/ui/formField/FormField";
@@ -203,6 +208,28 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
 
   private callbacks: EditProfileFormCallbacks;
 
+  protected events = {
+    submit: (event: Event) => {
+      handleValidatedSubmit(event, editProfileFormValidators, (values) => {
+        const data: EditProfileFormProps = {
+          login: values.login.trim(),
+          displayName: values.display_name.trim(),
+          email: values.email.trim(),
+          firstName: values.first_name.trim(),
+          surname: values.second_name.trim(),
+          phone: values.phone.trim(),
+          oldPassword: values.old_password?.trim() || undefined,
+          newPassword: values.new_password?.trim() || undefined,
+        };
+
+        this.callbacks.onSave?.(data);
+      });
+    },
+    focusout: (event: Event) => {
+      runFieldValidatorOnFocusOut(event, editProfileFormValidators);
+    },
+  };
+
   constructor(
     container: HTMLElement,
     props: EditProfileFormProps,
@@ -225,41 +252,6 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
       .querySelector('[type="button"]')
       ?.addEventListener("click", () => {
         this.callbacks.onCancel();
-      });
-
-    this.container
-      .querySelector("#editProfileForm")
-      ?.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const form = e.target as HTMLFormElement;
-        const data: EditProfileFormProps = {
-          login: (
-            form.elements.namedItem("login") as HTMLInputElement
-          ).value.trim(),
-          displayName: (
-            form.elements.namedItem("display_name") as HTMLInputElement
-          ).value.trim(),
-          email: (
-            form.elements.namedItem("email") as HTMLInputElement
-          ).value.trim(),
-          firstName: (
-            form.elements.namedItem("first_name") as HTMLInputElement
-          ).value.trim(),
-          surname: (
-            form.elements.namedItem("second_name") as HTMLInputElement
-          ).value.trim(),
-          phone: (
-            form.elements.namedItem("phone") as HTMLInputElement
-          ).value.trim(),
-          oldPassword:
-            (form.elements.namedItem("old_password") as HTMLInputElement)
-              .value || undefined,
-          newPassword:
-            (form.elements.namedItem("new_password") as HTMLInputElement)
-              .value || undefined,
-        };
-
-        this.callbacks.onSave?.(data);
       });
   }
 }
