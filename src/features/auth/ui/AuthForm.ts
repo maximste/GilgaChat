@@ -1,4 +1,9 @@
 import type { LinkProps } from "@/shared/lib/types";
+import {
+  authFormValidators,
+  handleValidatedSubmit,
+  runFieldValidatorOnFocusOut,
+} from "@/shared/lib/validation";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 import type { ButtonProps } from "@/shared/ui/button/Button";
 import type { FormFieldProps } from "@/shared/ui/formField/FormField";
@@ -21,6 +26,15 @@ type AuthFormBlockProps = AuthFormProps & {
 
 export class AuthForm extends Block<AuthFormBlockProps> {
   protected template = template;
+
+  protected events = {
+    submit: (event: Event) => {
+      handleValidatedSubmit(event, authFormValidators);
+    },
+    focusout: (event: Event) => {
+      runFieldValidatorOnFocusOut(event, authFormValidators);
+    },
+  };
 
   private container: HTMLElement;
 
