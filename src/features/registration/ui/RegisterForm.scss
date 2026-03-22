@@ -1,0 +1,118 @@
+@use "shared/styles/variables" as *;
+@use "shared/styles/buttons" as *;
+
+.auth-window--register {
+  width: 580px;
+  padding: $spacing-32;
+}
+
+.register-form {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  align-self: stretch;
+  gap: $gap-size-24 0;
+  grid-template-columns: 1fr 1fr;
+
+  & > * {
+    min-width: 0;
+  }
+
+  &__section {
+    display: grid;
+    gap: $gap-size-12 $gap-size-24;
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1fr;
+
+    & > * {
+      min-width: 0;
+    }
+
+    &--with-divider {
+      padding-top: $spacing-24;
+      border-top: 1px solid $border-color-dark;
+      margin-top: $spacing-8;
+    }
+  }
+
+  &__section-title {
+    margin: 0 0 $spacing-12;
+    color: $text-color-primary;
+    font-size: $font-size-16;
+    font-weight: 700;
+    grid-column: 1 / -1;
+    line-height: 1.25;
+  }
+
+  &__footer {
+    width: 100%;
+    margin-top: $spacing-24;
+    grid-column: 1 / -1;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $spacing-12;
+  }
+
+  &__actions-separator {
+    color: $text-color-secondary;
+    font-size: $font-size-14;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-8 $spacing-16;
+    border: none;
+    border-radius: $border-radius-6;
+    cursor: pointer;
+    font-size: $font-size-14;
+    line-height: $line-height-20;
+    text-decoration: none;
+    transition:
+      background-color 0.15s,
+      filter 0.15s;
+
+    &--primary {
+      @extend %btn-primary;
+
+      min-width: 10rem;
+      flex: 1;
+    }
+
+    &--secondary {
+      @extend %btn-secondary;
+
+      flex: 0 0 auto;
+    }
+  }
+
+  &__legal {
+    margin: 0;
+    color: $text-color-secondary;
+    font-size: $font-size-14;
+    line-height: $line-height-20;
+  }
+
+  &__link {
+    font-size: $font-size-14;
+    line-height: $line-height-20;
+    text-decoration: none;
+  }
+}
+
+@media (width <= 560px) {
+  .auth-window--register {
+    width: 100%;
+    max-width: 580px;
+    box-sizing: border-box;
+  }
+
+  .register-form__section {
+    grid-template-columns: 1fr;
+  }
+}

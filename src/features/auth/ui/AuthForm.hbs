@@ -1,0 +1,25 @@
+<section class="layout">
+  <section class="auth-window">
+    <header class="auth-window__header">
+      <span class="auth-window__icon-wrap">
+        <img src="images/logo.png" alt="GilgaChat" class="auth-window__icon" width="64" height="64" />
+      </span>
+      <h2 class="auth-window__title">{{title}}</h2>
+      <span class="auth-window__sub-title">{{subtitle}}</span>
+    </header>
+
+    <form id="authForm" class="login-form" action="/login" method="POST">
+      {{{FormField className=emailFormField.className icon=emailFormField.icon label=emailFormField.label input=emailFormField.input}}}
+      {{{FormField className=passwordFormField.className icon=passwordFormField.icon label=passwordFormField.label input=passwordFormField.input}}}
+
+      <footer class="login-form__footer">
+        {{{Link text=restorePasswordLink.text href=restorePasswordLink.href className=restorePasswordLink.className}}}
+        {{{Button type=signInButton.type text=signInButton.text className=signInButton.className}}}
+      </footer>
+    </form>
+
+    <footer class="auth-window__footer">
+
+    </footer>
+  </section>
+</section>

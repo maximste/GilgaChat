@@ -1,0 +1,63 @@
+@use "shared/styles/variables" as *;
+
+.main-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.main-layout__header {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-12 $spacing-32;
+}
+
+.main-layout__title {
+  margin: 0;
+  color: $text-color-primary;
+  font-size: $font-size-24;
+  font-weight: 700;
+  line-height: $line-height-32;
+}
+
+.main-layout__nav {
+  display: flex;
+  align-items: center;
+  gap: $gap-size-12;
+}
+
+.main-layout__content {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-32;
+}
+
+.main-layout__welcome-block {
+  max-width: 420px;
+  text-align: center;
+}
+
+.main-layout__welcome-notice {
+  margin: 0 0 $spacing-12;
+  color: $text-color-secondary;
+  font-size: $font-size-14;
+  line-height: 1.5;
+}
+
+.main-layout__welcome {
+  margin: 0;
+  color: $text-color-secondary;
+  font-size: $font-size-14;
+  line-height: $line-height-20;
+}

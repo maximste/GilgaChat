@@ -1,0 +1,26 @@
+@use "shared/styles/variables" as *;
+
+.messenger-sidebar__item-avatar {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: $background-color-surface;
+  color: $text-color-secondary;
+  font-size: $font-size-14;
+
+  &--user {
+    // Аватар в списке (позже — фото)
+  }
+}
+
+.messenger-sidebar__user-avatar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: $background-color-surface;
+}

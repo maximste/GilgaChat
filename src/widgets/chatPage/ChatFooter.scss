@@ -1,0 +1,8 @@
+@use "shared/styles/variables" as *;
+
+.chat-page__footer {
+  flex-shrink: 0;
+  padding: $spacing-12 $spacing-16;
+  border-top: 1px solid $border-color-dark;
+  background-color: $background-color-on-surface-black;
+}

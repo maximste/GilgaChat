@@ -1,0 +1,16 @@
+@use "shared/styles/variables" as *;
+
+.messenger-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background-color: $background-color;
+}
+
+.messenger-main {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  background-color: $background-color;
+}

@@ -1,0 +1,83 @@
+@use "shared/styles/variables" as *;
+
+.form-field {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  border-radius: $border-radius-6;
+  gap: $gap-size-8;
+
+  &--error {
+    .form-field__label {
+      color: $color-error;
+    }
+
+    .form-field__input-wrapper {
+      box-shadow: 0 0 0 1px $color-error;
+
+      &:focus-within {
+        outline: 1px solid $color-error;
+        outline-offset: -1px;
+      }
+    }
+  }
+
+  &__error {
+    margin: 0;
+    color: $color-error;
+    font-size: $font-size-12;
+    line-height: 1.35;
+  }
+
+  &__input-wrapper {
+    display: flex;
+    align-items: center;
+    padding-left: $spacing-12;
+    border-radius: $border-radius-6;
+    background-color: $background-color-input;
+    gap: $spacing-10;
+
+    &:focus-within {
+      outline: 1px solid $color-accent;
+      outline-offset: -1px;
+    }
+  }
+
+  &__icon {
+    width: 1.25rem;
+    flex-shrink: 0;
+    color: $text-color-secondary;
+    font-size: $font-size-14;
+    text-align: center;
+  }
+
+  &__label {
+    color: $text-color-primary;
+    font-size: $font-size-14;
+    line-height: $line-height-20;
+  }
+
+  &__input {
+    min-width: 0;
+    flex: 1;
+    padding: $spacing-8 $spacing-16;
+    border: none;
+    border-radius: $border-radius-6;
+    background-color: transparent;
+    color: $text-color-primary;
+    font-size: $font-size-14;
+    line-height: $line-height-20;
+
+    &:focus {
+      outline: none;
+    }
+
+    &--with-icon {
+      padding-left: 0;
+    }
+
+    &--success {
+      border: 1px solid $color-success;
+    }
+  }
+}

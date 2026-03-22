@@ -1,0 +1,9 @@
+<div class="messenger-sidebar__top">
+  <nav class="messenger-sidebar__top-links">
+    {{#each topLinks}}
+      {{{Link text=text href=href className=className}}}
+    {{/each}}
+  </nav>
+  {{{Button type="button" text=appTitle className="messenger-sidebar__app-title" ariaHaspopup="listbox" ariaExpanded="false" rightSection=appTitleRightSection}}}
+  {{{Search placeholder=searchPlaceholder ariaLabel=searchAriaLabel}}}
+</div>
