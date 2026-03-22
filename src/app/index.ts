@@ -1,3 +1,4 @@
+import "@/shared/ui/block/registerBlocks";
 import "@fontsource/inter";
 import { App } from "./App";
 

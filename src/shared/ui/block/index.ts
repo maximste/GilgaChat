@@ -1,3 +1,4 @@
-import { Block } from "./Block";
+import { Block, type BlockOwnProps } from "./Block";
 
-export { Block };
+export { Block, type BlockOwnProps };
+export { registerComponent } from "./lib/registerComponent";
