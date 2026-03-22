@@ -1,4 +1,8 @@
 import { registerComponent } from "@/shared/ui/block";
+import { ChatFooter } from "@/widgets/chatPage/ChatFooter";
+import { ChatHeader } from "@/widgets/chatPage/ChatHeader";
+import { ChatThread } from "@/widgets/chatPage/ChatThread";
+import { ChatTimelineRow } from "@/widgets/chatPage/ChatTimelineRow";
 import { MessageComposer } from "@/widgets/messageComposer";
 import { NoChatStub } from "@/widgets/noChatStub";
 import {
@@ -16,6 +20,10 @@ import { App } from "./App";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "@/shared/styles/global.scss";
 
+registerComponent(ChatHeader);
+registerComponent(ChatThread);
+registerComponent(ChatFooter);
+registerComponent(ChatTimelineRow);
 registerComponent(MessageComposer);
 registerComponent(NoChatStub);
 registerComponent(Sidebar);
