@@ -1,4 +1,9 @@
 import type { LinkProps } from "@/shared/lib/types";
+import {
+  handleValidatedSubmit,
+  registerFormValidators,
+  runFieldValidatorOnFocusOut,
+} from "@/shared/lib/validation";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 import type { ButtonProps } from "@/shared/ui/button/Button";
 import type { FormFieldProps } from "@/shared/ui/formField/FormField";
@@ -27,6 +32,15 @@ type RegisterFormBlockProps = RegisterFormProps & {
 
 export class RegisterForm extends Block<RegisterFormBlockProps> {
   protected template = template;
+
+  protected events = {
+    submit: (event: Event) => {
+      handleValidatedSubmit(event, registerFormValidators);
+    },
+    focusout: (event: Event) => {
+      runFieldValidatorOnFocusOut(event, registerFormValidators);
+    },
+  };
 
   private container: HTMLElement;
 
