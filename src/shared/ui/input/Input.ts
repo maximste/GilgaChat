@@ -1,21 +1,17 @@
 import type { InputProps } from "@/shared/lib/types";
 
+import { Block, type BlockOwnProps } from "../block/Block";
 import template from "./Input.hbs?raw";
-import Handlebars from "handlebars";
 
-class Input {
-  private props: InputProps;
+type InputBlockProps = InputProps & BlockOwnProps;
 
-  constructor(props: InputProps) {
-    this.props = props;
-  }
+class Input extends Block<InputBlockProps> {
+  static componentName = "Input";
 
-  public getData(): InputProps {
-    return this.props;
-  }
+  protected template = template;
 
-  public render(props: InputProps): string {
-    return Handlebars.compile(template)(props);
+  constructor(props: InputBlockProps) {
+    super(props);
   }
 }
 

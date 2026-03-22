@@ -1,21 +1,17 @@
 import type { LabelProps } from "@/shared/lib/types";
 
+import { Block, type BlockOwnProps } from "../block/Block";
 import template from "./Label.hbs?raw";
-import Handlebars from "handlebars";
 
-class Label {
-  private props: LabelProps;
+type LabelBlockProps = LabelProps & BlockOwnProps;
 
-  constructor(props: LabelProps) {
-    this.props = props;
-  }
+class Label extends Block<LabelBlockProps> {
+  static componentName = "Label";
 
-  public getData(): LabelProps {
-    return this.props;
-  }
+  protected template = template;
 
-  public render(props: LabelProps): string {
-    return Handlebars.compile(template)(props);
+  constructor(props: LabelBlockProps) {
+    super(props);
   }
 }
 

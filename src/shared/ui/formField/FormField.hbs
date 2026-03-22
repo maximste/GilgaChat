@@ -1,7 +1,7 @@
 <div class="form-field {{className}}">
-  {{> Label label }}
+  {{{Label text=label.text for=label.for className=label.className}}}
   <div class="form-field__input-wrapper">
     {{#if icon}}<i class="{{icon}} form-field__icon" aria-hidden="true"></i>{{/if}}
-    {{> Input input }}
+    {{{Input id=input.id type=input.type name=input.name value=input.value required=input.required className=input.className placeholder=input.placeholder ref=input.id}}}
   </div>
 </div>

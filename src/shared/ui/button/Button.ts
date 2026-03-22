@@ -1,28 +1,24 @@
+import { Block, type BlockOwnProps } from "../block/Block";
 import template from "./Button.hbs?raw";
-import Handlebars from "handlebars";
 
 import "./Button.scss";
 
-interface ButtonProps {
+export interface ButtonProps {
   type: "reset" | "submit" | "button";
   text: string;
   disabled?: boolean;
   className?: string;
 }
 
-class Button {
-  private props: ButtonProps;
+type ButtonBlockProps = ButtonProps & BlockOwnProps;
 
-  constructor(props: ButtonProps) {
-    this.props = props;
-  }
+class Button extends Block<ButtonBlockProps> {
+  static componentName = "Button";
 
-  public getData(): ButtonProps {
-    return this.props;
-  }
+  protected template = template;
 
-  public render(props: ButtonProps): string {
-    return Handlebars.compile(template)(props);
+  constructor(props: ButtonBlockProps) {
+    super(props);
   }
 }
 

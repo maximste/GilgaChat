@@ -1,21 +1,17 @@
 import type { LinkProps } from "@/shared/lib/types";
 
+import { Block, type BlockOwnProps } from "../block/Block";
 import template from "./Link.hbs?raw";
-import Handlebars from "handlebars";
 
-class Link {
-  private props: LinkProps;
+type LinkBlockProps = LinkProps & BlockOwnProps;
 
-  constructor(props: LinkProps) {
-    this.props = props;
-  }
+class Link extends Block<LinkBlockProps> {
+  static componentName = "Link";
 
-  public getData(): LinkProps {
-    return this.props;
-  }
+  protected template = template;
 
-  public render(props: LinkProps): string {
-    return Handlebars.compile(template)(props);
+  constructor(props: LinkBlockProps) {
+    super(props);
   }
 }
 

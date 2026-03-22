@@ -1,13 +1,11 @@
 import type { InputProps, LabelProps } from "@/shared/lib/types";
 
-import InputTemplate from "../input/Input.hbs?raw";
-import LabelTemplate from "../label/Label.hbs?raw";
+import { Block, type BlockOwnProps } from "../block/Block";
 import template from "./FormField.hbs?raw";
-import Handlebars from "handlebars";
 
 import "./FormField.scss";
 
-interface FormFieldProps {
+export interface FormFieldProps {
   input: InputProps;
   label: LabelProps;
   className?: string;
@@ -15,35 +13,28 @@ interface FormFieldProps {
   icon?: string;
 }
 
-class FormField {
-  private props: FormFieldProps;
+type FormFieldBlockProps = FormFieldProps & BlockOwnProps;
 
-  constructor(props: FormFieldProps) {
-    this.props = props;
-  }
+function withIconInputClass(props: FormFieldProps): FormFieldProps {
+  const input = props.icon
+    ? {
+        ...props.input,
+        className: [props.input.className, "form-field__input--with-icon"]
+          .filter(Boolean)
+          .join(" "),
+      }
+    : props.input;
 
-  public getData(): FormFieldProps {
-    const input = this.props.icon
-      ? {
-          ...this.props.input,
-          className: [
-            this.props.input.className,
-            "form-field__input--with-icon",
-          ]
-            .filter(Boolean)
-            .join(" "),
-        }
-      : this.props.input;
+  return { ...props, input };
+}
 
-    return { ...this.props, input };
-  }
+class FormField extends Block<FormFieldBlockProps> {
+  static componentName = "FormField";
 
-  public render(): string {
-    Handlebars.registerPartial("Input", InputTemplate);
-    Handlebars.registerPartial("Label", LabelTemplate);
-    const data = this.getData();
+  protected template = template;
 
-    return Handlebars.compile(template)(data);
+  constructor(props: FormFieldBlockProps) {
+    super(withIconInputClass(props) as FormFieldBlockProps);
   }
 }
 
