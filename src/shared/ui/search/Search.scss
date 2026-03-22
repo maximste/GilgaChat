@@ -1,0 +1,30 @@
+@use "shared/styles/variables" as *;
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search__icon {
+  position: absolute;
+  left: 10px;
+  color: $text-color-placeholder;
+  font-size: $font-size-12;
+  pointer-events: none;
+}
+
+.search__input {
+  width: 100%;
+  padding: $spacing-8 $spacing-10 $spacing-8 $spacing-32;
+  border: none;
+  border-radius: $border-radius-6;
+  background-color: $background-color-input;
+  color: $text-color-primary;
+  font-size: $font-size-14;
+  outline: none;
+
+  &::placeholder {
+    color: $text-color-placeholder;
+  }
+}
