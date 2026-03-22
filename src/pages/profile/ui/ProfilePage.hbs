@@ -1,6 +1,6 @@
 <div class="profile-page">
   <header class="profile-page__topbar">
-    {{> Link backLink }}
+    {{{Link text=backLink.text href=backLink.href className=backLink.className}}}
   </header>
 
   <div class="profile-page__content">
@@ -11,8 +11,8 @@
           <h2 class="profile-card__name">{{name}}</h2>
           <span class="profile-card__username">{{username}}</span>
           <div class="profile-card__actions">
-            {{> Button editProfileButton }}
-            {{> Button logoutButton }}
+            {{{Button type=editProfileButton.type text=editProfileButton.text className=editProfileButton.className}}}
+            {{{Button type=logoutButton.type text=logoutButton.text className=logoutButton.className}}}
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@
     <div class="messenger-sidebar__top">
       <nav class="messenger-sidebar__top-links">
         {{#each topLinks}}
-        {{> Link}}
+        {{{Link text=text href=href className=className}}}
         {{/each}}
       </nav>
       <button type="button" class="messenger-sidebar__app-title" aria-haspopup="listbox" aria-expanded="false">

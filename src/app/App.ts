@@ -1,10 +1,12 @@
 import { renderAuthPage } from "@/pages/auth";
-import { renderMessengerPage } from "@/pages/messenger";
+import { setupMessengerNoChatStub } from "@/pages/messenger";
 import { renderNotFoundPage } from "@/pages/notFound";
 import { renderProfilePage } from "@/pages/profile";
 import { renderRegisterPage } from "@/pages/register";
 import { renderServerErrorPage } from "@/pages/serverError";
+import { Block } from "@/shared/ui/block";
 import { MainLayout } from "@/widgets/mainLayout";
+import { MessengerLayout } from "@/widgets/messengerLayout";
 
 function showError(message: string): void {
   const app = document.getElementById("app");
@@ -29,6 +31,8 @@ const DEFAULT_PROFILE_PROPS = {
 export class App {
   private layoutContent: HTMLElement | null = null;
 
+  private appRoot: Block | null = null;
+
   constructor() {
     this.init();
   }
@@ -36,7 +40,6 @@ export class App {
   private init(): void {
     const run = (): void => {
       try {
-        this.renderLayout();
         this.setupNavigation();
         this.renderCurrentView();
       } catch (err) {
@@ -54,15 +57,32 @@ export class App {
     }
   }
 
-  private renderLayout(): void {
+  /**
+   * Смена корневого виджета в #app: снимает жизненный цикл с предыдущего Block и монтирует новый.
+   */
+  private mountAppRoot(block: Block): boolean {
     const container = document.getElementById("app");
 
     if (!container) {
       showError("App container #app not found");
 
-      return;
+      return false;
     }
 
+    this.appRoot?.destroy();
+    this.appRoot = block;
+    const el = block.element();
+
+    if (!el) {
+      return false;
+    }
+
+    container.replaceChildren(el);
+
+    return true;
+  }
+
+  private renderLayout(): void {
     const layout = new MainLayout({
       goBackLink: {
         href: "#",
@@ -72,8 +92,14 @@ export class App {
       content: "",
     });
 
-    container.innerHTML = layout.render();
+    if (!this.mountAppRoot(layout)) {
+      showError("MainLayout failed to render");
+
+      return;
+    }
+
     this.layoutContent = document.getElementById("layout-content");
+
     if (!this.layoutContent) {
       showError("Layout content #layout-content not found");
     }
@@ -83,17 +109,23 @@ export class App {
     window.addEventListener("hashchange", () => this.renderCurrentView());
   }
 
-  private renderCurrentView(): void {
-    const container = document.getElementById("app");
+  private showMessengerView(): void {
+    if (!this.mountAppRoot(new MessengerLayout())) {
+      return;
+    }
 
-    if (!container) return;
+    setupMessengerNoChatStub();
+    this.layoutContent = null;
+  }
+
+  private renderCurrentView(): void {
+    if (!document.getElementById("app")) return;
 
     const hash = window.location.hash;
     const isMessengerView = hash === "" || hash === "#messenger";
 
     if (isMessengerView) {
-      renderMessengerPage(container);
-      this.layoutContent = null;
+      this.showMessengerView();
 
       return;
     }
@@ -114,8 +146,7 @@ export class App {
     } else if (hash === "#500") {
       renderServerErrorPage(this.layoutContent);
     } else {
-      renderMessengerPage(container);
-      this.layoutContent = null;
+      this.showMessengerView();
     }
   }
 }

@@ -1,8 +1,7 @@
 import { EditProfileForm } from "@/features/editProfile";
-import { Button, ButtonTemplate, LinkTemplate } from "@/shared/ui";
+import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./ProfilePage.hbs?raw";
-import Handlebars from "handlebars";
 
 import "./ProfilePage.scss";
 
@@ -17,76 +16,90 @@ export interface ProfilePageProps {
   phone: string;
 }
 
-export class ProfilePage {
+type ProfilePageBlockProps = ProfilePageProps & {
+  backLink: { href: string; text: string; className: string };
+  editProfileButton: {
+    type: "button";
+    text: string;
+    className: string;
+  };
+  logoutButton: {
+    type: "button";
+    text: string;
+    className: string;
+  };
+} & BlockOwnProps;
+
+export class ProfilePage extends Block<ProfilePageBlockProps> {
+  protected template = template;
+
   private container: HTMLElement;
 
-  private props: ProfilePageProps;
+  private editButton: Element | null = null;
 
-  private backLink: { href: string; text: string; className: string };
+  private readonly handleEditProfile = (): void => {
+    const root = this.element();
+    const contentEl = root?.querySelector(".profile-page__content");
 
-  private editProfileButton: InstanceType<typeof Button>;
+    if (!contentEl || !(contentEl instanceof HTMLElement)) return;
 
-  private logoutButton: InstanceType<typeof Button>;
+    new EditProfileForm(
+      contentEl,
+      {
+        login: this.props.login,
+        displayName: this.props.displayName,
+        email: this.props.email,
+        firstName: this.props.firstName,
+        surname: this.props.surname,
+        phone: this.props.phone,
+      },
+      {
+        onCancel: () => this.render(),
+        onSave: () => this.render(),
+      },
+    ).render();
+  };
 
-  constructor(container: HTMLElement, props: ProfilePageProps) {
+  constructor(container: HTMLElement, pageProps: ProfilePageProps) {
+    super({
+      ...pageProps,
+      backLink: {
+        href: "#",
+        text: "← Back to Messenger",
+        className: "profile-page__back-link",
+      },
+      editProfileButton: {
+        type: "button",
+        text: "Edit Profile",
+        className: "profile-page__btn profile-page__btn--primary",
+      },
+      logoutButton: {
+        type: "button",
+        text: "Logout",
+        className: "profile-page__btn profile-page__btn--danger",
+      },
+    } as ProfilePageBlockProps);
     this.container = container;
-    this.props = props;
+  }
 
-    this.backLink = {
-      href: "#",
-      text: "← Back to Messenger",
-      className: "profile-page__back-link",
-    };
+  protected componentDidMount(): void {
+    const btn = this.element()?.querySelector(".profile-page__btn--primary");
 
-    this.editProfileButton = new Button({
-      type: "button",
-      text: "Edit Profile",
-      className: "profile-page__btn profile-page__btn--primary",
-    });
+    this.editButton = btn ?? null;
+    this.editButton?.addEventListener("click", this.handleEditProfile);
+  }
 
-    this.logoutButton = new Button({
-      type: "button",
-      text: "Logout",
-      className: "profile-page__btn profile-page__btn--danger",
-    });
+  protected componentWillUnmount(): void {
+    this.editButton?.removeEventListener("click", this.handleEditProfile);
+    this.editButton = null;
   }
 
   public render(): void {
-    Handlebars.registerPartial("Link", LinkTemplate);
-    Handlebars.registerPartial("Button", ButtonTemplate);
+    super.render();
+    const root = this.element();
 
-    const compiledTemplate = Handlebars.compile(template)({
-      ...this.props,
-      backLink: this.backLink,
-      editProfileButton: this.editProfileButton.getData(),
-      logoutButton: this.logoutButton.getData(),
-    });
-
-    this.container.innerHTML = compiledTemplate;
-
-    const contentEl = this.container.querySelector(".profile-page__content");
-
-    this.container
-      .querySelector(".profile-page__btn--primary")
-      ?.addEventListener("click", () => {
-        if (!contentEl || !(contentEl instanceof HTMLElement)) return;
-        const editForm = new EditProfileForm(
-          contentEl,
-          {
-            login: this.props.login,
-            displayName: this.props.displayName,
-            email: this.props.email,
-            firstName: this.props.firstName,
-            surname: this.props.surname,
-            phone: this.props.phone,
-          },
-          {
-            onCancel: () => this.render(),
-            onSave: () => this.render(),
-          },
-        );
-
-        editForm.render();
-      });
+    if (root) {
+      this.container.replaceChildren(root);
+    }
   }
 }

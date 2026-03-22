@@ -1,8 +1,7 @@
 import type { LinkProps } from "@/shared/lib/types";
-import { LinkTemplate } from "@/shared/ui";
+import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./MainLayout.hbs?raw";
-import Handlebars from "handlebars";
 
 import "./MainLayout.scss";
 
@@ -11,20 +10,16 @@ export interface MainLayoutProps {
   content?: string;
 }
 
-class MainLayout {
-  private props: MainLayoutProps;
+type MainLayoutBlockProps = MainLayoutProps & BlockOwnProps;
+
+class MainLayout extends Block<MainLayoutBlockProps> {
+  protected template = template;
 
   constructor(props: MainLayoutProps) {
-    this.props = {
+    super({
       ...props,
       content: props.content ?? "",
-    };
-  }
-
-  public render(): string {
-    Handlebars.registerPartial("Link", LinkTemplate);
-
-    return Handlebars.compile(template)(this.props);
+    } as MainLayoutBlockProps);
   }
 }
 
