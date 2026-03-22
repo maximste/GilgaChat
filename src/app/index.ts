@@ -1,7 +1,13 @@
 import { registerComponent } from "@/shared/ui/block";
 import { MessageComposer } from "@/widgets/messageComposer";
 import { NoChatStub } from "@/widgets/noChatStub";
-import { Sidebar } from "@/widgets/sidebar";
+import {
+  Sidebar,
+  SidebarChatListItem,
+  SidebarChatSection,
+  SidebarHeader,
+  SidebarUserPanel,
+} from "@/widgets/sidebar";
 
 import "@/shared/ui/block/registerBlocks";
 import "@fontsource/inter";
@@ -13,6 +19,10 @@ import "@/shared/styles/global.scss";
 registerComponent(MessageComposer);
 registerComponent(NoChatStub);
 registerComponent(Sidebar);
+registerComponent(SidebarHeader);
+registerComponent(SidebarChatSection);
+registerComponent(SidebarChatListItem);
+registerComponent(SidebarUserPanel);
 
 try {
   new App();
