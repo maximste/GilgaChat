@@ -11,9 +11,9 @@
 }
 
 %btn-secondary {
+  border: 1px solid $button-border-secondary;
   background-color: $button-bg-secondary;
   color: $text-color-primary;
-  border: 1px solid $button-border-secondary;
 
   &:hover {
     background-color: $button-bg-secondary-hover;

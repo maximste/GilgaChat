@@ -2,26 +2,26 @@
 @use "shared/styles/buttons" as *;
 
 .profile-page {
+  display: flex;
   width: 100%;
   max-width: 800px;
-  display: flex;
   flex-direction: column;
   gap: $gap-size-32;
 }
 
 .profile-page__topbar {
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
 }
 
 .profile-page__theme-btn {
-  background: none;
-  border: none;
   padding: $spacing-8;
-  cursor: pointer;
+  border: none;
+  background: none;
   color: $text-color-secondary;
+  cursor: pointer;
   font-size: $font-size-24;
   line-height: 1;
 
@@ -41,11 +41,11 @@
 }
 
 .profile-card {
-  background-color: $background-color-on-surface-black;
+  padding: $spacing-32;
   border: 1px solid $border-color-dark;
   border-radius: $border-radius-8;
-  padding: $spacing-32;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  background-color: $background-color-on-surface-black;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
 }
 
 .profile-card__header {
@@ -57,60 +57,60 @@
 .profile-card__avatar {
   width: 80px;
   height: 80px;
+  flex-shrink: 0;
   border-radius: 50%;
   background-color: $color-accent;
-  flex-shrink: 0;
 }
 
 .profile-card__identity {
   display: flex;
+  min-width: 0;
+  flex: 1;
   flex-direction: column;
   gap: $gap-size-8;
-  flex: 1;
-  min-width: 0;
 }
 
 .profile-card__name {
   margin: 0;
-  font-size: $font-size-24;
-  line-height: $line-height-32;
-  font-weight: 700;
   color: $text-color-primary;
+  font-size: $font-size-24;
+  font-weight: 700;
+  line-height: $line-height-32;
 }
 
 .profile-card__username {
+  color: $text-color-secondary;
   font-size: $font-size-14;
   line-height: $line-height-20;
-  color: $text-color-secondary;
 }
 
 .profile-card__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: $gap-size-12;
   margin-top: $spacing-8;
+  gap: $gap-size-12;
 }
 
 .profile-info {
-  background-color: $background-color-on-surface-black;
+  padding: $spacing-32;
   border: 1px solid $border-color-dark;
   border-radius: $border-radius-8;
-  padding: $spacing-32;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  background-color: $background-color-on-surface-black;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
 }
 
 .profile-info__title {
   margin: 0 0 $spacing-12;
-  font-size: $font-size-24;
-  line-height: $line-height-32;
-  font-weight: 700;
   color: $text-color-primary;
+  font-size: $font-size-24;
+  font-weight: 700;
+  line-height: $line-height-32;
 }
 
 .profile-info__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: $gap-size-12 $gap-size-32;
+  grid-template-columns: 1fr 1fr;
 }
 
 .profile-info__row {
@@ -120,29 +120,29 @@
 }
 
 .profile-info__label {
+  color: $text-color-secondary;
   font-size: $font-size-14;
   line-height: $line-height-20;
-  color: $text-color-secondary;
 }
 
 .profile-info__value {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: $font-size-14;
-  line-height: $line-height-20;
-  color: $text-color-primary;
-  background-color: $background-color-surface;
-  border-radius: $border-radius-6;
   padding: $spacing-8 $spacing-16;
+  border-radius: $border-radius-6;
+  background-color: $background-color-surface;
+  color: $text-color-primary;
+  font-size: $font-size-14;
+  gap: 10px;
+  line-height: $line-height-20;
 }
 
 .profile-info__icon {
-  flex-shrink: 0;
   width: 1.25rem;
-  text-align: center;
+  flex-shrink: 0;
   color: $text-color-secondary;
   font-size: $font-size-14;
+  text-align: center;
 }
 
 .profile-page__btn {
@@ -159,7 +159,7 @@
   }
 }
 
-@media (max-width: 520px) {
+@media (width <= 520px) {
   .profile-info__grid {
     grid-template-columns: 1fr;
   }

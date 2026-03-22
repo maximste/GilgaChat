@@ -2,11 +2,11 @@
 @use "shared/styles/buttons" as *;
 
 .edit-profile {
-  background-color: $background-color-on-surface-black;
+  padding: $spacing-32;
   border: 1px solid $border-color-dark;
   border-radius: $border-radius-8;
-  padding: $spacing-32;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  background-color: $background-color-on-surface-black;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
 }
 
 .edit-profile__header {
@@ -15,16 +15,16 @@
 
 .edit-profile__title {
   margin: 0;
+  color: $text-color-primary;
   font-size: $font-size-24;
   font-weight: 700;
-  color: $text-color-primary;
 }
 
 .edit-profile__form {
   display: flex;
+  width: 100%;
   flex-direction: column;
   gap: $gap-size-12;
-  width: 100%;
 }
 
 .edit-profile__field {
@@ -38,8 +38,8 @@
 .edit-profile__footer {
   display: flex;
   flex-wrap: wrap;
-  gap: $gap-size-12;
   margin-top: $spacing-8;
+  gap: $gap-size-12;
 }
 
 .edit-profile__btn {
