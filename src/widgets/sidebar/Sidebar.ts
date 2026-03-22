@@ -39,10 +39,44 @@ type SidebarBlockProps = SidebarProps & {
 const DEFAULT_APP_TITLE_RIGHT_SECTION =
   '<i class="fa-solid fa-chevron-down messenger-sidebar__chevron" aria-hidden="true"></i>';
 
+/** Всплывающее событие на корне сайдбара при выборе чата в списке */
+export const SIDEBAR_SELECT_CHAT_EVENT = "sidebar-select-chat" as const;
+
+export type SidebarSelectChatDetail = { chatId: string };
+
 class Sidebar extends Block<SidebarBlockProps> {
   static componentName = "Sidebar";
 
   protected template = template;
+
+  private readonly handleChatListClick = (event: Event): void => {
+    const root = this.element();
+
+    if (!root) {
+      return;
+    }
+
+    const item = (event.target as HTMLElement).closest<HTMLButtonElement>(
+      ".messenger-sidebar__item",
+    );
+
+    if (!item || !root.contains(item)) {
+      return;
+    }
+
+    const chatId = item.dataset.chat;
+
+    if (!chatId) {
+      return;
+    }
+
+    root.dispatchEvent(
+      new CustomEvent<SidebarSelectChatDetail>(SIDEBAR_SELECT_CHAT_EVENT, {
+        bubbles: true,
+        detail: { chatId },
+      }),
+    );
+  };
 
   constructor(props: SidebarProps) {
     super({
@@ -50,6 +84,14 @@ class Sidebar extends Block<SidebarBlockProps> {
       appTitleRightSection:
         props.appTitleRightSection ?? DEFAULT_APP_TITLE_RIGHT_SECTION,
     } as SidebarBlockProps);
+  }
+
+  protected componentDidMount(): void {
+    this.element()?.addEventListener("click", this.handleChatListClick);
+  }
+
+  protected componentWillUnmount(): void {
+    this.element()?.removeEventListener("click", this.handleChatListClick);
   }
 }
 
