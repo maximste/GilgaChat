@@ -7,7 +7,7 @@
 .message-composer__row {
   display: flex;
   flex-wrap: nowrap;
-  align-items: center;
+  align-items: flex-end;
   gap: $spacing-12;
 }
 
@@ -28,4 +28,20 @@
   padding-bottom: $spacing-12;
   line-height: 1.35;
   resize: none;
+}
+
+.message-composer__send.icon-button {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  padding: 0;
+  border-radius: 50%;
+  background-color: $color-accent;
+  color: $text-color-primary;
+  font-size: $font-size-14;
+
+  &:hover:not(:disabled) {
+    background-color: $color-accent-dark;
+    color: $text-color-primary;
+  }
 }

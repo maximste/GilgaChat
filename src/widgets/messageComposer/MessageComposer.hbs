@@ -3,6 +3,7 @@
   class="message-composer"
   action="#"
   method="POST"
+  novalidate
 >
   <div class="message-composer__row">
     {{{IconButton type="button" icon="fa-solid fa-paperclip" ariaLabel="Прикрепить файл" className="message-composer__attach"}}}
@@ -12,5 +13,6 @@
         {{{IconButton type="button" icon="fa-regular fa-face-smile" ariaLabel="Эмодзи" className="message-composer__emoji"}}}
       </div>
     </div>
+    {{{IconButton type="button" icon="fa-solid fa-paper-plane" ariaLabel="Отправить сообщение" className="message-composer__send"}}}
   </div>
 </form>

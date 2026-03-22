@@ -1,9 +1,9 @@
-import {
-  handleValidatedSubmit,
-  messageFormValidators,
-  runFieldValidatorOnFocusOut,
-} from "@/shared/lib/validation";
+import { messageFormValidators } from "@/shared/lib/validation";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
+import {
+  CHAT_MESSAGE_SENT_EVENT,
+  type ChatMessageSentDetail,
+} from "@/widgets/chatPage/chatMessageEvents";
 
 import template from "./MessageComposer.hbs?raw";
 
@@ -22,21 +22,50 @@ export class MessageComposer extends Block<MessageComposerBlockProps> {
 
   protected template = template;
 
+  private trySend(): void {
+    const root = this.element();
+    const form = root instanceof HTMLFormElement ? root : null;
+    const ta = root?.querySelector<HTMLTextAreaElement>(
+      'textarea[name="message"]',
+    );
+
+    if (!form || !ta) {
+      return;
+    }
+
+    const raw = ta.value;
+    const err = messageFormValidators.message(raw, { message: raw });
+
+    if (err) {
+      return;
+    }
+
+    const text = raw.trim();
+
+    form.dispatchEvent(
+      new CustomEvent<ChatMessageSentDetail>(CHAT_MESSAGE_SENT_EVENT, {
+        bubbles: true,
+        detail: { text },
+      }),
+    );
+
+    ta.value = "";
+  }
+
   protected events = {
     submit: (event: Event) => {
-      handleValidatedSubmit(event, messageFormValidators, () => {
-        const root = this.element();
-        const ta = root?.querySelector<HTMLTextAreaElement>(
-          'textarea[name="message"]',
-        );
-
-        if (ta) {
-          ta.value = "";
-        }
-      });
+      event.preventDefault();
+      this.trySend();
     },
-    focusout: (event: Event) => {
-      runFieldValidatorOnFocusOut(event, messageFormValidators);
+    click: (event: Event) => {
+      const target = (event.target as HTMLElement).closest(
+        ".message-composer__send",
+      );
+
+      if (target) {
+        event.preventDefault();
+        this.trySend();
+      }
     },
   };
 
@@ -49,7 +78,7 @@ export class MessageComposer extends Block<MessageComposerBlockProps> {
 
   protected componentDidMount(): void {
     const root = this.element();
-    const form = root?.querySelector("form");
+    const form = root instanceof HTMLFormElement ? root : null;
     const ta = root?.querySelector<HTMLTextAreaElement>(
       'textarea[name="message"]',
     );
