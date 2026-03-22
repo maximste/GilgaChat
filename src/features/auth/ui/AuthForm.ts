@@ -1,18 +1,9 @@
-import {
-  Button,
-  ButtonTemplate,
-  FormField,
-  FormFieldTemplate,
-  Input,
-  InputTemplate,
-  Label,
-  LabelTemplate,
-  Link,
-  LinkTemplate,
-} from "@/shared/ui";
+import type { LinkProps } from "@/shared/lib/types";
+import { Block, type BlockOwnProps } from "@/shared/ui/block";
+import type { ButtonProps } from "@/shared/ui/button/Button";
+import type { FormFieldProps } from "@/shared/ui/formField/FormField";
 
 import template from "./AuthForm.hbs?raw";
-import Handlebars from "handlebars";
 
 import "./AuthForm.scss";
 
@@ -21,102 +12,80 @@ interface AuthFormProps {
   subtitle?: string;
 }
 
-export class AuthForm {
+type AuthFormBlockProps = AuthFormProps & {
+  emailFormField: FormFieldProps;
+  passwordFormField: FormFieldProps;
+  restorePasswordLink: LinkProps;
+  signInButton: ButtonProps;
+} & BlockOwnProps;
+
+export class AuthForm extends Block<AuthFormBlockProps> {
+  protected template = template;
+
   private container: HTMLElement;
 
-  private props: AuthFormProps;
-
-  private signInButton: InstanceType<typeof Button>;
-
-  private emailLabel: InstanceType<typeof Label>;
-
-  private emailInput: InstanceType<typeof Input>;
-
-  private passwordLabel: InstanceType<typeof Label>;
-
-  private passwordInput: InstanceType<typeof Input>;
-
-  private emailFormField: InstanceType<typeof FormField>;
-
-  private passwordFormField: InstanceType<typeof FormField>;
-
-  private restorePasswordLink: InstanceType<typeof Link>;
-
   constructor(container: HTMLElement, props: AuthFormProps) {
+    const fieldClass = "login-form__field";
+    const labelClass = "login-form__label";
+    const inputClass = "login-form__input";
+
+    const initial: AuthFormBlockProps = {
+      title: props.title,
+      subtitle: props.subtitle,
+      emailFormField: {
+        label: {
+          text: "Email",
+          for: "userEmail",
+          className: labelClass,
+        },
+        input: {
+          id: "userEmail",
+          type: "email",
+          name: "email",
+          required: true,
+          className: inputClass,
+        },
+        className: fieldClass,
+        icon: "fa-solid fa-envelope",
+      },
+      passwordFormField: {
+        label: {
+          text: "Password",
+          for: "userPassword",
+          className: labelClass,
+        },
+        input: {
+          id: "userPassword",
+          type: "password",
+          name: "password",
+          required: true,
+          className: inputClass,
+        },
+        className: fieldClass,
+        icon: "fa-solid fa-lock",
+      },
+      restorePasswordLink: {
+        text: "Forgot password?",
+        href: "/recovery",
+        className: "login-form__link",
+      },
+      signInButton: {
+        type: "submit",
+        text: "Sign In",
+        className: "login-form__submit-btn",
+      },
+    };
+
+    super(initial);
     this.container = container;
-    this.props = props;
-
-    this.emailLabel = new Label({
-      text: "Email",
-      for: "userEmail",
-      className: "login-form__label",
-    });
-
-    this.passwordLabel = new Label({
-      text: "Password",
-      for: "userPassword",
-      className: "login-form__label",
-    });
-
-    this.emailInput = new Input({
-      id: "userEmail",
-      type: "email",
-      name: "email",
-      required: true,
-      className: "login-form__input",
-    });
-
-    this.passwordInput = new Input({
-      id: "userPassword",
-      type: "password",
-      name: "password",
-      required: true,
-      className: "login-form__input",
-    });
-
-    this.signInButton = new Button({
-      type: "submit",
-      text: "Sign In",
-      className: "login-form__submit-btn",
-    });
-
-    this.emailFormField = new FormField({
-      label: this.emailLabel.getData(),
-      input: this.emailInput.getData(),
-      className: "login-form__field",
-      icon: "fa-solid fa-envelope",
-    });
-
-    this.passwordFormField = new FormField({
-      label: this.passwordLabel.getData(),
-      input: this.passwordInput.getData(),
-      className: "login-form__field",
-      icon: "fa-solid fa-lock",
-    });
-
-    this.restorePasswordLink = new Link({
-      text: "Forgot password?",
-      href: "/recovery",
-      className: "login-form__link",
-    });
   }
 
   public render(): void {
-    Handlebars.registerPartial("Button", ButtonTemplate);
-    Handlebars.registerPartial("Input", InputTemplate);
-    Handlebars.registerPartial("Label", LabelTemplate);
-    Handlebars.registerPartial("FormField", FormFieldTemplate);
-    Handlebars.registerPartial("Link", LinkTemplate);
+    super.render();
+    const root = this.element();
 
-    const compiledTemplate = Handlebars.compile(template)({
-      title: this.props.title,
-      subtitle: this.props.subtitle,
-      signInButton: this.signInButton.getData(),
-      emailFormField: this.emailFormField.getData(),
-      passwordFormField: this.passwordFormField.getData(),
-      restorePasswordLink: this.restorePasswordLink.getData(),
-    });
-
-    this.container.innerHTML = compiledTemplate;
+    if (root) {
+      this.container.replaceChildren(root);
+    }
   }
 }

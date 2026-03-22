@@ -1,16 +1,8 @@
-import {
-  Button,
-  ButtonTemplate,
-  FormField,
-  FormFieldTemplate,
-  Input,
-  InputTemplate,
-  Label,
-  LabelTemplate,
-} from "@/shared/ui";
+import { Block, type BlockOwnProps } from "@/shared/ui/block";
+import type { ButtonProps } from "@/shared/ui/button/Button";
+import type { FormFieldProps } from "@/shared/ui/formField/FormField";
 
 import template from "./EditProfileForm.hbs?raw";
-import Handlebars from "handlebars";
 
 import "./EditProfileForm.scss";
 
@@ -30,50 +22,34 @@ export interface EditProfileFormCallbacks {
   onSave?: (data: EditProfileFormProps) => void;
 }
 
-export class EditProfileForm {
-  private container: HTMLElement;
+type EditProfileFormBlockProps = {
+  loginFormField: FormFieldProps;
+  displayNameFormField: FormFieldProps;
+  emailFormField: FormFieldProps;
+  firstNameFormField: FormFieldProps;
+  secondNameFormField: FormFieldProps;
+  phoneFormField: FormFieldProps;
+  oldPasswordFormField: FormFieldProps;
+  newPasswordFormField: FormFieldProps;
+  cancelButton: ButtonProps;
+  saveButton: ButtonProps;
+} & BlockOwnProps;
 
-  private callbacks: EditProfileFormCallbacks;
+function buildBlockProps(
+  props: EditProfileFormProps,
+): EditProfileFormBlockProps {
+  const fieldClass = "edit-profile__field";
+  const labelClass = "edit-profile__label";
+  const inputClass = "edit-profile__input";
 
-  private loginFormField: InstanceType<typeof FormField>;
-
-  private displayNameFormField: InstanceType<typeof FormField>;
-
-  private emailFormField: InstanceType<typeof FormField>;
-
-  private firstNameFormField: InstanceType<typeof FormField>;
-
-  private secondNameFormField: InstanceType<typeof FormField>;
-
-  private phoneFormField: InstanceType<typeof FormField>;
-
-  private oldPasswordFormField: InstanceType<typeof FormField>;
-
-  private newPasswordFormField: InstanceType<typeof FormField>;
-
-  private cancelButton: InstanceType<typeof Button>;
-
-  private saveButton: InstanceType<typeof Button>;
-
-  constructor(
-    container: HTMLElement,
-    props: EditProfileFormProps,
-    callbacks: EditProfileFormCallbacks,
-  ) {
-    this.container = container;
-    this.callbacks = callbacks;
-
-    const fieldClass = "edit-profile__field";
-    const labelClass = "edit-profile__label";
-    const inputClass = "edit-profile__input";
-
-    this.loginFormField = new FormField({
-      label: new Label({
+  return {
+    loginFormField: {
+      label: {
         text: "Login",
         for: "editProfileLogin",
         className: labelClass,
-      }).getData(),
-      input: new Input({
+      },
+      input: {
         id: "editProfileLogin",
         type: "text",
         name: "login",
@@ -81,18 +57,17 @@ export class EditProfileForm {
         required: true,
         placeholder: "Login",
         className: inputClass,
-      }).getData(),
+      },
       className: fieldClass,
       icon: "fa-solid fa-user",
-    });
-
-    this.displayNameFormField = new FormField({
-      label: new Label({
+    },
+    displayNameFormField: {
+      label: {
         text: "Display name",
         for: "editProfileDisplayName",
         className: labelClass,
-      }).getData(),
-      input: new Input({
+      },
+      input: {
         id: "editProfileDisplayName",
         type: "text",
         name: "display_name",
@@ -100,18 +75,17 @@ export class EditProfileForm {
         required: true,
         placeholder: "Display name",
         className: inputClass,
-      }).getData(),
+      },
       className: fieldClass,
       icon: "fa-solid fa-user",
-    });
-
-    this.emailFormField = new FormField({
-      label: new Label({
+    },
+    emailFormField: {
+      label: {
         text: "Email",
         for: "editProfileEmail",
         className: labelClass,
-      }).getData(),
-      input: new Input({
+      },
+      input: {
         id: "editProfileEmail",
         type: "email",
         name: "email",
@@ -119,18 +93,17 @@ export class EditProfileForm {
         required: true,
         placeholder: "you@example.com",
         className: inputClass,
-      }).getData(),
+      },
       className: fieldClass,
       icon: "fa-solid fa-envelope",
-    });
-
-    this.firstNameFormField = new FormField({
-      label: new Label({
+    },
+    firstNameFormField: {
+      label: {
         text: "Name",
         for: "editProfileFirstName",
         className: labelClass,
-      }).getData(),
-      input: new Input({
+      },
+      input: {
         id: "editProfileFirstName",
         type: "text",
         name: "first_name",
@@ -138,18 +111,17 @@ export class EditProfileForm {
         required: true,
         placeholder: "Name",
         className: inputClass,
-      }).getData(),
+      },
       className: fieldClass,
       icon: "fa-solid fa-user",
-    });
-
-    this.secondNameFormField = new FormField({
-      label: new Label({
+    },
+    secondNameFormField: {
+      label: {
         text: "Surname",
         for: "editProfileSecondName",
         className: labelClass,
-      }).getData(),
-      input: new Input({
+      },
+      input: {
         id: "editProfileSecondName",
         type: "text",
         name: "second_name",
@@ -157,18 +129,17 @@ export class EditProfileForm {
         required: true,
         placeholder: "Surname",
         className: inputClass,
-      }).getData(),
+      },
       className: fieldClass,
       icon: "fa-solid fa-user",
-    });
-
-    this.phoneFormField = new FormField({
-      label: new Label({
+    },
+    phoneFormField: {
+      label: {
         text: "Phone",
         for: "editProfilePhone",
         className: labelClass,
-      }).getData(),
-      input: new Input({
+      },
+      input: {
         id: "editProfilePhone",
         type: "tel",
         name: "phone",
@@ -176,76 +147,79 @@ export class EditProfileForm {
         required: true,
         placeholder: "+1 (555) 000-0000",
         className: inputClass,
-      }).getData(),
+      },
       className: fieldClass,
       icon: "fa-solid fa-phone",
-    });
-
-    this.oldPasswordFormField = new FormField({
-      label: new Label({
+    },
+    oldPasswordFormField: {
+      label: {
         text: "Current password",
         for: "editProfileOldPassword",
         className: labelClass,
-      }).getData(),
-      input: new Input({
+      },
+      input: {
         id: "editProfileOldPassword",
         type: "password",
         name: "old_password",
         placeholder: "Leave blank to keep current",
         className: inputClass,
-      }).getData(),
+      },
       className: fieldClass,
       icon: "fa-solid fa-lock",
-    });
-
-    this.newPasswordFormField = new FormField({
-      label: new Label({
+    },
+    newPasswordFormField: {
+      label: {
         text: "New password",
         for: "editProfileNewPassword",
         className: labelClass,
-      }).getData(),
-      input: new Input({
+      },
+      input: {
         id: "editProfileNewPassword",
         type: "password",
         name: "new_password",
         placeholder: "Leave blank to keep current",
         className: inputClass,
-      }).getData(),
+      },
       className: fieldClass,
       icon: "fa-solid fa-lock",
-    });
-
-    this.cancelButton = new Button({
+    },
+    cancelButton: {
       type: "button",
       text: "Cancel",
       className: "edit-profile__btn edit-profile__btn--secondary",
-    });
-
-    this.saveButton = new Button({
+    },
+    saveButton: {
       type: "submit",
       text: "Save",
       className: "edit-profile__btn edit-profile__btn--primary",
-    });
+    },
+  };
+}
+
+export class EditProfileForm extends Block<EditProfileFormBlockProps> {
+  protected template = template;
+
+  private container: HTMLElement;
+
+  private callbacks: EditProfileFormCallbacks;
+
+  constructor(
+    container: HTMLElement,
+    props: EditProfileFormProps,
+    callbacks: EditProfileFormCallbacks,
+  ) {
+    super(buildBlockProps(props));
+    this.container = container;
+    this.callbacks = callbacks;
   }
 
   public render(): void {
-    Handlebars.registerPartial("Button", ButtonTemplate);
-    Handlebars.registerPartial("FormField", FormFieldTemplate);
-    Handlebars.registerPartial("Input", InputTemplate);
-    Handlebars.registerPartial("Label", LabelTemplate);
+    super.render();
+    const root = this.element();
 
-    this.container.innerHTML = Handlebars.compile(template)({
-      loginFormField: this.loginFormField.getData(),
-      displayNameFormField: this.displayNameFormField.getData(),
-      emailFormField: this.emailFormField.getData(),
-      firstNameFormField: this.firstNameFormField.getData(),
-      secondNameFormField: this.secondNameFormField.getData(),
-      phoneFormField: this.phoneFormField.getData(),
-      oldPasswordFormField: this.oldPasswordFormField.getData(),
-      newPasswordFormField: this.newPasswordFormField.getData(),
-      cancelButton: this.cancelButton.getData(),
-      saveButton: this.saveButton.getData(),
-    });
+    if (root) {
+      this.container.replaceChildren(root);
+    }
 
     this.container
       .querySelector('[type="button"]')

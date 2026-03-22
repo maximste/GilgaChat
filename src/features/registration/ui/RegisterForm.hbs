@@ -11,24 +11,24 @@
     <form id="registerForm" class="register-form" action="/register" method="POST">
       <section class="register-form__section" aria-labelledby="register-account-heading">
         <h3 id="register-account-heading" class="register-form__section-title">Account</h3>
-        {{> FormField emailFormField }}
-        {{> FormField loginFormField }}
-        {{> FormField passwordFormField }}
-        {{> FormField confirmPasswordFormField }}
+        {{{FormField className=loginFormField.className icon=loginFormField.icon label=loginFormField.label input=loginFormField.input}}}
+        {{{FormField className=emailFormField.className icon=emailFormField.icon label=emailFormField.label input=emailFormField.input}}}
+        {{{FormField className=passwordFormField.className icon=passwordFormField.icon label=passwordFormField.label input=passwordFormField.input}}}
+        {{{FormField className=confirmPasswordFormField.className icon=confirmPasswordFormField.icon label=confirmPasswordFormField.label input=confirmPasswordFormField.input}}}
       </section>
       <section class="register-form__section register-form__section--with-divider" aria-labelledby="register-profile-heading">
         <h3 id="register-profile-heading" class="register-form__section-title">Profile</h3>
-        {{> FormField nameFormField }}
-        {{> FormField surnameFormField }}
-        {{> FormField displayNameFormField }}
-        {{> FormField phoneFormField }}
+        {{{FormField className=nameFormField.className icon=nameFormField.icon label=nameFormField.label input=nameFormField.input}}}
+        {{{FormField className=surnameFormField.className icon=surnameFormField.icon label=surnameFormField.label input=surnameFormField.input}}}
+        {{{FormField className=displayNameFormField.className icon=displayNameFormField.icon label=displayNameFormField.label input=displayNameFormField.input}}}
+        {{{FormField className=phoneFormField.className icon=phoneFormField.icon label=phoneFormField.label input=phoneFormField.input}}}
       </section>
 
       <footer class="register-form__footer">
         <div class="register-form__actions">
-          {{> Button createAccountButton }}
+          {{{Button type=createAccountButton.type text=createAccountButton.text className=createAccountButton.className}}}
           <span class="register-form__actions-separator">or</span>
-          <a href="{{signInLink.href}}" class="register-form__btn register-form__btn--secondary">{{signInLink.text}}</a>
+          {{{Link text=signInLink.text href=signInLink.href className="register-form__btn register-form__btn--secondary"}}}
         </div>
       </footer>
     </form>

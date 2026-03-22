@@ -4,18 +4,18 @@
   </header>
 
   <form id="editProfileForm" class="edit-profile__form" action="#" method="POST">
-    {{> FormField loginFormField }}
-    {{> FormField displayNameFormField }}
-    {{> FormField emailFormField }}
-    {{> FormField firstNameFormField }}
-    {{> FormField secondNameFormField }}
-    {{> FormField phoneFormField }}
-    {{> FormField oldPasswordFormField }}
-    {{> FormField newPasswordFormField }}
+    {{{FormField className=loginFormField.className icon=loginFormField.icon label=loginFormField.label input=loginFormField.input}}}
+    {{{FormField className=displayNameFormField.className icon=displayNameFormField.icon label=displayNameFormField.label input=displayNameFormField.input}}}
+    {{{FormField className=emailFormField.className icon=emailFormField.icon label=emailFormField.label input=emailFormField.input}}}
+    {{{FormField className=firstNameFormField.className icon=firstNameFormField.icon label=firstNameFormField.label input=firstNameFormField.input}}}
+    {{{FormField className=secondNameFormField.className icon=secondNameFormField.icon label=secondNameFormField.label input=secondNameFormField.input}}}
+    {{{FormField className=phoneFormField.className icon=phoneFormField.icon label=phoneFormField.label input=phoneFormField.input}}}
+    {{{FormField className=oldPasswordFormField.className icon=oldPasswordFormField.icon label=oldPasswordFormField.label input=oldPasswordFormField.input}}}
+    {{{FormField className=newPasswordFormField.className icon=newPasswordFormField.icon label=newPasswordFormField.label input=newPasswordFormField.input}}}
 
     <footer class="edit-profile__footer">
-      {{> Button cancelButton }}
-      {{> Button saveButton }}
+      {{{Button type=cancelButton.type text=cancelButton.text className=cancelButton.className}}}
+      {{{Button type=saveButton.type text=saveButton.text className=saveButton.className}}}
     </footer>
   </form>
 </section>

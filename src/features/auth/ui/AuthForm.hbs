@@ -9,12 +9,12 @@
     </header>
 
     <form id="authForm" class="login-form" action="/login" method="POST">
-      {{> FormField emailFormField }}
-      {{> FormField passwordFormField }}
+      {{{FormField className=emailFormField.className icon=emailFormField.icon label=emailFormField.label input=emailFormField.input}}}
+      {{{FormField className=passwordFormField.className icon=passwordFormField.icon label=passwordFormField.label input=passwordFormField.input}}}
 
       <footer class="login-form__footer">
-        {{> Link restorePasswordLink }}
-        {{> Button signInButton }}
+        {{{Link text=restorePasswordLink.text href=restorePasswordLink.href className=restorePasswordLink.className}}}
+        {{{Button type=signInButton.type text=signInButton.text className=signInButton.className}}}
       </footer>
     </form>
 
