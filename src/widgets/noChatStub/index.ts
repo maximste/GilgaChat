@@ -1,1 +1,1 @@
-export { NoChatStub } from "./NoChatStub";
+export { NoChatStub, type NoChatStubProps } from "./NoChatStub";

@@ -1,7 +1,6 @@
-<div class="no-chat-stub">
-  <div class="no-chat-stub__icon-wrap" aria-hidden="true">
-    <i class="fa-solid fa-circle-exclamation no-chat-stub__icon"></i>
-  </div>
-  <h2 class="no-chat-stub__title">No chat selected</h2>
-  <p class="no-chat-stub__hint">Select a conversation from the sidebar to start messaging</p>
+<div class="no-chat-stub{{#if fillVertical}} no-chat-stub--fill{{/if}}">
+  <p class="no-chat-stub__title">{{title}}</p>
+  {{#if description}}
+    <p class="no-chat-stub__description">{{description}}</p>
+  {{/if}}
 </div>

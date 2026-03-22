@@ -1,16 +1,24 @@
+import { Block, type BlockOwnProps } from "@/shared/ui/block";
+
 import template from "./NoChatStub.hbs?raw";
-import Handlebars from "handlebars";
 
 import "./NoChatStub.scss";
 
-export class NoChatStub {
-  private container: HTMLElement;
+export interface NoChatStubProps {
+  title: string;
+  description?: string;
+  /** Растянуть заглушку по высоте колонки (главная область мессенджера) */
+  fillVertical?: boolean;
+}
 
-  constructor(container: HTMLElement) {
-    this.container = container;
-  }
+type NoChatStubBlockProps = NoChatStubProps & BlockOwnProps;
 
-  public render(): void {
-    this.container.innerHTML = Handlebars.compile(template)({});
+export class NoChatStub extends Block<NoChatStubBlockProps> {
+  static componentName = "NoChatStub";
+
+  protected template = template;
+
+  constructor(props: NoChatStubProps) {
+    super(props as NoChatStubBlockProps);
   }
 }
