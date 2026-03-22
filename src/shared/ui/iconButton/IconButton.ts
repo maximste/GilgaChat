@@ -8,6 +8,8 @@ export interface IconButtonProps {
   icon: string;
   /** Обязательная подпись для доступности */
   ariaLabel: string;
+  /** Если задан — рендерится `<a>` вместо `<button>` */
+  href?: string;
   type?: "button" | "submit" | "reset";
   className?: string;
   disabled?: boolean;

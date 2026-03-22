@@ -1,8 +1,18 @@
-<button
-  class="icon-button {{className}}"
-  type="{{type}}"
-  aria-label="{{ariaLabel}}"
-  {{#if disabled}}disabled{{/if}}
->
-  <i class="{{icon}}" aria-hidden="true"></i>
-</button>
+{{#if href}}
+  <a
+    class="icon-button {{className}}"
+    href="{{href}}"
+    aria-label="{{ariaLabel}}"
+  >
+    <i class="{{icon}}" aria-hidden="true"></i>
+  </a>
+{{else}}
+  <button
+    class="icon-button {{className}}"
+    type="{{type}}"
+    aria-label="{{ariaLabel}}"
+    {{#if disabled}}disabled{{/if}}
+  >
+    <i class="{{icon}}" aria-hidden="true"></i>
+  </button>
+{{/if}}
