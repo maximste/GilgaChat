@@ -17,7 +17,7 @@ GilgaChat — учебный фронтенд-проект, в котором п
 - **Vite** — сборка и dev-сервер.
 - **SCSS** — стили.
 
-В приложении реализована **навигация по hash** и есть **главная страница** (демо с ссылками), **layout мессенджера** (сайдбар и заглушка), формы **входа** и **регистрации**, страница **профиля**, страницы ошибок **404** и **500** — всё на базе переиспользуемых UI-компонентов.
+В приложении реализована **навигация по hash** и есть **главная страница** (демо с ссылками), **layout мессенджера** (сайдбар и область чата: заглушка или экран переписки), формы **входа** и **регистрации**, страница **профиля**, страницы ошибок **404** и **500** — всё на базе переиспользуемых UI-компонентов на **Block** + Handlebars.
 
 **Архитектура:** проект организован по [Feature-Sliced Design (FSD)](https://feature-sliced.design/). Описание слоёв, правил импортов и точки входа — в [docs/FSD.md](docs/FSD.md).
 
@@ -28,7 +28,7 @@ GilgaChat — учебный фронтенд-проект, в котором п
 
 - **Layout мессенджера** (`#messenger`)
   - Слева: сайдбар с названием приложения и выпадающим меню, поиском, списком **личных сообщений** (аватар, имя, превью последнего сообщения, индикатор статуса), списком **групп** (иконка, название, превью) и блоком текущего пользователя (имя, статус, ссылка на настройки).
-  - Справа: заглушка **NoChatStub** («Чат не выбран» — место под будущий экран переписки).
+  - Справа: до выбора диалога — заглушка **NoChatStub**; после выбора чата — **ChatPage** (шапка с действиями, прокручиваемая лента с датами и сообщениями, индикатор набора, **MessageComposer**). Если в моках у чата нет сообщений, в ленте показывается вложенная заглушка «Нет сообщений».
 
 - **Авторизация и профиль**
   - **Вход** (`#auth`) — форма входа с логотипом, полями email/пароль и ссылкой «Забыли пароль?».
@@ -40,12 +40,13 @@ GilgaChat — учебный фронтенд-проект, в котором п
   - **500** (`#500`) — «Houston, we have a problem!» с карточками статуса и кнопками «Try Again» / «Go Home».
 
 - **Переиспользуемые UI-компоненты**
-  - `Button`, `Input`, `Label`, `Link`, `FormField` — базовые компоненты для форм и layout’ов.
-  - У каждого: класс на TypeScript, шаблон Handlebars (`.hbs`), стили SCSS.
+  - Базовые: `Button`, `Input`, `Label`, `Link`, `FormField`, `IconButton`, `Textarea`, `Search`, атомы сайдбара в `shared/ui/sidebar`.
+  - У каждого: класс **Block**, шаблон Handlebars (`.hbs`), стили SCSS; вложенные блоки подключаются через `registerComponent`.
 
-- **Layout’ы**
+- **Layout’ы и экран чата**
   - **MainLayout** — шапка (GilgaChat, Вход / Регистрация) и область контента для авторизации, профиля, ошибок и главной.
-  - **MessengerLayout** — сайдбар и основная область (например, NoChatStub или будущий экран чата).
+  - **MessengerLayout** — сайдбар и основная область.
+  - **ChatPage** (виджет) — композиция **ChatHeader**, **ChatThread** (лента из **ChatTimelineRow** + индикатор набора), **ChatFooter** с **MessageComposer**.
 
 - **Разработка и деплой**
   - Dev-сервер Vite с hot reload, сборка TypeScript + Vite.
@@ -113,15 +114,15 @@ npm run start
 ├── public
 │   └── images/              # Статика (логотип, изображение для 404)
 ├── src
-│   ├── app/                 # Точка входа, роутинг по hash, класс App
+│   ├── app/                 # Точка входа, роутинг по hash, класс App, registerComponent
 │   ├── pages/               # Страницы: auth, register, profile, messenger, not-found, server-error
-│   ├── widgets/             # main-layout, messenger-layout, no-chat-stub
+│   ├── widgets/             # mainLayout, messengerLayout, sidebar, chatPage, messageComposer, noChatStub
 │   ├── features/            # auth, registration, edit-profile
 │   ├── entities/            # user (заглушка)
 │   └── shared/
-│       ├── ui/              # button, input, label, link, form-field
+│       ├── ui/              # block, button, input, label, link, formField, iconButton, textarea, search, sidebar/*
 │       ├── styles/          # variables, global, _colors, _buttons, …
-│       └── lib/             # types, utils (mydash)
+│       └── lib/             # types, utils (в т.ч. chatTimeline), mocks
 ├── docs/
 │   └── FSD.md               # Описание архитектуры FSD
 ├── vite.config.ts           # Конфиг Vite (base, build, preview port: 3000)
@@ -135,10 +136,10 @@ npm run start
 
 - Точка входа — `src/app/index.ts`: подключаются глобальные стили и создаётся экземпляр `App`. В `App` подписаны события `DOMContentLoaded` и `hashchange`; по `window.location.hash` вызывается соответствующая страница из `pages/`.
 - **Роутинг:**
-  - `#messenger` или пустой hash → **renderMessengerPage** (MessengerLayout + NoChatStub).
+  - `#messenger` или пустой hash → в `#app` монтируется **MessengerLayout**, затем **setupMessengerChatPage** (`pages/messenger`): справа сначала **NoChatStub**, по выбору чата в сайдбаре — **ChatPage**.
   - `#auth`, `#register`, `#profile`, `#404`, `#500` → сначала рендерится **MainLayout**, затем в область контента вызывается **renderAuthPage**, **renderRegisterPage**, **renderProfilePage**, **renderNotFoundPage** или **renderServerErrorPage**.
-  - Неизвестный hash → снова **renderMessengerPage**.
-- При переходе с `#messenger` на другой маршрут корень перерисовывается с MainLayout. Компоненты (формы, страницы) используют Handlebars-партиалы и классы на TypeScript; форма редактирования профиля рендерится по клику на «Edit Profile» внутри области контента профиля.
+  - Неизвестный hash → снова вид мессенджера (**MessengerLayout** + **setupMessengerChatPage**).
+- При переходе с `#messenger` на другой маршрут корень перерисовывается с MainLayout. UI строится на **Block** + Handlebars; форма редактирования профиля рендерится по клику на «Edit Profile» внутри области контента профиля.
 
 ## Разработка и соглашения
 
@@ -169,8 +170,8 @@ npm run start
 
 ## Планы
 
-- **Сделано:** экран регистрации, страница профиля, 404/500, layout мессенджера (сайдбар и заглушка), роутинг по hash, редиректы и заголовки для Netlify.
-- **Дальше:** полноценный экран чата в основной области мессенджера (сообщения, поле ввода), валидация форм и обработка ошибок, восстановление пароля.
+- **Сделано:** экран регистрации, страница профиля, 404/500, layout мессенджера (сайдбар, выбор чата, экран переписки **ChatPage** с лентой и **MessageComposer**), роутинг по hash, редиректы и заголовки для Netlify.
+- **Дальше:** валидация форм и обработка ошибок, восстановление пароля, доработка чата (реальные данные, вложения).
 - **Позже:** бэкенд-API для авторизации и чата.
 
 ## Лицензия
