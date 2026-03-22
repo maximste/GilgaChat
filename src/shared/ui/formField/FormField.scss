@@ -8,16 +8,17 @@
   gap: $gap-size-8;
 
   &--error {
-    border-radius: $border-radius-6;
-    box-shadow: 0 0 0 1px $color-error;
-
     .form-field__label {
       color: $color-error;
     }
 
-    .form-field__input-wrapper:focus-within {
-      outline: 1px solid $color-error;
-      outline-offset: -1px;
+    .form-field__input-wrapper {
+      box-shadow: 0 0 0 1px $color-error;
+
+      &:focus-within {
+        outline: 1px solid $color-error;
+        outline-offset: -1px;
+      }
     }
   }
 
