@@ -5,4 +5,5 @@ export { Input, InputTemplate } from "./input";
 export { Label, LabelTemplate } from "./label";
 export { Link } from "./link";
 export { Search, type SearchProps } from "./search";
+export * from "./sidebar";
 export { Textarea, TextareaTemplate } from "./textarea";
