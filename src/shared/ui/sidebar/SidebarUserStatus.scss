@@ -1,0 +1,11 @@
+@use "shared/styles/variables" as *;
+@use "./sidebarStatusDot";
+
+.messenger-sidebar__user-status {
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+  color: $text-color-secondary;
+  font-size: $font-size-12;
+  gap: 4px;
+}
