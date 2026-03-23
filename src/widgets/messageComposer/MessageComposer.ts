@@ -67,6 +67,22 @@ export class MessageComposer extends Block<MessageComposerBlockProps> {
         this.trySend();
       }
     },
+    keydown: (event: Event) => {
+      const ke = event as KeyboardEvent;
+
+      if (ke.key !== "Enter" || ke.shiftKey) {
+        return;
+      }
+
+      const el = ke.target;
+
+      if (!(el instanceof HTMLTextAreaElement) || el.name !== "message") {
+        return;
+      }
+
+      ke.preventDefault();
+      el.form?.requestSubmit();
+    },
   };
 
   constructor(props: { peerName: string }) {
@@ -74,20 +90,5 @@ export class MessageComposer extends Block<MessageComposerBlockProps> {
       peerName: props.peerName,
       placeholder: `Message ${props.peerName}`,
     } as MessageComposerBlockProps);
-  }
-
-  protected componentDidMount(): void {
-    const root = this.element();
-    const form = root instanceof HTMLFormElement ? root : null;
-    const ta = root?.querySelector<HTMLTextAreaElement>(
-      'textarea[name="message"]',
-    );
-
-    ta?.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        form?.requestSubmit();
-      }
-    });
   }
 }

@@ -228,6 +228,15 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
     focusout: (event: Event) => {
       runFieldValidatorOnFocusOut(event, editProfileFormValidators);
     },
+    click: (event: Event) => {
+      const cancel = (event.target as HTMLElement).closest(
+        ".edit-profile__btn--secondary",
+      );
+
+      if (cancel) {
+        this.callbacks.onCancel();
+      }
+    },
   };
 
   constructor(
@@ -247,11 +256,5 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
     if (root) {
       this.container.replaceChildren(root);
     }
-
-    this.container
-      .querySelector('[type="button"]')
-      ?.addEventListener("click", () => {
-        this.callbacks.onCancel();
-      });
   }
 }

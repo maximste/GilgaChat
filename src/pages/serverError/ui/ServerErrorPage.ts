@@ -1,29 +1,44 @@
+import { Block, type BlockOwnProps } from "@/shared/ui/block";
+
 import template from "./ServerErrorPage.hbs?raw";
-import Handlebars from "handlebars";
 
 import "./ServerErrorPage.scss";
 
-export class ServerErrorPage {
+type ServerErrorPageBlockProps = BlockOwnProps;
+
+export class ServerErrorPage extends Block<ServerErrorPageBlockProps> {
+  protected template = template;
+
   private container: HTMLElement;
 
+  protected events = {
+    click: (event: Event) => {
+      const target = event.target as HTMLElement;
+
+      if (target.closest("[data-try-again]")) {
+        window.location.reload();
+
+        return;
+      }
+
+      if (target.closest("[data-go-home]")) {
+        event.preventDefault();
+        window.location.hash = "";
+      }
+    },
+  };
+
   constructor(container: HTMLElement) {
+    super({} as ServerErrorPageBlockProps);
     this.container = container;
   }
 
   public render(): void {
-    this.container.innerHTML = Handlebars.compile(template)({});
+    super.render();
+    const root = this.element();
 
-    this.container
-      .querySelector("[data-go-home]")
-      ?.addEventListener("click", (e) => {
-        e.preventDefault();
-        window.location.hash = "";
-      });
-
-    this.container
-      .querySelector("[data-try-again]")
-      ?.addEventListener("click", () => {
-        window.location.reload();
-      });
+    if (root) {
+      this.container.replaceChildren(root);
+    }
   }
 }

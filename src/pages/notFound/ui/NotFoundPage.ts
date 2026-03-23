@@ -1,33 +1,48 @@
+import { Block, type BlockOwnProps } from "@/shared/ui/block";
+
 import template from "./NotFoundPage.hbs?raw";
-import Handlebars from "handlebars";
 
 import "./NotFoundPage.scss";
 
-export class NotFoundPage {
+type NotFoundPageBlockProps = BlockOwnProps;
+
+export class NotFoundPage extends Block<NotFoundPageBlockProps> {
+  protected template = template;
+
   private container: HTMLElement;
 
-  constructor(container: HTMLElement) {
-    this.container = container;
-  }
+  protected events = {
+    click: (event: Event) => {
+      const target = event.target as HTMLElement;
 
-  public render(): void {
-    this.container.innerHTML = Handlebars.compile(template)({});
-
-    this.container
-      .querySelector("[data-go-home]")
-      ?.addEventListener("click", (e) => {
-        e.preventDefault();
+      if (target.closest("[data-go-home]")) {
+        event.preventDefault();
         window.location.hash = "";
-      });
 
-    this.container
-      .querySelector("[data-go-back]")
-      ?.addEventListener("click", () => {
+        return;
+      }
+
+      if (target.closest("[data-go-back]")) {
         if (window.history.length > 1) {
           window.history.back();
         } else {
           window.location.hash = "";
         }
-      });
+      }
+    },
+  };
+
+  constructor(container: HTMLElement) {
+    super({} as NotFoundPageBlockProps);
+    this.container = container;
+  }
+
+  public render(): void {
+    super.render();
+    const root = this.element();
+
+    if (root) {
+      this.container.replaceChildren(root);
+    }
   }
 }
