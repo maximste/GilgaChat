@@ -35,7 +35,17 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
 
   private container: HTMLElement;
 
-  private editButton: Element | null = null;
+  protected events = {
+    click: (event: Event) => {
+      const btn = (event.target as HTMLElement).closest(
+        ".profile-page__btn--primary",
+      );
+
+      if (btn) {
+        this.handleEditProfile();
+      }
+    },
+  };
 
   private readonly handleEditProfile = (): void => {
     const root = this.element();
@@ -80,18 +90,6 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
       },
     } as ProfilePageBlockProps);
     this.container = container;
-  }
-
-  protected componentDidMount(): void {
-    const btn = this.element()?.querySelector(".profile-page__btn--primary");
-
-    this.editButton = btn ?? null;
-    this.editButton?.addEventListener("click", this.handleEditProfile);
-  }
-
-  protected componentWillUnmount(): void {
-    this.editButton?.removeEventListener("click", this.handleEditProfile);
-    this.editButton = null;
   }
 
   public render(): void {
