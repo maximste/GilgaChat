@@ -62,20 +62,16 @@ class Sidebar extends Block<SidebarBlockProps> {
     );
   };
 
+  protected events = {
+    click: this.handleChatListClick,
+  };
+
   constructor(props: SidebarProps) {
     super({
       ...props,
       appTitleRightSection:
         props.appTitleRightSection ?? DEFAULT_APP_TITLE_RIGHT_SECTION,
     } as SidebarBlockProps);
-  }
-
-  protected componentDidMount(): void {
-    this.element()?.addEventListener("click", this.handleChatListClick);
-  }
-
-  protected componentWillUnmount(): void {
-    this.element()?.removeEventListener("click", this.handleChatListClick);
   }
 }
 
