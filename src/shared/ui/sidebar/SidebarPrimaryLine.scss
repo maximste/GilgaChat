@@ -1,0 +1,19 @@
+@use "shared/styles/variables" as *;
+@use "./sidebarStatusDot";
+
+.messenger-sidebar__item-name {
+  display: flex;
+  align-items: center;
+  color: $text-color-primary;
+  font-size: $font-size-14;
+  font-weight: 500;
+  gap: 4px;
+  line-height: 1.3;
+}
+
+.messenger-sidebar__user-name {
+  display: block;
+  color: $text-color-primary;
+  font-size: $font-size-14;
+  font-weight: 600;
+}

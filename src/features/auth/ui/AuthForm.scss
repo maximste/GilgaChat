@@ -1,0 +1,82 @@
+@use "shared/styles/variables" as *;
+@use "shared/styles/buttons" as *;
+
+.auth-window {
+  display: flex;
+  width: 386px;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-32;
+  border: 1px solid $border-color-dark;
+  border-radius: $border-radius-8;
+  background-color: $background-color-on-surface-black;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+  gap: $gap-size-32;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $gap-size-8;
+  }
+
+  &__icon-wrap {
+    display: flex;
+    overflow: hidden;
+    width: 64px;
+    height: 64px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 6%),
+      0 2px 8px rgb(0 0 0 / 40%);
+  }
+
+  &__icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+  }
+
+  &__title {
+    margin: 0;
+    color: $text-color-primary;
+    font-size: $font-size-24;
+    font-weight: 700;
+    line-height: $line-height-32;
+  }
+
+  &__sub-title {
+    color: $text-color-secondary;
+    font-size: $font-size-14;
+  }
+}
+
+.login-form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: start;
+  align-self: start;
+  gap: $gap-size-12;
+
+  &__footer {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: $gap-size-12;
+  }
+
+  &__link {
+    font-size: $font-size-14;
+    line-height: $line-height-20;
+    text-decoration: none;
+  }
+
+  &__submit-btn {
+    @extend %btn-primary;
+  }
+}

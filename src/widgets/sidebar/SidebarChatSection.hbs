@@ -1,0 +1,22 @@
+<section class="messenger-sidebar__section">
+  <button type="button" class="messenger-sidebar__section-head" aria-expanded="true" data-section="{{sectionData}}">
+    {{title}}
+  </button>
+  <ul class="messenger-sidebar__list" role="list">
+    {{#each items}}
+      <li>
+        {{{SidebarChatListItem
+          isDmVariant=../isDmVariant
+          chatIdPrefix=../chatIdPrefix
+          index=@index
+          firstName=firstName
+          lastName=lastName
+          preview=preview
+          statusType=statusType
+          name=name
+          iconClass=iconClass
+        }}}
+      </li>
+    {{/each}}
+  </ul>
+</section>

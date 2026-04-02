@@ -1,0 +1,11 @@
+<button
+  class="button {{className}}"
+  type="{{type}}"
+  {{#if disabled}}disabled{{/if}}
+  {{#if ariaHaspopup}}aria-haspopup="{{ariaHaspopup}}"{{/if}}
+  {{#if ariaExpanded}}aria-expanded="{{ariaExpanded}}"{{/if}}
+>
+  {{#if leftSection}}{{{leftSection}}}{{/if}}
+  {{#if text}}<span class="button__label">{{text}}</span>{{/if}}
+  {{#if rightSection}}{{{rightSection}}}{{/if}}
+</button>

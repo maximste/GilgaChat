@@ -1,0 +1,45 @@
+@use "shared/styles/variables" as *;
+
+.messenger-sidebar__user {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: $spacing-12;
+  border-top: 1px solid $border-color-dark;
+  background-color: $background-color-on-surface-black;
+  gap: $gap-size-8;
+}
+
+.messenger-sidebar__user-avatar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: $background-color-surface;
+}
+
+.messenger-sidebar__user-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.messenger-sidebar__user-name {
+  display: block;
+  color: $text-color-primary;
+  font-size: $font-size-14;
+  font-weight: 600;
+}
+
+.messenger-sidebar__user-status {
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+  color: $text-color-secondary;
+  font-size: $font-size-12;
+  gap: 4px;
+}
+
+.icon-button.messenger-sidebar__user-settings {
+  padding: $spacing-8;
+  font-size: $font-size-14;
+}

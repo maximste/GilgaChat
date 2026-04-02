@@ -1,0 +1,32 @@
+@use "shared/styles/variables" as *;
+
+.messenger-sidebar__section {
+  margin-bottom: $spacing-12;
+}
+
+.messenger-sidebar__section-head {
+  width: 100%;
+  padding: $spacing-8 0;
+  border: none;
+  background: none;
+  color: $text-color-secondary;
+  cursor: pointer;
+  font-size: $font-size-12;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-align: left;
+
+  &:hover {
+    color: $text-color-primary;
+  }
+}
+
+.messenger-sidebar__list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.messenger-sidebar__list li {
+  margin: 0;
+}

@@ -1,0 +1,33 @@
+@use "shared/styles/variables" as *;
+
+.messenger-sidebar__item {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  padding: $spacing-8;
+  border: none;
+  border-radius: $border-radius-6;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  gap: $gap-size-8;
+  text-align: left;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgb(255 255 255 / 6%);
+  }
+
+  &--active {
+    background-color: rgb(255 255 255 / 10%);
+  }
+}
+
+.messenger-sidebar__item-info {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}

@@ -1,0 +1,20 @@
+@use "shared/styles/variables" as *;
+@use "shared/ui/sidebar/sidebarStatusDot";
+
+.messenger-sidebar {
+  display: flex;
+  width: 280px;
+  min-width: 280px;
+  min-height: 0;
+  flex-direction: column;
+  align-self: stretch;
+  border-right: 1px solid $border-color-dark;
+  background-color: $background-color-on-surface-black;
+}
+
+.messenger-sidebar__nav {
+  min-height: 0;
+  flex: 1;
+  padding: 0 $spacing-12 $spacing-12;
+  overflow-y: auto;
+}

@@ -1,0 +1,22 @@
+@use "shared/styles/variables" as *;
+
+.messenger-sidebar__status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+
+  &--green {
+    background-color: $color-success;
+  }
+
+  &--yellow {
+    background-color: #b8a200;
+  }
+
+  &--gray {
+    background-color: $color-muted;
+  }
+}

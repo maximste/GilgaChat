@@ -1,0 +1,33 @@
+@use "shared/styles/variables" as *;
+
+.icon-button {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-10;
+  border: none;
+  border-radius: $border-radius-6;
+  background: transparent;
+  color: $text-color-secondary;
+  cursor: pointer;
+  font-size: $font-size-16;
+  line-height: 1;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background-color: rgb(255 255 255 / 6%);
+    color: $text-color-primary;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  &[href] {
+    text-decoration: none;
+  }
+}

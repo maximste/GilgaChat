@@ -1,0 +1,53 @@
+@use "shared/styles/variables" as *;
+@use "shared/styles/buttons" as *;
+
+.edit-profile {
+  padding: $spacing-32;
+  border: 1px solid $border-color-dark;
+  border-radius: $border-radius-8;
+  background-color: $background-color-on-surface-black;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+}
+
+.edit-profile__header {
+  margin-bottom: $spacing-24;
+}
+
+.edit-profile__title {
+  margin: 0;
+  color: $text-color-primary;
+  font-size: $font-size-24;
+  font-weight: 700;
+}
+
+.edit-profile__form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: $gap-size-12;
+}
+
+.edit-profile__field {
+  width: 100%;
+}
+
+.edit-profile__input {
+  width: 100%;
+}
+
+.edit-profile__footer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: $spacing-8;
+  gap: $gap-size-12;
+}
+
+.edit-profile__btn {
+  &--primary {
+    @extend %btn-primary;
+  }
+
+  &--secondary {
+    @extend %btn-secondary;
+  }
+}
