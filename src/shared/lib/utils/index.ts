@@ -1,3 +1,10 @@
+export type { Indexed } from "../types";
 export { timelineHasMessages } from "./chatTimeline";
+export { cloneDeep } from "./cloneDeep";
 export { first } from "./first";
+export { isEqual } from "./isEqual";
 export { last } from "./last";
+export { isPlainObject,merge } from "./merge";
+export { queryStringify } from "./queryStringify";
+export { set } from "./set";
+export { trim } from "./trim";
