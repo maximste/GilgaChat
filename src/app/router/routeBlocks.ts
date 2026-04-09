@@ -20,7 +20,7 @@ export class AuthScreenBlock extends MainLayout {
   constructor() {
     super({
       goBackLink: {
-        href: appHref(APP_PATHS.home),
+        href: appHref(APP_PATHS.messenger),
         text: "Go back",
         className: "main-layout__go-back",
       },
@@ -52,7 +52,7 @@ export class RegisterScreenBlock extends MainLayout {
   constructor() {
     super({
       goBackLink: {
-        href: appHref(APP_PATHS.home),
+        href: appHref(APP_PATHS.login),
         text: "Go back",
         className: "main-layout__go-back",
       },

@@ -170,7 +170,7 @@ export class RegisterForm extends Block<RegisterFormBlockProps> {
       },
       signInLink: {
         text: "Sign in",
-        href: appHref(APP_PATHS.auth),
+        href: appHref(APP_PATHS.login),
         className: "register-form__link",
       },
     };

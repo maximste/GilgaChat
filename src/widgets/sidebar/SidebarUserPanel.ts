@@ -31,7 +31,7 @@ class SidebarUserPanel extends Block<SidebarUserPanelBlockProps> {
       ...props,
       displayName: `${firstName} ${lastName}`.trim(),
       statusLine: status,
-      settingsHref: props.settingsHref ?? appHref(APP_PATHS.profile),
+      settingsHref: props.settingsHref ?? appHref(APP_PATHS.settings),
       settingsAriaLabel: props.settingsAriaLabel ?? "Settings",
     } as SidebarUserPanelBlockProps);
   }

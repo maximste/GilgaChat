@@ -20,12 +20,12 @@ type MessengerLayoutBlockProps = MessengerLayoutProps & BlockOwnProps;
 
 const defaultTopLinks: SidebarProps["topLinks"] = [
   {
-    href: appHref(APP_PATHS.auth),
+    href: appHref(APP_PATHS.login),
     text: "Sign in",
     className: "messenger-sidebar__top-link",
   },
   {
-    href: appHref(APP_PATHS.register),
+    href: appHref(APP_PATHS.signUp),
     text: "Sign up",
     className: "messenger-sidebar__top-link",
   },

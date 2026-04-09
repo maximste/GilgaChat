@@ -1,10 +1,13 @@
 /** Публичные пути приложения (без префикса `import.meta.env.BASE_URL`). */
 export const APP_PATHS = {
-  home: "/",
+  /** Страница входа */
+  login: "/",
+  /** Регистрация */
+  signUp: "/sign-up",
+  /** Настройки профиля */
+  settings: "/settings",
+  /** Чат */
   messenger: "/messenger",
-  auth: "/auth",
-  register: "/register",
-  profile: "/profile",
   notFound: "/404",
   serverError: "/500",
 } as const;

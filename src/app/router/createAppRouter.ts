@@ -18,11 +18,10 @@ export function createAppRouter(): Router {
   });
 
   return router
-    .use(APP_PATHS.home, MessengerRouteBlock)
+    .use(APP_PATHS.login, AuthScreenBlock)
+    .use(APP_PATHS.signUp, RegisterScreenBlock)
+    .use(APP_PATHS.settings, ProfileRoutePage)
     .use(APP_PATHS.messenger, MessengerRouteBlock)
-    .use(APP_PATHS.auth, AuthScreenBlock)
-    .use(APP_PATHS.register, RegisterScreenBlock)
-    .use(APP_PATHS.profile, ProfileRoutePage)
     .use(APP_PATHS.notFound, NotFoundPage)
     .use(APP_PATHS.serverError, ServerErrorPage);
 }

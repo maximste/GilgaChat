@@ -73,7 +73,7 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
     super({
       ...pageProps,
       backLink: {
-        href: appHref(APP_PATHS.home),
+        href: appHref(APP_PATHS.messenger),
         text: "← Back to Messenger",
         className: "profile-page__back-link",
       },

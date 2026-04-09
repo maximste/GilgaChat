@@ -18,13 +18,13 @@ export class NotFoundPage extends Block<NotFoundPageBlockProps> {
         if (window.history.length > 1) {
           window.history.back();
         } else {
-          window.location.assign(appHref(APP_PATHS.home));
+          window.location.assign(appHref(APP_PATHS.messenger));
         }
       }
     },
   };
 
   constructor() {
-    super({ homeHref: appHref(APP_PATHS.home) } as NotFoundPageBlockProps);
+    super({ homeHref: appHref(APP_PATHS.messenger) } as NotFoundPageBlockProps);
   }
 }

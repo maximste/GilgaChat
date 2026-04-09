@@ -21,6 +21,8 @@ export class ServerErrorPage extends Block<ServerErrorPageBlockProps> {
   };
 
   constructor() {
-    super({ homeHref: appHref(APP_PATHS.home) } as ServerErrorPageBlockProps);
+    super({
+      homeHref: appHref(APP_PATHS.messenger),
+    } as ServerErrorPageBlockProps);
   }
 }
