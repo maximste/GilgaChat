@@ -1,3 +1,4 @@
+import { APP_PATHS, appHref } from "@/shared/config/routes";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./SidebarUserPanel.hbs?raw";
@@ -30,7 +31,7 @@ class SidebarUserPanel extends Block<SidebarUserPanelBlockProps> {
       ...props,
       displayName: `${firstName} ${lastName}`.trim(),
       statusLine: status,
-      settingsHref: props.settingsHref ?? "#profile",
+      settingsHref: props.settingsHref ?? appHref(APP_PATHS.profile),
       settingsAriaLabel: props.settingsAriaLabel ?? "Settings",
     } as SidebarUserPanelBlockProps);
   }

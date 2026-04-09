@@ -1,3 +1,4 @@
+import { APP_PATHS, appHref } from "@/shared/config/routes";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 import type {
   DirectMessageItem,
@@ -18,14 +19,26 @@ export interface MessengerLayoutProps extends SidebarProps {
 type MessengerLayoutBlockProps = MessengerLayoutProps & BlockOwnProps;
 
 const defaultTopLinks: SidebarProps["topLinks"] = [
-  { href: "#auth", text: "Sign in", className: "messenger-sidebar__top-link" },
   {
-    href: "#register",
+    href: appHref(APP_PATHS.auth),
+    text: "Sign in",
+    className: "messenger-sidebar__top-link",
+  },
+  {
+    href: appHref(APP_PATHS.register),
     text: "Sign up",
     className: "messenger-sidebar__top-link",
   },
-  { href: "#404", text: "404", className: "messenger-sidebar__top-link" },
-  { href: "#500", text: "500", className: "messenger-sidebar__top-link" },
+  {
+    href: appHref(APP_PATHS.notFound),
+    text: "404",
+    className: "messenger-sidebar__top-link",
+  },
+  {
+    href: appHref(APP_PATHS.serverError),
+    text: "500",
+    className: "messenger-sidebar__top-link",
+  },
 ];
 
 const defaultDirectMessages: DirectMessageItem[] = [

@@ -7,17 +7,29 @@ import {
   type SidebarSelectChatDetail,
 } from "@/widgets/sidebar";
 
-/** Монтирует правую колонку: заглушка без выбора, по клику — чат или заглушка «нет сообщений». */
-export function setupMessengerChatPage(): void {
-  const contentEl = document.getElementById("messenger-content");
-  const layout = document.querySelector<HTMLElement>(".messenger-layout");
+/**
+ * Монтирует правую колонку: заглушка без выбора, по клику — чат или заглушка «нет сообщений».
+ *
+ * @param layoutRoot Корень `MessengerLayout` (`.messenger-layout`). Нужен явно: `componentDidMount`
+ * срабатывает до вставки блока в `document`, поэтому `document.getElementById` в этот момент не находит `#messenger-content`.
+ */
+export function setupMessengerChatPage(layoutRoot: HTMLElement): void {
+  const contentEl = layoutRoot.querySelector("#messenger-content");
 
-  if (!contentEl || !layout) {
+  if (!(contentEl instanceof HTMLElement)) {
     return;
   }
 
+  const maybeSidebar = layoutRoot.classList.contains("messenger-layout")
+    ? layoutRoot
+    : layoutRoot.querySelector<HTMLElement>(".messenger-layout");
+
+  if (!maybeSidebar) {
+    return;
+  }
+
+  const sidebar = maybeSidebar;
   const mainEl = contentEl;
-  const sidebarEl = layout;
 
   let currentBlock: Block | null = null;
 
@@ -32,13 +44,13 @@ export function setupMessengerChatPage(): void {
   }
 
   function setActiveItem(chatId: string): void {
-    sidebarEl
+    sidebar
       .querySelectorAll(".messenger-sidebar__item--active")
       .forEach((node) => {
         node.classList.remove("messenger-sidebar__item--active");
       });
 
-    const item = sidebarEl.querySelector<HTMLButtonElement>(
+    const item = sidebar.querySelector<HTMLButtonElement>(
       `.messenger-sidebar__item[data-chat="${CSS.escape(chatId)}"]`,
     );
 
@@ -77,7 +89,7 @@ export function setupMessengerChatPage(): void {
     }),
   );
 
-  sidebarEl.addEventListener(SIDEBAR_SELECT_CHAT_EVENT, (event: Event) => {
+  sidebar.addEventListener(SIDEBAR_SELECT_CHAT_EVENT, (event: Event) => {
     const { chatId } = (event as CustomEvent<SidebarSelectChatDetail>).detail;
 
     if (chatId) {

@@ -1,3 +1,4 @@
+import { APP_PATHS, appHref } from "@/shared/config/routes";
 import type { LinkProps } from "@/shared/lib/types";
 import {
   handleValidatedSubmit,
@@ -12,7 +13,7 @@ import template from "./RegisterForm.hbs?raw";
 
 import "./RegisterForm.scss";
 
-interface RegisterFormProps {
+export interface RegisterFormProps {
   title: string;
   subtitle?: string;
 }
@@ -42,9 +43,7 @@ export class RegisterForm extends Block<RegisterFormBlockProps> {
     },
   };
 
-  private container: HTMLElement;
-
-  constructor(container: HTMLElement, props: RegisterFormProps) {
+  constructor(props: RegisterFormProps) {
     const fieldClass = "register-form__field";
     const labelClass = "register-form__label";
     const inputClass = "register-form__input";
@@ -171,21 +170,11 @@ export class RegisterForm extends Block<RegisterFormBlockProps> {
       },
       signInLink: {
         text: "Sign in",
-        href: "#auth",
+        href: appHref(APP_PATHS.auth),
         className: "register-form__link",
       },
     };
 
     super(initial);
-    this.container = container;
-  }
-
-  public render(): void {
-    super.render();
-    const root = this.element();
-
-    if (root) {
-      this.container.replaceChildren(root);
-    }
   }
 }

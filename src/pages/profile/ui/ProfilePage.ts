@@ -1,4 +1,5 @@
 import { EditProfileForm } from "@/features/editProfile";
+import { APP_PATHS, appHref } from "@/shared/config/routes";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./ProfilePage.hbs?raw";
@@ -32,8 +33,6 @@ type ProfilePageBlockProps = ProfilePageProps & {
 
 export class ProfilePage extends Block<ProfilePageBlockProps> {
   protected template = template;
-
-  private container: HTMLElement;
 
   protected events = {
     click: (event: Event) => {
@@ -70,11 +69,11 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
     ).render();
   };
 
-  constructor(container: HTMLElement, pageProps: ProfilePageProps) {
+  constructor(pageProps: ProfilePageProps) {
     super({
       ...pageProps,
       backLink: {
-        href: "#",
+        href: appHref(APP_PATHS.home),
         text: "← Back to Messenger",
         className: "profile-page__back-link",
       },
@@ -89,15 +88,5 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
         className: "profile-page__btn profile-page__btn--danger",
       },
     } as ProfilePageBlockProps);
-    this.container = container;
-  }
-
-  public render(): void {
-    super.render();
-    const root = this.element();
-
-    if (root) {
-      this.container.replaceChildren(root);
-    }
   }
 }

@@ -12,7 +12,7 @@ import template from "./AuthForm.hbs?raw";
 
 import "./AuthForm.scss";
 
-interface AuthFormProps {
+export interface AuthFormProps {
   title: string;
   subtitle?: string;
 }
@@ -36,9 +36,7 @@ export class AuthForm extends Block<AuthFormBlockProps> {
     },
   };
 
-  private container: HTMLElement;
-
-  constructor(container: HTMLElement, props: AuthFormProps) {
+  constructor(props: AuthFormProps) {
     const fieldClass = "login-form__field";
     const labelClass = "login-form__label";
     const inputClass = "login-form__input";
@@ -91,15 +89,5 @@ export class AuthForm extends Block<AuthFormBlockProps> {
     };
 
     super(initial);
-    this.container = container;
-  }
-
-  public render(): void {
-    super.render();
-    const root = this.element();
-
-    if (root) {
-      this.container.replaceChildren(root);
-    }
   }
 }
