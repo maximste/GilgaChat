@@ -62,6 +62,24 @@ export default abstract class Block<
     return this.domElement;
   }
 
+  /** Скрыть корень в DOM (для роутера при смене страницы без destroy у Block). */
+  public hide(): void {
+    const el = this.domElement;
+
+    if (el instanceof HTMLElement) {
+      el.style.display = "none";
+    }
+  }
+
+  /** Показать корень после hide(). */
+  public show(): void {
+    const el = this.domElement;
+
+    if (el instanceof HTMLElement) {
+      el.style.display = "";
+    }
+  }
+
   /**
    * Обновление данных и полный пересчёт DOM. Сбрасываем __children/__refs в props, чтобы
    * следующий compile не наслаивал хелперы на старые записи.
