@@ -8,7 +8,7 @@
  * 4. Otherwise — take the value from `rhs` (primitives, arrays, null, etc. replace the left side).
  */
 
-import type { Indexed } from "../types";
+import type { Indexed } from "../../types";
 
 export function isPlainObject(value: unknown): value is Indexed {
   return typeof value === "object" && value !== null && !Array.isArray(value);

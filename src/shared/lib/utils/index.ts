@@ -1,10 +1,19 @@
 export type { Indexed } from "../types";
-export { timelineHasMessages } from "./chatTimeline";
-export { cloneDeep } from "./cloneDeep";
-export { first } from "./first";
-export { isEqual } from "./isEqual";
-export { last } from "./last";
-export { isPlainObject,merge } from "./merge";
-export { queryStringify } from "./queryStringify";
-export { set } from "./set";
-export { trim } from "./trim";
+export { first } from "./array/first";
+export { last } from "./array/last";
+export {
+  type ChatTimelineRowVm,
+  mapChatTimelineToRows,
+  timelineHasMessages,
+} from "./chat/chatTimeline";
+export {
+  type HTTPRequestOptions,
+  HTTPTransport,
+  type RequestBodyData,
+} from "./http/HTTPTransport";
+export { cloneDeep } from "./object/cloneDeep";
+export { isEqual } from "./object/isEqual";
+export { isPlainObject, merge } from "./object/merge";
+export { set } from "./object/set";
+export { type QueryStringData,queryStringify } from "./string/queryStringify";
+export { trim } from "./string/trim";

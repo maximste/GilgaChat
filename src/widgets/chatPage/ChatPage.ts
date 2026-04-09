@@ -1,9 +1,6 @@
 import { createDemoChatTimeline } from "@/shared/lib/mocks";
 import type { ChatTimelineItem } from "@/shared/lib/types/ChatTimelineTypes";
-import {
-  mapChatTimelineToRows,
-  timelineHasMessages,
-} from "@/shared/lib/utils/chatTimeline";
+import { mapChatTimelineToRows, timelineHasMessages } from "@/shared/lib/utils";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import {

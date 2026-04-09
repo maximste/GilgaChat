@@ -1,4 +1,4 @@
-import type { ChatTimelineRowVm } from "@/shared/lib/utils/chatTimeline";
+import type { ChatTimelineRowVm } from "@/shared/lib/utils";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./ChatThread.hbs?raw";

@@ -1,4 +1,4 @@
-import type { Indexed } from "../types";
+import type { Indexed } from "../../types";
 import { isPlainObject, merge } from "./merge";
 
 function set(

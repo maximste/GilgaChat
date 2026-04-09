@@ -5,4 +5,4 @@ export {
   type MockMessengerChatConfig,
 } from "@/shared/lib/mocks";
 export type { ChatTimelineItem } from "@/shared/lib/types/ChatTimelineTypes";
-export { timelineHasMessages } from "@/shared/lib/utils/chatTimeline";
+export { timelineHasMessages } from "@/shared/lib/utils";

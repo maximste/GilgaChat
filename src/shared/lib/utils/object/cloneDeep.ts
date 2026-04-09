@@ -1,4 +1,4 @@
-import type { Indexed } from "../types";
+import type { Indexed } from "../../types";
 import { isPlainObject } from "./merge";
 
 function cloneDeepValue(value: unknown): unknown {
