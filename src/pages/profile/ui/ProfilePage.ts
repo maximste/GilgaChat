@@ -1,5 +1,13 @@
+import {
+  changePassword,
+  logout,
+  updateProfile,
+  uploadAvatar,
+} from "@/app/controllers";
+import { getAppRouter } from "@/app/router/routerHolder";
 import { EditProfileForm } from "@/features/editProfile";
 import { APP_PATHS, appHref } from "@/shared/config/routes";
+import { ApiError } from "@/shared/lib/api";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./ProfilePage.hbs?raw";
@@ -15,6 +23,8 @@ export interface ProfilePageProps {
   firstName: string;
   surname: string;
   phone: string;
+  /** Полный URL для отображения аватара. */
+  avatarUrl?: string;
 }
 
 type ProfilePageBlockProps = ProfilePageProps & {
@@ -36,11 +46,15 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
 
   protected events = {
     click: (event: Event) => {
-      const btn = (event.target as HTMLElement).closest(
-        ".profile-page__btn--primary",
-      );
+      const target = event.target as HTMLElement;
 
-      if (btn) {
+      if (target.closest(".profile-page__btn--danger")) {
+        void logout(getAppRouter());
+
+        return;
+      }
+
+      if (target.closest(".profile-page__btn--primary")) {
         this.handleEditProfile();
       }
     },
@@ -64,13 +78,49 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
       },
       {
         onCancel: () => this.render(),
-        onSave: () => this.render(),
+        onSave: async (data) => {
+          try {
+            if (data.avatarFile) {
+              await uploadAvatar(data.avatarFile);
+            }
+
+            await updateProfile({
+              first_name: data.firstName,
+              second_name: data.surname,
+              display_name: data.displayName,
+              login: data.login,
+              email: data.email,
+              phone: data.phone,
+            });
+
+            if (data.oldPassword && data.newPassword) {
+              await changePassword({
+                oldPassword: data.oldPassword,
+                newPassword: data.newPassword,
+              });
+            }
+
+            this.render();
+          } catch (e) {
+            window.alert(
+              e instanceof ApiError ? e.message : "Failed to save profile",
+            );
+          }
+        },
       },
     ).render();
   };
 
-  constructor(pageProps: ProfilePageProps) {
+  constructor(pageProps?: ProfilePageBlockProps) {
     super({
+      name: "",
+      username: "",
+      displayName: "",
+      login: "",
+      email: "",
+      firstName: "",
+      surname: "",
+      phone: "",
       ...pageProps,
       backLink: {
         href: appHref(APP_PATHS.messenger),
@@ -87,6 +137,6 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
         text: "Logout",
         className: "profile-page__btn profile-page__btn--danger",
       },
-    } as ProfilePageBlockProps);
+    });
   }
 }

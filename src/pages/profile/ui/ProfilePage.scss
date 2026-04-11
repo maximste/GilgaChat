@@ -62,6 +62,12 @@
   background-color: $color-accent;
 }
 
+.profile-card__avatar--image {
+  display: block;
+  background-color: transparent;
+  object-fit: cover;
+}
+
 .profile-card__identity {
   display: flex;
   min-width: 0;

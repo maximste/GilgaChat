@@ -22,9 +22,13 @@ export interface EditProfileFormProps {
   newPassword?: string;
 }
 
+export type EditProfileFormSavePayload = EditProfileFormProps & {
+  avatarFile?: File;
+};
+
 export interface EditProfileFormCallbacks {
   onCancel: () => void;
-  onSave?: (data: EditProfileFormProps) => void;
+  onSave?: (data: EditProfileFormSavePayload) => void | Promise<void>;
 }
 
 type EditProfileFormBlockProps = {
@@ -210,8 +214,14 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
 
   protected events = {
     submit: (event: Event) => {
+      const form = (event as SubmitEvent).target;
+
+      if (!(form instanceof HTMLFormElement)) {
+        return;
+      }
+
       handleValidatedSubmit(event, editProfileFormValidators, (values) => {
-        const data: EditProfileFormProps = {
+        const data: EditProfileFormSavePayload = {
           login: values.login.trim(),
           displayName: values.display_name.trim(),
           email: values.email.trim(),
@@ -222,7 +232,13 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
           newPassword: values.new_password?.trim() || undefined,
         };
 
-        this.callbacks.onSave?.(data);
+        const avatarEl = form.elements.namedItem("avatar");
+        const avatarFile =
+          avatarEl instanceof HTMLInputElement
+            ? avatarEl.files?.[0]
+            : undefined;
+
+        void this.callbacks.onSave?.({ ...data, avatarFile });
       });
     },
     focusout: (event: Event) => {

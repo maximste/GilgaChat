@@ -6,7 +6,11 @@
   <div class="profile-page__content">
     <section class="profile-card">
       <div class="profile-card__header">
-        <div class="profile-card__avatar" aria-hidden="true"></div>
+        {{#if avatarUrl}}
+          <img class="profile-card__avatar profile-card__avatar--image" src="{{avatarUrl}}" alt="" width="80" height="80" />
+        {{else}}
+          <div class="profile-card__avatar" aria-hidden="true"></div>
+        {{/if}}
         <div class="profile-card__identity">
           <h2 class="profile-card__name">{{name}}</h2>
           <span class="profile-card__username">{{username}}</span>

@@ -3,7 +3,11 @@
     <h2 class="edit-profile__title">Edit Profile</h2>
   </header>
 
-  <form id="editProfileForm" class="edit-profile__form" action="#" method="POST">
+  <form id="editProfileForm" class="edit-profile__form" action="#" method="POST" enctype="multipart/form-data">
+    <div class="edit-profile__field edit-profile__field--avatar">
+      <label class="edit-profile__label" for="editProfileAvatar">Avatar</label>
+      <input id="editProfileAvatar" class="edit-profile__input edit-profile__input--file" type="file" name="avatar" accept="image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp" />
+    </div>
     {{{FormField className=loginFormField.className icon=loginFormField.icon label=loginFormField.label input=loginFormField.input}}}
     {{{FormField className=displayNameFormField.className icon=displayNameFormField.icon label=displayNameFormField.label input=displayNameFormField.input}}}
     {{{FormField className=emailFormField.className icon=emailFormField.icon label=emailFormField.label input=emailFormField.input}}}
