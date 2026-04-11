@@ -1,4 +1,4 @@
-import { type QueryStringData,queryStringify } from "../string/queryStringify";
+import { type QueryStringData, queryStringify } from "../string/queryStringify";
 
 const METHODS = {
   GET: "GET",
@@ -24,6 +24,7 @@ export interface HTTPRequestOptions {
   data?: RequestBodyData;
   responseType?: XMLHttpRequestResponseType;
   timeout?: number;
+  withCredentials?: boolean;
 }
 
 class HTTPTransport {
@@ -64,7 +65,13 @@ class HTTPTransport {
     options: HTTPRequestOptions = {},
     timeout = 5000,
   ): Promise<unknown> => {
-    const { headers = {}, method, data, responseType } = options;
+    const {
+      headers = {},
+      method,
+      data,
+      responseType,
+      withCredentials,
+    } = options;
 
     return new Promise((resolve, reject) => {
       if (!method) {
@@ -82,6 +89,7 @@ class HTTPTransport {
           : url;
 
       xhr.open(method, urlWithQuery);
+      xhr.withCredentials = withCredentials ?? false;
 
       if (responseType) {
         xhr.responseType = responseType;
