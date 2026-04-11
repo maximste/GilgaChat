@@ -1,12 +1,17 @@
+import { signIn, signUp } from "@/app/controllers";
 import { AuthForm } from "@/features/auth";
 import { RegisterForm } from "@/features/registration";
-import { setupMessengerChatPage } from "@/pages/messenger";
-import { APP_PATHS, appHref } from "@/shared/config/routes";
+import {
+  setupMessengerChatPage,
+  setupMessengerChatTools,
+} from "@/pages/messenger";
+import { ApiError } from "@/shared/lib/api";
 import { connect } from "@/shared/ui/block";
 import { MainLayout } from "@/widgets/mainLayout";
 import { MessengerLayout } from "@/widgets/messengerLayout";
 
 import { mapMessengerLayoutState } from "../store";
+import { getAppRouter } from "./routerHolder";
 
 const ConnectedMessengerLayout = connect(mapMessengerLayoutState)(
   MessengerLayout,
@@ -20,6 +25,7 @@ export class MessengerRouteBlock extends ConnectedMessengerLayout {
 
     if (root instanceof HTMLElement) {
       setupMessengerChatPage(root);
+      setupMessengerChatTools(root);
     }
   }
 }
@@ -27,11 +33,6 @@ export class MessengerRouteBlock extends ConnectedMessengerLayout {
 export class AuthScreenBlock extends MainLayout {
   constructor() {
     super({
-      goBackLink: {
-        href: appHref(APP_PATHS.messenger),
-        text: "Go back",
-        className: "main-layout__go-back",
-      },
       content: "",
     });
   }
@@ -47,6 +48,15 @@ export class AuthScreenBlock extends MainLayout {
     const form = new AuthForm({
       title: "Welcome back",
       subtitle: "Sign in to continue to GilgaChat",
+      onSignIn: async (payload) => {
+        try {
+          await signIn(payload, getAppRouter());
+        } catch (e) {
+          const msg = e instanceof ApiError ? e.message : "Sign in failed";
+
+          window.alert(msg);
+        }
+      },
     });
     const el = form.element();
 
@@ -59,11 +69,6 @@ export class AuthScreenBlock extends MainLayout {
 export class RegisterScreenBlock extends MainLayout {
   constructor() {
     super({
-      goBackLink: {
-        href: appHref(APP_PATHS.login),
-        text: "Go back",
-        className: "main-layout__go-back",
-      },
       content: "",
     });
   }
@@ -79,6 +84,15 @@ export class RegisterScreenBlock extends MainLayout {
     const form = new RegisterForm({
       title: "Create Account",
       subtitle: "Sign up to get started",
+      onSignUp: async (payload) => {
+        try {
+          await signUp(payload, getAppRouter());
+        } catch (e) {
+          const msg = e instanceof ApiError ? e.message : "Registration failed";
+
+          window.alert(msg);
+        }
+      },
     });
     const el = form.element();
 
