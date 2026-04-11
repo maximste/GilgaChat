@@ -4,9 +4,9 @@ import { isEqual } from "@/shared/lib/utils";
 
 import { Block, type BlockOwnProps } from "./Block";
 
-/** Класс, который создаётся через `new MyBlock(props)` и даёт экземпляр `Block`. */
+/** Класс блока: пропсы опциональны (роутер вызывает `new Page()` без аргументов). */
 type BlockConstructor<Props extends BlockOwnProps> = new (
-  props: Props,
+  props?: Props,
 ) => Block<Props>;
 
 /**
@@ -50,10 +50,11 @@ export function connect<Slice extends StoreSlice>(
 
       private lastSlice: Slice;
 
-      constructor(props: Props) {
+      constructor(props?: Props) {
+        const ownProps = (props ?? {}) as Props;
         const fromStore = mapStateToProps(store.getState());
 
-        super(mergeSliceWithOwnProps(fromStore, props));
+        super(mergeSliceWithOwnProps(fromStore, ownProps));
         this.lastSlice = fromStore;
         this.storeUnsubscribe = store.subscribe(() => {
           const next = mapStateToProps(store.getState());

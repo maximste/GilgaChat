@@ -2,8 +2,12 @@ import type { Block, BlockOwnProps } from "@/shared/ui/block";
 
 import { normalizeAppPath } from "./path/normalizePath";
 
-/** Класс страницы для роутера (любой наследник Block с произвольными пропсами). */
-type BlockPageConstructor = new (props?: object) => Block<BlockOwnProps>;
+/**
+ * Класс страницы для роутера: любой наследник `Block`.
+ * Аргументы конструктора не фиксируем (`connect`, экраны без пропсов, частичные пропсы).
+ */
+/** `any[]`: у страниц разные конструкторы (`connect`, пропсы, без аргументов). */
+export type BlockPageConstructor = new (...args: any[]) => Block<BlockOwnProps>;
 
 export interface RouteProps {
   rootQuery: string;

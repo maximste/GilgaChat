@@ -2,10 +2,18 @@ import { AuthForm } from "@/features/auth";
 import { RegisterForm } from "@/features/registration";
 import { setupMessengerChatPage } from "@/pages/messenger";
 import { APP_PATHS, appHref } from "@/shared/config/routes";
+import { connect } from "@/shared/ui/block";
 import { MainLayout } from "@/widgets/mainLayout";
 import { MessengerLayout } from "@/widgets/messengerLayout";
 
-export class MessengerRouteBlock extends MessengerLayout {
+import { mapMessengerLayoutState } from "../store";
+
+const ConnectedMessengerLayout = connect(mapMessengerLayoutState)(
+  MessengerLayout,
+);
+
+// @ts-expect-error TS2515 — база из `connect` (конкретный Block с template); TS обрезает тип до абстрактного Block.
+export class MessengerRouteBlock extends ConnectedMessengerLayout {
   protected componentDidMount(): void {
     super.componentDidMount();
     const root = this.element();
