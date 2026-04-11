@@ -1,4 +1,5 @@
 import { APP_PATHS, appHref } from "@/shared/config/routes";
+import type { SignUpRequest } from "@/shared/lib/api/types";
 import type { LinkProps } from "@/shared/lib/types";
 import {
   handleValidatedSubmit,
@@ -16,6 +17,7 @@ import "./RegisterForm.scss";
 export interface RegisterFormProps {
   title: string;
   subtitle?: string;
+  onSignUp?: (payload: SignUpRequest) => void | Promise<void>;
 }
 
 type RegisterFormBlockProps = RegisterFormProps & {
@@ -34,16 +36,8 @@ type RegisterFormBlockProps = RegisterFormProps & {
 export class RegisterForm extends Block<RegisterFormBlockProps> {
   protected template = template;
 
-  protected events = {
-    submit: (event: Event) => {
-      handleValidatedSubmit(event, registerFormValidators);
-    },
-    focusout: (event: Event) => {
-      runFieldValidatorOnFocusOut(event, registerFormValidators);
-    },
-  };
-
   constructor(props: RegisterFormProps) {
+    const onSignUp = props.onSignUp;
     const fieldClass = "register-form__field";
     const labelClass = "register-form__label";
     const inputClass = "register-form__input";
@@ -176,5 +170,22 @@ export class RegisterForm extends Block<RegisterFormBlockProps> {
     };
 
     super(initial);
+    this.events = {
+      submit: (event: Event) => {
+        handleValidatedSubmit(event, registerFormValidators, (values) => {
+          void onSignUp?.({
+            first_name: String(values.first_name ?? "").trim(),
+            second_name: String(values.second_name ?? "").trim(),
+            login: String(values.login ?? "").trim(),
+            email: String(values.email ?? "").trim(),
+            password: String(values.password ?? ""),
+            phone: String(values.phone ?? "").trim(),
+          });
+        });
+      },
+      focusout: (event: Event) => {
+        runFieldValidatorOnFocusOut(event, registerFormValidators);
+      },
+    };
   }
 }
