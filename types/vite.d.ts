@@ -1,9 +1,9 @@
-declare module "*.hbs" {
-  import type { TemplateDelegate } from "handlebars";
+declare module "@fontsource/inter";
 
-  const template: TemplateDelegate;
-
-  export default template;
+interface ImportMetaEnv {
+  readonly VITE_API_HOST?: string;
 }
 
-declare module "@fontsource/inter";
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
