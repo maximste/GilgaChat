@@ -5,6 +5,7 @@ export interface SidebarCurrentUser {
 }
 
 export interface DirectMessageItem {
+  chatId?: string;
   firstName: string;
   lastName: string;
   preview: string;
@@ -12,6 +13,7 @@ export interface DirectMessageItem {
 }
 
 export interface GroupItem {
+  chatId?: string;
   name: string;
   preview: string;
   iconClass: string;
