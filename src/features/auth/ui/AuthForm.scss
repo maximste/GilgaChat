@@ -53,6 +53,23 @@
     color: $text-color-secondary;
     font-size: $font-size-14;
   }
+
+  &__footer--sign-up {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+
+  &__sign-up-prompt {
+    margin: 0;
+    font-size: $font-size-14;
+    line-height: $line-height-20;
+  }
+
+  &__sign-up-lead {
+    margin-right: $spacing-4;
+    color: $text-color-secondary;
+  }
 }
 
 .login-form {
@@ -78,5 +95,16 @@
 
   &__submit-btn {
     @extend %btn-primary;
+  }
+
+  &__sign-up-link {
+    color: #3369f3;
+    font-size: $font-size-14;
+    line-height: $line-height-20;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

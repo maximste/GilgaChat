@@ -9,7 +9,7 @@
     </header>
 
     <form id="authForm" class="login-form" action="/login" method="POST">
-      {{{FormField className=emailFormField.className icon=emailFormField.icon label=emailFormField.label input=emailFormField.input}}}
+      {{{FormField className=loginFormField.className icon=loginFormField.icon label=loginFormField.label input=loginFormField.input}}}
       {{{FormField className=passwordFormField.className icon=passwordFormField.icon label=passwordFormField.label input=passwordFormField.input}}}
 
       <footer class="login-form__footer">
@@ -18,8 +18,11 @@
       </footer>
     </form>
 
-    <footer class="auth-window__footer">
-
+    <footer class="auth-window__footer auth-window__footer--sign-up">
+      <p class="auth-window__sign-up-prompt">
+        <span class="auth-window__sign-up-lead">Don't have an account?</span>
+        {{{Link text=signUpLink.text href=signUpLink.href className=signUpLink.className}}}
+      </p>
     </footer>
   </section>
 </section>
