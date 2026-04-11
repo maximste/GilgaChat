@@ -37,7 +37,8 @@ export class Route {
 
   leave(): void {
     if (this._block) {
-      this._block.hide();
+      this._block.destroy();
+      this._block = null;
     }
   }
 
@@ -51,10 +52,9 @@ export class Route {
     }
 
     Route.mountBlockInRoot(this._props.rootQuery, this._block);
-    this._block.show();
   }
 
-  /** Монтирует корень Block в контейнер по селектору (как в учебном тренажёре). */
+  /** Монтирует корень Block в контейнер по селектору */
   private static mountBlockInRoot(
     rootQuery: string,
     block: Block<BlockOwnProps>,

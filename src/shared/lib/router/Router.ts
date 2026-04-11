@@ -6,6 +6,11 @@ export interface RouterOptions {
   basePath?: string;
   /** Внутренний путь страницы 404 при неизвестном URL. */
   notFoundPath?: string;
+  /**
+   * Перед выбором маршрута: можно вернуть другой внутренний путь (редирект).
+   * Вызывается из `go` и при старте; не дублировать бесконечные редиректы.
+   */
+  resolvePath?: (pathname: string) => string;
 }
 
 export class Router {
@@ -24,6 +29,8 @@ export class Router {
 
   private readonly notFoundPath!: string;
 
+  private readonly resolvePath?: (pathname: string) => string;
+
   constructor(rootQuery: string, options?: RouterOptions) {
     if (Router.__instance) {
       return Router.__instance;
@@ -32,6 +39,7 @@ export class Router {
     this._rootQuery = rootQuery;
     this.basePath = (options?.basePath ?? "").replace(/\/$/, "");
     this.notFoundPath = options?.notFoundPath ?? "";
+    this.resolvePath = options?.resolvePath;
     Router.__instance = this;
   }
 
@@ -53,10 +61,11 @@ export class Router {
 
   go(pathname: string): void {
     const internal = normalizeAppPath(pathname);
-    const url = this.toHistoryURL(internal);
+    const resolved = this.resolvePath?.(internal) ?? internal;
+    const url = this.toHistoryURL(resolved);
 
     this.history.pushState({}, "", url);
-    this._onRoute(internal);
+    this._onRoute(resolved);
   }
 
   back(): void {
@@ -91,6 +100,17 @@ export class Router {
 
   private _onRoute(pathname: string): void {
     const normalized = normalizeAppPath(pathname);
+    const resolved = this.resolvePath?.(normalized) ?? normalized;
+
+    if (resolved !== normalized) {
+      const url = this.toHistoryURL(resolved);
+
+      this.history.replaceState({}, "", url);
+      this._onRoute(resolved);
+
+      return;
+    }
+
     const route =
       this.getRoute(normalized) ??
       (this.notFoundPath
