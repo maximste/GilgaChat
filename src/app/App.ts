@@ -1,4 +1,5 @@
 import { createAppRouter, setupSpaLinks } from "./router";
+import { bootstrapAppStore } from "./store";
 
 function showError(message: string): void {
   const app = document.getElementById("app");
@@ -15,6 +16,8 @@ export class App {
     const run = (): void => {
       try {
         const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+        bootstrapAppStore();
         const router = createAppRouter();
 
         setupSpaLinks(router, basePath);
