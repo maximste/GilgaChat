@@ -6,6 +6,7 @@ import template from "./SidebarChatListItem.hbs?raw";
 import "./SidebarChatListItem.scss";
 
 export interface SidebarChatListItemProps {
+  chatId?: string;
   isDmVariant: boolean;
   chatIdPrefix: string;
   index: number | string;
@@ -35,7 +36,7 @@ class SidebarChatListItem extends Block<SidebarChatListItemBlockProps> {
 
     super({
       ...props,
-      chatId: `${props.chatIdPrefix}${props.index}`,
+      chatId: props.chatId ?? `${props.chatIdPrefix}${props.index}`,
       primaryLineText,
       previewLine: props.preview ?? "",
     } as SidebarChatListItemBlockProps);
