@@ -1,4 +1,4 @@
-function isEqual(a: object, b: object): boolean {
+function isEqual(a: unknown, b: unknown): boolean {
   return deepEqual(a, b);
 }
 
