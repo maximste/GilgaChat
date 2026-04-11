@@ -1,2 +1,2 @@
-export { bootstrapAppStore } from "./bootstrapAppStore";
 export { mapMessengerLayoutState } from "./mapMessengerLayoutState";
+export { mapProfilePageState } from "./mapProfilePageState";

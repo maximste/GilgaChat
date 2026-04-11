@@ -1,5 +1,5 @@
+import { initAuthSession } from "./controllers";
 import { createAppRouter, setupSpaLinks } from "./router";
-import { bootstrapAppStore } from "./store";
 
 function showError(message: string): void {
   const app = document.getElementById("app");
@@ -13,11 +13,11 @@ function showError(message: string): void {
 
 export class App {
   constructor() {
-    const run = (): void => {
+    const run = async (): Promise<void> => {
       try {
         const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 
-        bootstrapAppStore();
+        await initAuthSession();
         const router = createAppRouter();
 
         setupSpaLinks(router, basePath);
@@ -31,9 +31,11 @@ export class App {
     };
 
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", run);
+      document.addEventListener("DOMContentLoaded", () => {
+        void run();
+      });
     } else {
-      run();
+      void run();
     }
   }
 }
