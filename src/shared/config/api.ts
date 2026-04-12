@@ -12,9 +12,23 @@ export function apiAbsolutePath(path: string): string {
   return `${API_HOST}${API_PATH_PREFIX}${p}`;
 }
 
-/** URL для отображения файла по пути из поля `avatar` и т.п. (`GET /resources/{path}`). */
+/**
+ * URL картинки из поля `avatar` в ответах API.
+ * Поддерживает: полный `https://…`, путь `/api/v2/resources/…`, относительный `/uuid/file.jpg`.
+ */
 export function resourceFileUrl(resourcePath: string): string {
-  const p = resourcePath.startsWith("/") ? resourcePath : `/${resourcePath}`;
+  const s = resourcePath.trim();
 
-  return `${API_HOST}${API_PATH_PREFIX}/resources${p}`;
+  if (/^https?:\/\//i.test(s)) {
+    return s;
+  }
+
+  const p = s.startsWith("/") ? s : `/${s}`;
+  const resourcesBase = `${API_PATH_PREFIX}/resources`;
+
+  if (p.startsWith(`${resourcesBase}/`) || p === resourcesBase) {
+    return `${API_HOST}${p}`;
+  }
+
+  return `${API_HOST}${resourcesBase}${p}`;
 }
