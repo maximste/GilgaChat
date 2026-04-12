@@ -8,7 +8,7 @@
   - Примеры UI: `Button`, `Input`, `Label`, `Link`, `FormField`, `IconButton`, `Textarea`, `Search`, атомы сайдбара (`SidebarAvatar`, `SidebarPrimaryLine`, `SidebarSecondaryLine`, `SidebarUserStatus`). Регистрация общих блоков — `shared/ui/block/registerBlocks.ts`.
 - **entities** — бизнес-сущности. Пока слой минимальный (`entities/user`), при росте доменной логики сюда выносят типы и модели.
 - **features** — пользовательские сценарии: авторизация (`features/auth`), регистрация (`features/registration`), редактирование профиля (`features/edit-profile`).
-- **widgets** — составные блоки: **MainLayout**, **MessengerLayout**, **Sidebar** (шапка, секции чатов, список, панель пользователя), **ChatPage** (оболочка экрана переписки) и её части — **ChatHeader**, **ChatThread**, **ChatTimelineRow**, **ChatFooter**, **MessageComposer**, **NoChatStub**.
+- **widgets** — составные блоки: **MainLayout**, **MessengerLayout**, **Sidebar** (шапка, секции чатов, список, панель пользователя), **messengerCreate** (FAB «+», модалки Create DM / Create Group на **Block** + Handlebars), **ChatPage** (оболочка экрана переписки) и её части — **ChatHeader**, **ChatThread**, **ChatTimelineRow**, **ChatFooter**, **MessageComposer**, **NoChatStub**.
 - **pages** — композиция страниц: auth, register, profile, messenger, not-found, server-error. Каждая страница экспортирует функцию `render*Page(container, props?)` или setup-функции (например, `setupMessengerChatPage` для правой колонки мессенджера).
 - **app** — инициализация приложения, роутинг по hash, подключение глобальных стилей, `registerComponent` для виджетов и блоков чата. Точка входа: `src/app/index.ts`.
 
@@ -31,7 +31,7 @@
 
 - `@/shared/ui`, `@/shared/lib/types`, `@/shared/lib/utils` (в т.ч. маппинг ленты чата `chatTimeline`)
 - `@/features/auth`, `@/features/registration`, `@/features/edit-profile`
-- `@/widgets/mainLayout`, `@/widgets/messengerLayout`, `@/widgets/sidebar`, `@/widgets/chatPage`, `@/widgets/messageComposer`, `@/widgets/noChatStub`
+- `@/widgets/mainLayout`, `@/widgets/messengerLayout`, `@/widgets/sidebar`, `@/widgets/messengerCreate`, `@/widgets/chatPage`, `@/widgets/messageComposer`, `@/widgets/noChatStub`
 - `@/pages/auth`, `@/pages/register`, `@/pages/profile`, `@/pages/messenger`, `@/pages/not-found`, `@/pages/server-error`
 - `@/app` — точка входа и класс App
 
@@ -53,6 +53,7 @@ src/
 │   ├── sidebar/         # Sidebar, секции, элементы списка, панель пользователя
 │   ├── chatPage/        # ChatPage, ChatHeader, ChatThread, ChatTimelineRow, ChatFooter
 │   ├── messageComposer/
+│   ├── messengerCreate/ # FAB + модалки создания чатов (setupMessengerCreateUi)
 │   └── noChatStub/
 ├── features/            # auth, registration, edit-profile
 ├── entities/            # user (заглушка)
