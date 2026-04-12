@@ -142,15 +142,33 @@ export const chatsController = {
       await chatsApi.addUsers({ chatId: id, users: userIds });
     }
 
+    let avatarFromUpload: string | null = null;
+
     if (avatarFile) {
       const fd = new FormData();
 
       fd.append("chatId", String(id));
       fd.append("avatar", avatarFile, avatarFile.name);
-      await chatsApi.uploadChatAvatar(fd);
+      const updated = await chatsApi.uploadChatAvatar(fd);
+
+      avatarFromUpload = updated.avatar ?? null;
     }
 
     await this.loadChats();
+
+    if (avatarFromUpload) {
+      const list = this.getChatsFromStore();
+      const idx = list.findIndex((c) => c.id === id);
+
+      if (idx >= 0 && !list[idx]?.avatar) {
+        const next = list.map((c, j) =>
+          j === idx ? { ...c, avatar: avatarFromUpload } : c,
+        );
+
+        store.setState("chats.list", next);
+      }
+    }
+
     markChatKind(id, "group");
 
     return id;

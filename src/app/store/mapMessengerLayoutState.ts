@@ -28,7 +28,7 @@ function mapChatsToGroups(chats: ApiChat[]): GroupItem[] {
     name: c.title,
     preview: c.last_message?.content ?? "",
     iconClass: "fa-comments",
-    avatarUrl: c.avatar ? resourceFileUrl(c.avatar) : undefined,
+    avatarUrl: c.avatar?.trim() ? resourceFileUrl(c.avatar.trim()) : undefined,
   }));
 }
 
