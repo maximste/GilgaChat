@@ -1,10 +1,7 @@
 import { signIn, signUp } from "@/app/controllers";
 import { AuthForm } from "@/features/auth";
 import { RegisterForm } from "@/features/registration";
-import {
-  setupMessengerChatPage,
-  setupMessengerChatTools,
-} from "@/pages/messenger";
+import { setupMessengerChatPage } from "@/pages/messenger";
 import { ApiError } from "@/shared/lib/api";
 import { connect } from "@/shared/ui/block";
 import { MainLayout } from "@/widgets/mainLayout";
@@ -25,7 +22,6 @@ export class MessengerRouteBlock extends ConnectedMessengerLayout {
 
     if (root instanceof HTMLElement) {
       setupMessengerChatPage(root);
-      setupMessengerChatTools(root);
     }
   }
 }

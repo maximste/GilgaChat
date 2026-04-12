@@ -10,8 +10,6 @@ export interface SidebarProps {
   currentUser: SidebarCurrentUser;
   directMessages: DirectMessageItem[];
   groups: GroupItem[];
-  searchPlaceholder?: string;
-  searchAriaLabel?: string;
 }
 
 type SidebarBlockProps = SidebarProps & BlockOwnProps;
@@ -60,11 +58,7 @@ class Sidebar extends Block<SidebarBlockProps> {
   };
 
   constructor(props: SidebarProps) {
-    super({
-      ...props,
-      searchPlaceholder: props.searchPlaceholder,
-      searchAriaLabel: props.searchAriaLabel,
-    } as SidebarBlockProps);
+    super(props as SidebarBlockProps);
   }
 }
 

@@ -64,7 +64,6 @@ export async function initAuthSession(): Promise<void> {
       store.setState("user", { profile: null, sidebar: undefined });
       store.setState("chats.list", []);
       store.setState("chats.kindById", {});
-      store.setState("messenger", { searchFilter: "" });
       setSession({ authenticated: false });
     } else {
       console.error("[auth]", e);
@@ -113,7 +112,6 @@ export async function logout(router: Router): Promise<void> {
   store.setState("user", { profile: null, sidebar: undefined });
   store.setState("chats.list", []);
   store.setState("chats.kindById", {});
-  store.setState("messenger", { searchFilter: "" });
   store.setState("session", { initialized: true, authenticated: false });
   router.go(APP_PATHS.login);
 

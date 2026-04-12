@@ -1,11 +1,19 @@
-import { MOCK_MESSENGER_CHATS } from "@/shared/lib/mocks";
+import {
+  chatsController,
+  getProfileFromStore,
+  searchUsersByLogin,
+} from "@/app/controllers";
+import { createDemoChatTimeline } from "@/shared/lib/mocks";
 import type { Block } from "@/shared/ui/block";
 import { ChatPage } from "@/widgets/chatPage";
+import { setupMessengerCreateUi } from "@/widgets/messengerCreate";
 import { NoChatStub } from "@/widgets/noChatStub";
 import {
   SIDEBAR_SELECT_CHAT_EVENT,
   type SidebarSelectChatDetail,
 } from "@/widgets/sidebar";
+
+export { setupMessengerCreateUi } from "@/widgets/messengerCreate";
 
 /**
  * Монтирует правую колонку: заглушка без выбора, по клику — чат или заглушка «нет сообщений».
@@ -13,11 +21,14 @@ import {
  * @param layoutRoot Корень `MessengerLayout` (`.messenger-layout`). Нужен явно: `componentDidMount`
  * срабатывает до вставки блока в `document`, поэтому `document.getElementById` в этот момент не находит `#messenger-content`.
  */
-export function setupMessengerChatPage(layoutRoot: HTMLElement): void {
+export function setupMessengerChatPage(layoutRoot: HTMLElement): {
+  selectChat: (chatId: string) => void;
+} {
+  const noop = (): void => {};
   const contentEl = layoutRoot.querySelector("#messenger-content");
 
   if (!(contentEl instanceof HTMLElement)) {
-    return;
+    return { selectChat: noop };
   }
 
   const maybeSidebar = layoutRoot.classList.contains("messenger-layout")
@@ -25,7 +36,7 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): void {
     : layoutRoot.querySelector<HTMLElement>(".messenger-layout");
 
   if (!maybeSidebar) {
-    return;
+    return { selectChat: noop };
   }
 
   const sidebar = maybeSidebar;
@@ -59,9 +70,23 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): void {
 
   function selectChat(chatId: string): void {
     setActiveItem(chatId);
-    const meta = MOCK_MESSENGER_CHATS[chatId];
+    const idNum = Number(chatId);
 
-    if (!meta) {
+    if (Number.isNaN(idNum)) {
+      mount(
+        new NoChatStub({
+          title: "Чат не найден",
+          description: "Выберите другой диалог в списке слева.",
+          fillVertical: true,
+        }),
+      );
+
+      return;
+    }
+
+    const chat = chatsController.findChatById(idNum);
+
+    if (!chat) {
       mount(
         new NoChatStub({
           title: "Чат не найден",
@@ -75,8 +100,9 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): void {
 
     mount(
       new ChatPage(mainEl, {
-        peerName: meta.peerName,
-        timeline: meta.timeline,
+        peerName: chat.title,
+        timeline: createDemoChatTimeline(chat.title),
+        showStatusDot: chatsController.chatHeaderShowsStatusDot(idNum),
       }),
     );
   }
@@ -96,4 +122,15 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): void {
       selectChat(chatId);
     }
   });
+
+  setupMessengerCreateUi(layoutRoot, {
+    selectChat,
+    searchUsersByLogin,
+    openDmWithUser: (user) => chatsController.openDmWithUser(user),
+    createGroupWithMembers: (opts) =>
+      chatsController.createGroupWithMembers(opts),
+    getProfileFromStore,
+  });
+
+  return { selectChat };
 }

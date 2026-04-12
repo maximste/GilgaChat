@@ -6,8 +6,6 @@ import "./SidebarHeader.scss";
 
 export interface SidebarHeaderProps {
   appTitle: string;
-  searchPlaceholder?: string;
-  searchAriaLabel?: string;
 }
 
 type SidebarHeaderBlockProps = SidebarHeaderProps & BlockOwnProps;
@@ -18,13 +16,7 @@ class SidebarHeader extends Block<SidebarHeaderBlockProps> {
   protected template = template;
 
   constructor(props: SidebarHeaderProps) {
-    const searchPlaceholder = props.searchPlaceholder ?? "Search";
-
-    super({
-      ...props,
-      searchPlaceholder,
-      searchAriaLabel: props.searchAriaLabel ?? searchPlaceholder,
-    } as SidebarHeaderBlockProps);
+    super(props as SidebarHeaderBlockProps);
   }
 }
 
