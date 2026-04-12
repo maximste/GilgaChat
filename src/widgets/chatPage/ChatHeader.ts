@@ -6,9 +6,13 @@ import "./ChatHeader.scss";
 
 export interface ChatHeaderProps {
   peerName: string;
+  /** Личный чат: зелёная точка «онлайн»; для группы — false. */
+  showStatusDot?: boolean;
 }
 
-type ChatHeaderBlockProps = ChatHeaderProps & BlockOwnProps;
+type ChatHeaderBlockProps = ChatHeaderProps & {
+  showStatusDot: boolean;
+} & BlockOwnProps;
 
 class ChatHeader extends Block<ChatHeaderBlockProps> {
   static componentName = "ChatHeader";
@@ -16,7 +20,10 @@ class ChatHeader extends Block<ChatHeaderBlockProps> {
   protected template = template;
 
   constructor(props: ChatHeaderProps) {
-    super(props as ChatHeaderBlockProps);
+    super({
+      ...props,
+      showStatusDot: props.showStatusDot ?? true,
+    } as ChatHeaderBlockProps);
   }
 }
 

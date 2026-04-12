@@ -1,17 +1,65 @@
-import { chatsApi } from "@/shared/lib/api";
+import { ApiError, chatsApi } from "@/shared/lib/api";
 import type {
   ApiChat,
+  ApiUser,
   ChatsUsersRequest,
   CreateChatRequest,
   DeleteChatRequest,
 } from "@/shared/lib/api/types";
 import { store } from "@/shared/lib/store";
 
+export type ChatKind = "dm" | "group";
+
+type ChatsSlice = {
+  list?: ApiChat[];
+  kindById?: Record<number, ChatKind>;
+};
+
+function pruneChatKinds(
+  list: ApiChat[],
+  prev: Record<number, ChatKind> | undefined,
+): Record<number, ChatKind> {
+  const ids = new Set(list.map((c) => c.id));
+  const next: Record<number, ChatKind> = {};
+
+  if (!prev) {
+    return next;
+  }
+
+  for (const key of Object.keys(prev)) {
+    const id = Number(key);
+
+    if (ids.has(id)) {
+      next[id] = prev[id] as ChatKind;
+    }
+  }
+
+  return next;
+}
+
+function markChatKind(chatId: number, kind: ChatKind): void {
+  const slice = (store.getState().chats as ChatsSlice | undefined) ?? {};
+  const kindById = { ...(slice.kindById ?? {}), [chatId]: kind };
+
+  store.setState("chats.kindById", kindById);
+}
+
 export const chatsController = {
   async loadChats(): Promise<void> {
     const list = await chatsApi.getList();
+    const prev = (store.getState().chats as ChatsSlice | undefined)?.kindById;
+    const kindById = pruneChatKinds(list, prev);
 
     store.setState("chats.list", list);
+    store.setState("chats.kindById", kindById);
+  },
+
+  chatHeaderShowsStatusDot(chatId: number): boolean {
+    const kind = (store.getState().chats as ChatsSlice | undefined)?.kindById?.[
+      chatId
+    ];
+
+    return kind !== "group";
   },
 
   async createChat(data: CreateChatRequest): Promise<number> {
@@ -45,5 +93,66 @@ export const chatsController = {
 
   findChatById(id: number): ApiChat | undefined {
     return this.getChatsFromStore().find((c) => c.id === id);
+  },
+
+  /**
+   * Открыть DM с пользователем: сначала GET /chats/{userId}/common, иначе создать чат и добавить собеседника.
+   */
+  async openDmWithUser(peer: ApiUser): Promise<number> {
+    try {
+      const common = await chatsApi.getCommonChatWithUser(peer.id);
+
+      if (Array.isArray(common) && common.length > 0) {
+        const chatId = common[0].id;
+
+        await this.loadChats();
+        markChatKind(chatId, "dm");
+
+        return chatId;
+      }
+    } catch (e) {
+      if (!(e instanceof ApiError && e.status === 404)) {
+        throw e;
+      }
+    }
+
+    const title =
+      peer.display_name?.trim() ||
+      `${peer.first_name} ${peer.second_name}`.trim() ||
+      peer.login;
+    const { id } = await chatsApi.create({ title });
+
+    await chatsApi.addUsers({ chatId: id, users: [peer.id] });
+    await this.loadChats();
+    markChatKind(id, "dm");
+
+    return id;
+  },
+
+  /** Группа: создать чат, добавить участников, опционально аватар */
+  async createGroupWithMembers(options: {
+    title: string;
+    userIds: number[];
+    avatarFile?: File | null;
+  }): Promise<number> {
+    const { title, userIds, avatarFile } = options;
+    const { id } = await chatsApi.create({ title });
+
+    if (userIds.length > 0) {
+      await chatsApi.addUsers({ chatId: id, users: userIds });
+    }
+
+    if (avatarFile) {
+      const fd = new FormData();
+
+      fd.append("chatId", String(id));
+      fd.append("avatar", avatarFile, avatarFile.name);
+      await chatsApi.uploadChatAvatar(fd);
+    }
+
+    await this.loadChats();
+    markChatKind(id, "group");
+
+    return id;
   },
 };

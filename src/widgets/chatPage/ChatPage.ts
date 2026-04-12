@@ -15,10 +15,12 @@ export interface ChatPageProps {
   peerName?: string;
   /** Лента сообщений; без передачи подставляется демо-лента */
   timeline?: ChatTimelineItem[];
+  showStatusDot?: boolean;
 }
 
 type ChatPageBlockProps = ChatPageProps & {
   peerName: string;
+  showStatusDot: boolean;
   timeline: ChatTimelineItem[];
   hasMessages: boolean;
   timelineRows: ReturnType<typeof mapChatTimelineToRows>;
@@ -64,6 +66,7 @@ export class ChatPage extends Block<ChatPageBlockProps> {
 
     super({
       peerName,
+      showStatusDot: props.showStatusDot ?? true,
       timeline,
       hasMessages,
       timelineRows,
