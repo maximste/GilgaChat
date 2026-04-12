@@ -15,5 +15,6 @@ export { cloneDeep } from "./object/cloneDeep";
 export { isEqual } from "./object/isEqual";
 export { isPlainObject, merge } from "./object/merge";
 export { set } from "./object/set";
-export { type QueryStringData,queryStringify } from "./string/queryStringify";
+export { escapeHtml } from "./string/escapeHtml";
+export { type QueryStringData, queryStringify } from "./string/queryStringify";
 export { trim } from "./string/trim";
