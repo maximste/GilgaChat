@@ -5,8 +5,30 @@
 
   <form id="editProfileForm" class="edit-profile__form" action="#" method="POST" enctype="multipart/form-data">
     <div class="edit-profile__field edit-profile__field--avatar">
-      <label class="edit-profile__label" for="editProfileAvatar">Avatar</label>
-      <input id="editProfileAvatar" class="edit-profile__input edit-profile__input--file" type="file" name="avatar" accept="image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp" />
+      <span class="edit-profile__label edit-profile__label--avatar" id="editProfileAvatarLabel">Avatar</span>
+      <div class="edit-profile__avatar-row">
+        <label
+          for="editProfileAvatar"
+          class="edit-profile__avatar-btn"
+          title="Upload avatar"
+          tabindex="0"
+        >
+          <input
+            id="editProfileAvatar"
+            class="edit-profile__avatar-input"
+            type="file"
+            name="avatar"
+            accept="image/jpeg,image/png,image/gif,image/webp"
+            hidden
+            aria-labelledby="editProfileAvatarLabel"
+          />
+          <span aria-hidden="true">↑</span>
+        </label>
+        <div class="edit-profile__avatar-meta">
+          <span class="edit-profile__avatar-hint">JPG, PNG</span>
+          <p class="edit-profile__avatar-filename" data-avatar-filename hidden></p>
+        </div>
+      </div>
     </div>
     {{{FormField className=loginFormField.className icon=loginFormField.icon label=loginFormField.label input=loginFormField.input}}}
     {{{FormField className=displayNameFormField.className icon=displayNameFormField.icon label=displayNameFormField.label input=displayNameFormField.input}}}

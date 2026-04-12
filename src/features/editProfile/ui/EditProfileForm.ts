@@ -253,6 +253,51 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
         this.callbacks.onCancel();
       }
     },
+    change: (event: Event) => {
+      const target = event.target;
+
+      if (
+        !(target instanceof HTMLInputElement) ||
+        target.id !== "editProfileAvatar"
+      ) {
+        return;
+      }
+
+      const root = this.element();
+      const nameEl = root?.querySelector<HTMLElement>("[data-avatar-filename]");
+
+      if (!nameEl) {
+        return;
+      }
+
+      const file = target.files?.[0];
+
+      if (file) {
+        nameEl.textContent = file.name;
+        nameEl.hidden = false;
+      } else {
+        nameEl.textContent = "";
+        nameEl.hidden = true;
+      }
+    },
+    keydown: (event: Event) => {
+      const e = event as KeyboardEvent;
+
+      if (e.key !== "Enter" && e.key !== " ") {
+        return;
+      }
+
+      const el = (e.target as HTMLElement).closest(".edit-profile__avatar-btn");
+
+      if (!el || !this.element()?.contains(el)) {
+        return;
+      }
+
+      e.preventDefault();
+      this.element()
+        ?.querySelector<HTMLInputElement>("#editProfileAvatar")
+        ?.click();
+    },
   };
 
   constructor(
