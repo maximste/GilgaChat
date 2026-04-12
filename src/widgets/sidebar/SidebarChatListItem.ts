@@ -16,6 +16,7 @@ export interface SidebarChatListItemProps {
   statusType?: SidebarStatusType;
   name?: string;
   iconClass?: string;
+  avatarUrl?: string;
 }
 
 type SidebarChatListItemBlockProps = SidebarChatListItemProps & {

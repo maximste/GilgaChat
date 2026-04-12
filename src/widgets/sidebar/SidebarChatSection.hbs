@@ -1,23 +1,27 @@
 <section class="messenger-sidebar__section">
-  <button type="button" class="messenger-sidebar__section-head" aria-expanded="true" data-section="{{sectionData}}">
-    {{title}}
+  <button type="button" class="messenger-sidebar__section-head" aria-expanded="true" aria-controls="sidebar-section-{{sectionData}}" id="sidebar-section-head-{{sectionData}}" data-section="{{sectionData}}">
+    <span class="messenger-sidebar__section-head-text">{{title}}</span>
+    <i class="fa-solid fa-chevron-down messenger-sidebar__section-chevron" aria-hidden="true"></i>
   </button>
-  <ul class="messenger-sidebar__list" role="list">
-    {{#each items}}
-      <li>
-        {{{SidebarChatListItem
-          chatId=chatId
-          isDmVariant=../isDmVariant
-          chatIdPrefix=../chatIdPrefix
-          index=@index
-          firstName=firstName
-          lastName=lastName
-          preview=preview
-          statusType=statusType
-          name=name
-          iconClass=iconClass
-        }}}
-      </li>
-    {{/each}}
-  </ul>
+  <div class="messenger-sidebar__section-body" id="sidebar-section-{{sectionData}}" role="region" aria-labelledby="sidebar-section-head-{{sectionData}}">
+    <ul class="messenger-sidebar__list" role="list">
+      {{#each items}}
+        <li>
+          {{{SidebarChatListItem
+            chatId=chatId
+            isDmVariant=../isDmVariant
+            chatIdPrefix=../chatIdPrefix
+            index=@index
+            firstName=firstName
+            lastName=lastName
+            preview=preview
+            statusType=statusType
+            name=name
+            iconClass=iconClass
+            avatarUrl=avatarUrl
+          }}}
+        </li>
+      {{/each}}
+    </ul>
+  </div>
 </section>
