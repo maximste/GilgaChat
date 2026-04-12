@@ -1,7 +1,8 @@
 import type { MessengerCreateDeps } from "./types";
-import { CreateDmModal } from "./ui/CreateDmModal";
-import { CreateGroupModal } from "./ui/CreateGroupModal";
+import { CreateDmForm } from "./ui/forms/CreateDmForm";
+import { CreateGroupForm } from "./ui/forms/CreateGroupForm";
 import { MessengerFab } from "./ui/MessengerFab";
+import { MessengerModalShell } from "./ui/MessengerModalShell";
 
 function ensureModalsRoot(layoutRoot: HTMLElement): HTMLElement {
   let el = layoutRoot.querySelector<HTMLElement>("[data-messenger-modals]");
@@ -21,8 +22,7 @@ export type SetupMessengerCreateUiOptions = MessengerCreateDeps & {
 };
 
 /**
- * FAB «+», меню Create DM / Create Group, модалки на Block.
- * Зависимости от API передаются со страницы (`@/app` не импортируется).
+ * FAB «+», меню Create DM / Create Group, модалки: shell + форма в body.
  */
 export function setupMessengerCreateUi(
   layoutRoot: HTMLElement,
@@ -42,27 +42,77 @@ export function setupMessengerCreateUi(
 
   const fab = new MessengerFab({
     onOpenDm: () => {
-      const modal = new CreateDmModal({
-        searchUsersByLogin: options.searchUsersByLogin,
-        openDmWithUser: options.openDmWithUser,
-        onDone: (chatId) => {
-          options.selectChat(String(chatId));
-        },
+      const shell = new MessengerModalShell({
+        title: "Create Direct Message",
+        subtitle: "Select a user to start a conversation with.",
+        modalClass: "messenger-modal--dm",
+        primaryLabel: "Create DM",
       });
 
-      modal.mount(modalsRoot);
+      const dmRef: { form: CreateDmForm | null } = { form: null };
+
+      const closeDm = (): void => {
+        dmRef.form?.destroy();
+        shell.element()?.remove();
+        shell.destroy();
+      };
+
+      dmRef.form = new CreateDmForm(
+        {
+          searchUsersByLogin: options.searchUsersByLogin,
+          openDmWithUser: options.openDmWithUser,
+          onDone: (chatId) => {
+            options.selectChat(String(chatId));
+          },
+          closeModal: closeDm,
+        },
+        shell,
+      );
+
+      shell.setHandlers({
+        onClose: closeDm,
+        onSubmit: () => void dmRef.form!.submit(),
+      });
+
+      shell.mount(modalsRoot);
+      shell.mountBody(dmRef.form.element()!);
     },
     onOpenGroup: () => {
-      const modal = new CreateGroupModal({
-        searchUsersByLogin: options.searchUsersByLogin,
-        createGroupWithMembers: options.createGroupWithMembers,
-        getProfileFromStore: options.getProfileFromStore,
-        onDone: (chatId) => {
-          options.selectChat(String(chatId));
-        },
+      const shell = new MessengerModalShell({
+        title: "Create Group",
+        subtitle: "Set up a new group chat with multiple members.",
+        modalClass: "messenger-modal--group",
+        primaryLabel: "Create Group",
       });
 
-      modal.mount(modalsRoot);
+      const groupRef: { form: CreateGroupForm | null } = { form: null };
+
+      const closeGroup = (): void => {
+        groupRef.form?.destroy();
+        shell.element()?.remove();
+        shell.destroy();
+      };
+
+      groupRef.form = new CreateGroupForm(
+        {
+          searchUsersByLogin: options.searchUsersByLogin,
+          createGroupWithMembers: options.createGroupWithMembers,
+          getProfileFromStore: options.getProfileFromStore,
+          onDone: (chatId) => {
+            options.selectChat(String(chatId));
+          },
+          closeModal: closeGroup,
+        },
+        shell,
+      );
+
+      shell.setHandlers({
+        onClose: closeGroup,
+        onSubmit: () => void groupRef.form!.submit(),
+      });
+
+      shell.mount(modalsRoot);
+      shell.mountBody(groupRef.form.element()!);
     },
   });
 

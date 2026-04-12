@@ -1,4 +1,5 @@
 @use "shared/styles/variables" as *;
+@use "shared/styles/buttons" as *;
 
 .messenger-modals {
   position: relative;
@@ -11,7 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: $spacing-16;
+  padding: $spacing-24;
   background-color: rgb(0 0 0 / 55%);
   inset: 0;
 }
@@ -25,32 +26,35 @@
   border: 1px solid $border-color-dark;
   border-radius: $border-radius-8;
   background-color: $background-color-on-surface-black;
-  box-shadow: 0 24px 48px rgb(0 0 0 / 40%);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
 }
 
 .messenger-modal__head {
   position: relative;
-  padding: $spacing-16 $spacing-16 $spacing-8;
+  flex-shrink: 0;
+  padding: $spacing-24 $spacing-32 $spacing-12;
 }
 
 .messenger-modal__title {
-  margin: 0 0 $spacing-4;
+  padding-right: $spacing-32;
+  margin: 0 0 $spacing-8;
   color: $text-color-primary;
   font-size: $font-size-24;
   font-weight: 700;
+  line-height: $line-height-32;
 }
 
 .messenger-modal__subtitle {
   margin: 0;
   color: $text-color-secondary;
   font-size: $font-size-14;
-  line-height: 1.4;
+  line-height: $line-height-20;
 }
 
 .messenger-modal__close {
   position: absolute;
-  top: $spacing-12;
-  right: $spacing-12;
+  top: $spacing-20;
+  right: $spacing-20;
   padding: $spacing-4;
   border: none;
   background: transparent;
@@ -70,49 +74,84 @@
   min-height: 0;
   flex: 1;
   flex-direction: column;
-  padding: 0 $spacing-16 $spacing-12;
-  gap: $spacing-12;
+  padding: 0 $spacing-32 $spacing-24;
+  gap: $gap-size-24;
 }
 
-.messenger-modal__footer {
+.messenger-modal__field {
   display: flex;
-  flex-shrink: 0;
-  justify-content: flex-end;
-  padding: $spacing-12 $spacing-16 $spacing-16;
-  border-top: 1px solid $border-color-dark;
-  gap: $spacing-8;
+  min-width: 0;
+  flex-direction: column;
+  gap: $gap-size-8;
+}
+
+.messenger-modal__field--grow {
+  min-width: 0;
+  flex: 1;
+}
+
+.messenger-modal__stack {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: $gap-size-12;
 }
 
 .messenger-modal__label {
-  display: block;
-  margin-bottom: $spacing-4;
-  color: $text-color-secondary;
-  font-size: $font-size-12;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  margin: 0;
+  color: $text-color-primary;
+  font-size: $font-size-14;
+  line-height: $line-height-20;
+}
+
+.messenger-modal__input-shell {
+  display: flex;
+  align-items: center;
+  border-radius: $border-radius-6;
+  background-color: $background-color-input;
+
+  &:focus-within {
+    outline: 1px solid $color-accent;
+    outline-offset: -1px;
+  }
 }
 
 .messenger-modal__input {
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
-  padding: $spacing-8 $spacing-10;
-  border: 1px solid $border-color-dark;
+  padding: $spacing-8 $spacing-16;
+  border: none;
   border-radius: $border-radius-6;
-  background-color: $background-color-input;
+  background-color: transparent;
   color: $text-color-primary;
   font-size: $font-size-14;
+  line-height: $line-height-20;
 
   &::placeholder {
     color: $text-color-placeholder;
   }
 
   &:focus {
-    outline: 2px solid $color-accent;
-    outline-offset: 0;
+    outline: none;
   }
 }
 
+.messenger-modal__footer {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  padding: $spacing-24 $spacing-32 $spacing-32;
+  border-top: 1px solid $border-color-dark;
+  gap: $gap-size-12;
+}
+
 .messenger-modal__user-list {
+  min-height: 0;
+  flex: 1;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -123,6 +162,7 @@
   padding: $spacing-12;
   color: $text-color-secondary;
   font-size: $font-size-14;
+  line-height: $line-height-20;
 }
 
 .messenger-modal__user-row {
@@ -172,6 +212,7 @@
   overflow: hidden;
   color: $text-color-primary;
   font-size: $font-size-14;
+  line-height: $line-height-20;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -179,6 +220,7 @@
 .messenger-modal__user-login {
   color: $text-color-secondary;
   font-size: $font-size-12;
+  line-height: $line-height-20;
 }
 
 .messenger-modal__check {
@@ -195,29 +237,28 @@
 }
 
 .messenger-modal__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: $spacing-8 $spacing-16;
   border-radius: $border-radius-6;
   cursor: pointer;
   font-size: $font-size-14;
+  line-height: $line-height-20;
+  text-decoration: none;
+  transition:
+    background-color 0.15s,
+    filter 0.15s;
 
   &--ghost {
-    border: 1px solid transparent;
-    background: transparent;
-    color: $text-color-secondary;
-
-    &:hover {
-      color: $text-color-primary;
-    }
+    @extend %btn-secondary;
   }
 
   &--primary {
+    min-width: 10rem;
     border: none;
-    background-color: $color-accent;
-    color: $text-color-primary;
 
-    &:hover:not(:disabled) {
-      background-color: $color-accent-dark;
-    }
+    @extend %btn-primary;
 
     &:disabled {
       cursor: not-allowed;
@@ -228,17 +269,15 @@
 
 .messenger-modal__avatar-row {
   display: flex;
-  align-items: center;
-  gap: $spacing-12;
-}
-
-.messenger-modal__avatar-row-field {
-  min-width: 0;
-  flex: 1;
+  flex-shrink: 0;
+  align-items: flex-end;
+  gap: $gap-size-12;
 }
 
 .messenger-modal__avatar-btn {
+  position: relative;
   display: flex;
+  overflow: hidden;
   width: 64px;
   height: 64px;
   flex-shrink: 0;
@@ -254,6 +293,21 @@
   &:hover {
     border-color: $color-accent;
   }
+}
+
+/* Не задавать display: block без учёта [hidden] — иначе перебиваем UA и виден пустой img. */
+.messenger-modal__avatar-preview {
+  position: absolute;
+  display: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  inset: 0;
+  object-fit: cover;
+}
+
+.messenger-modal__avatar-preview:not([hidden]) {
+  display: block;
 }
 
 .messenger-modal__chips {
@@ -282,4 +336,49 @@
   cursor: pointer;
   font-size: 1rem;
   line-height: 1;
+}
+
+.create-group-form,
+.create-dm-form {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: $gap-size-24;
+}
+
+.create-group-form__avatar-slot {
+  flex-shrink: 0;
+}
+
+.create-group-form__picker-slot,
+.create-dm-form__list-slot {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.group-member-picker {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: $gap-size-12;
+}
+
+.group-member-picker__mount {
+  display: block;
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Корень блока — сам `ul` (как DM), без вложенного flex-stack */
+.messenger-modal__user-list.group-member-pick-results__ul,
+.messenger-modal__user-list.dm-user-pick-results__ul {
+  min-height: min(28vh, 160px);
+  max-height: min(48vh, 320px);
+  flex: none;
+  overflow-y: auto;
 }

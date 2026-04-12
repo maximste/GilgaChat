@@ -1,0 +1,35 @@
+<div class="messenger-modal-backdrop" ref="backdrop">
+  <div
+    class="messenger-modal {{modalClass}}"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="messenger-modal-shell-title"
+  >
+    <div class="messenger-modal__head">
+      <h2 id="messenger-modal-shell-title" class="messenger-modal__title">{{title}}</h2>
+      {{#if subtitle}}
+        <p class="messenger-modal__subtitle">{{subtitle}}</p>
+      {{/if}}
+      <button type="button" class="messenger-modal__close" ref="closeBtn" aria-label="Close">&times;</button>
+    </div>
+    <div class="messenger-modal__body" ref="bodyMount"></div>
+    <div class="messenger-modal__footer">
+      <button
+        type="button"
+        class="messenger-modal__btn messenger-modal__btn--ghost"
+        ref="cancelBtn"
+        data-act="cancel"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="messenger-modal__btn messenger-modal__btn--primary"
+        ref="submitBtn"
+        data-act="submit"
+      >
+        {{primaryLabel}}
+      </button>
+    </div>
+  </div>
+</div>
