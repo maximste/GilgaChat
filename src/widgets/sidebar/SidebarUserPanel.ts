@@ -15,6 +15,7 @@ export interface SidebarUserPanelProps {
 type SidebarUserPanelBlockProps = SidebarUserPanelProps & {
   displayName: string;
   statusLine: string;
+  avatarUrl?: string;
   settingsHref: string;
   settingsAriaLabel: string;
 } & BlockOwnProps;
@@ -25,12 +26,13 @@ class SidebarUserPanel extends Block<SidebarUserPanelBlockProps> {
   protected template = template;
 
   constructor(props: SidebarUserPanelProps) {
-    const { firstName, lastName, status } = props.currentUser;
+    const { firstName, lastName, status, avatarUrl } = props.currentUser;
 
     super({
       ...props,
       displayName: `${firstName} ${lastName}`.trim(),
       statusLine: status,
+      avatarUrl,
       settingsHref: props.settingsHref ?? appHref(APP_PATHS.settings),
       settingsAriaLabel: props.settingsAriaLabel ?? "Settings",
     } as SidebarUserPanelBlockProps);
