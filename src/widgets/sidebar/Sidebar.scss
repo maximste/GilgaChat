@@ -2,6 +2,7 @@
 @use "shared/ui/sidebar/sidebarStatusDot";
 
 .messenger-sidebar {
+  position: relative;
   display: flex;
   width: 280px;
   min-width: 280px;
@@ -17,26 +18,4 @@
   flex: 1;
   padding: 0 $spacing-12 $spacing-12;
   overflow-y: auto;
-}
-
-.messenger-sidebar__tools {
-  display: flex;
-  flex-direction: column;
-  padding: 0 $spacing-12 $spacing-8;
-  gap: $spacing-4;
-}
-
-.messenger-sidebar__tool-btn {
-  padding: $spacing-6 $spacing-8;
-  border: 1px solid $border-color-dark;
-  border-radius: 6px;
-  background: transparent;
-  color: $text-color-secondary;
-  cursor: pointer;
-  font-size: $font-size-12;
-  text-align: left;
-
-  &:hover {
-    color: $text-color-primary;
-  }
 }

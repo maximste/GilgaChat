@@ -1,9 +1,9 @@
 <div class="messenger-sidebar__top">
-  <nav class="messenger-sidebar__top-links">
-    {{#each topLinks}}
-      {{{Link text=text href=href className=className}}}
-    {{/each}}
-  </nav>
-  {{{Button type="button" text=appTitle className="messenger-sidebar__app-title" ariaHaspopup="listbox" ariaExpanded="false" rightSection=appTitleRightSection}}}
+  <div class="messenger-sidebar__brand">
+    <span class="messenger-sidebar__brand-icon-wrap">
+      <img src="images/logo.png" alt="" class="messenger-sidebar__brand-icon" width="40" height="40" />
+    </span>
+    <h2 class="messenger-sidebar__brand-title">{{appTitle}}</h2>
+  </div>
   {{{Search placeholder=searchPlaceholder ariaLabel=searchAriaLabel}}}
 </div>

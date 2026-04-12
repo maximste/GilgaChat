@@ -1,4 +1,3 @@
-import { APP_PATHS, appHref } from "@/shared/config/routes";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 import type {
   DirectMessageItem,
@@ -17,29 +16,6 @@ export interface MessengerLayoutProps extends SidebarProps {
 }
 
 type MessengerLayoutBlockProps = MessengerLayoutProps & BlockOwnProps;
-
-const defaultTopLinks: SidebarProps["topLinks"] = [
-  {
-    href: appHref(APP_PATHS.login),
-    text: "Sign in",
-    className: "messenger-sidebar__top-link",
-  },
-  {
-    href: appHref(APP_PATHS.signUp),
-    text: "Sign up",
-    className: "messenger-sidebar__top-link",
-  },
-  {
-    href: appHref(APP_PATHS.notFound),
-    text: "404",
-    className: "messenger-sidebar__top-link",
-  },
-  {
-    href: appHref(APP_PATHS.serverError),
-    text: "500",
-    className: "messenger-sidebar__top-link",
-  },
-];
 
 const defaultDirectMessages: DirectMessageItem[] = [
   {
@@ -74,8 +50,7 @@ class MessengerLayout extends Block<MessengerLayoutBlockProps> {
 
   constructor(props: Partial<MessengerLayoutProps> = {}) {
     super({
-      appTitle: props.appTitle ?? "Messenger",
-      topLinks: props.topLinks ?? defaultTopLinks,
+      appTitle: props.appTitle ?? "GilgaChat",
       currentUser: props.currentUser ?? {
         firstName: "Alex",
         lastName: "Morgan",

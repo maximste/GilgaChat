@@ -1,4 +1,3 @@
-import type { LinkProps } from "@/shared/lib/types";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./SidebarHeader.hbs?raw";
@@ -6,9 +5,7 @@ import template from "./SidebarHeader.hbs?raw";
 import "./SidebarHeader.scss";
 
 export interface SidebarHeaderProps {
-  topLinks: LinkProps[];
   appTitle: string;
-  appTitleRightSection: string;
   searchPlaceholder?: string;
   searchAriaLabel?: string;
 }
