@@ -1,0 +1,95 @@
+<div class="messenger-modal-backdrop" ref="backdrop">
+  <div
+    class="messenger-modal messenger-modal--group"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="messenger-group-title"
+  >
+    <div class="messenger-modal__head">
+      <h2 id="messenger-group-title" class="messenger-modal__title">Create Group</h2>
+      <p class="messenger-modal__subtitle">Set up a new group chat with multiple members.</p>
+      <button type="button" class="messenger-modal__close" ref="closeHeadBtn" aria-label="Close">&times;</button>
+    </div>
+    <div class="messenger-modal__body">
+      <div class="messenger-modal__avatar-row">
+        <label class="messenger-modal__avatar-btn" title="Group avatar" tabindex="0" ref="avatarLabel">
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/gif,image/webp"
+            class="messenger-modal__avatar-input"
+            ref="avatarInput"
+            hidden
+          />
+          <span aria-hidden="true">↑</span>
+        </label>
+        <div class="messenger-modal__avatar-row-field">
+          <label class="messenger-modal__label" for="group-name">Group name</label>
+          <input
+            type="text"
+            id="group-name"
+            class="messenger-modal__input"
+            placeholder="Enter group name..."
+            autocomplete="off"
+            ref="nameInput"
+          />
+        </div>
+      </div>
+      <div>
+        <span class="messenger-modal__label" id="members-label" ref="membersLabel">{{membersLabelText}}</span>
+        <input
+          type="text"
+          class="messenger-modal__input"
+          id="group-member-search"
+          placeholder="Search users..."
+          autocomplete="off"
+          aria-labelledby="members-label"
+          ref="memberSearchInput"
+        />
+        <div class="messenger-modal__chips" ref="chipsHost">
+          {{#each chips}}
+            <span class="messenger-modal__chip">
+              {{label}}
+              <button
+                type="button"
+                class="messenger-modal__chip-remove"
+                data-chip-remove="{{id}}"
+                aria-label="Remove"
+              >&times;</button>
+            </span>
+          {{/each}}
+        </div>
+        <ul class="messenger-modal__user-list" role="listbox">
+          {{#if showMemberHintOnly}}
+            <li class="messenger-modal__hint">{{memberListHint}}</li>
+          {{else}}
+            {{#each memberRows}}
+              <li
+                class="messenger-modal__user-row{{#if picked}} messenger-modal__user-row--picked{{/if}}"
+                data-member-id="{{id}}"
+              >
+                <span class="messenger-modal__user-dot messenger-modal__user-dot--gray" aria-hidden="true"></span>
+                <span class="messenger-modal__user-meta">
+                  <span class="messenger-modal__user-name">{{displayName}}</span>
+                  <span class="messenger-modal__user-login">@{{login}}</span>
+                </span>
+                <span class="messenger-modal__check" aria-hidden="true">{{#if picked}}✓{{/if}}</span>
+              </li>
+            {{/each}}
+            {{#unless memberRows.length}}
+              <li class="messenger-modal__hint">No users.</li>
+            {{/unless}}
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+    <div class="messenger-modal__footer">
+      <button type="button" class="messenger-modal__btn messenger-modal__btn--ghost" data-act="cancel">Cancel</button>
+      <button
+        type="button"
+        class="messenger-modal__btn messenger-modal__btn--primary"
+        data-act="submit"
+        {{#if submitDisabled}}disabled{{/if}}
+      >Create Group</button>
+    </div>
+  </div>
+</div>

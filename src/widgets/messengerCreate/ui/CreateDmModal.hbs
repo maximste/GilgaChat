@@ -1,0 +1,58 @@
+<div class="messenger-modal-backdrop" ref="backdrop">
+  <div
+    class="messenger-modal messenger-modal--dm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="messenger-dm-title"
+  >
+    <div class="messenger-modal__head">
+      <h2 id="messenger-dm-title" class="messenger-modal__title">Create Direct Message</h2>
+      <p class="messenger-modal__subtitle">Select a user to start a conversation with.</p>
+      <button type="button" class="messenger-modal__close" ref="closeHeadBtn" aria-label="Close">&times;</button>
+    </div>
+    <div class="messenger-modal__body">
+      <div>
+        <label class="messenger-modal__label" for="dm-search">Search by login</label>
+        <input
+          type="text"
+          id="dm-search"
+          class="messenger-modal__input"
+          placeholder="Search users..."
+          autocomplete="off"
+          ref="searchInput"
+        />
+      </div>
+      <ul class="messenger-modal__user-list" role="listbox" aria-label="Search results">
+        {{#if showHintOnly}}
+          <li class="messenger-modal__hint">{{listHint}}</li>
+        {{else}}
+          {{#each users}}
+            <li
+              class="messenger-modal__user-row{{#if active}} messenger-modal__user-row--active{{/if}}"
+              role="option"
+              data-user-id="{{id}}"
+            >
+              <span class="messenger-modal__user-dot messenger-modal__user-dot--gray" aria-hidden="true"></span>
+              <span class="messenger-modal__user-meta">
+                <span class="messenger-modal__user-name">{{displayName}}</span>
+                <span class="messenger-modal__user-login">@{{login}}</span>
+              </span>
+            </li>
+          {{/each}}
+          {{#unless users.length}}
+            <li class="messenger-modal__hint">No users found.</li>
+          {{/unless}}
+        {{/if}}
+      </ul>
+    </div>
+    <div class="messenger-modal__footer">
+      <button type="button" class="messenger-modal__btn messenger-modal__btn--ghost" data-act="cancel">Cancel</button>
+      <button
+        type="button"
+        class="messenger-modal__btn messenger-modal__btn--primary"
+        data-act="submit"
+        {{#if submitDisabled}}disabled{{/if}}
+      >Create DM</button>
+    </div>
+  </div>
+</div>

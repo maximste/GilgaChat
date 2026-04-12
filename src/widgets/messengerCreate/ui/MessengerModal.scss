@@ -1,0 +1,285 @@
+@use "shared/styles/variables" as *;
+
+.messenger-modals {
+  position: relative;
+  z-index: 50;
+}
+
+.messenger-modal-backdrop {
+  position: fixed;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-16;
+  background-color: rgb(0 0 0 / 55%);
+  inset: 0;
+}
+
+.messenger-modal {
+  display: flex;
+  width: 100%;
+  max-width: 420px;
+  max-height: min(90vh, 560px);
+  flex-direction: column;
+  border: 1px solid $border-color-dark;
+  border-radius: $border-radius-8;
+  background-color: $background-color-on-surface-black;
+  box-shadow: 0 24px 48px rgb(0 0 0 / 40%);
+}
+
+.messenger-modal__head {
+  position: relative;
+  padding: $spacing-16 $spacing-16 $spacing-8;
+}
+
+.messenger-modal__title {
+  margin: 0 0 $spacing-4;
+  color: $text-color-primary;
+  font-size: $font-size-24;
+  font-weight: 700;
+}
+
+.messenger-modal__subtitle {
+  margin: 0;
+  color: $text-color-secondary;
+  font-size: $font-size-14;
+  line-height: 1.4;
+}
+
+.messenger-modal__close {
+  position: absolute;
+  top: $spacing-12;
+  right: $spacing-12;
+  padding: $spacing-4;
+  border: none;
+  background: transparent;
+  color: $text-color-secondary;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+
+  &:hover {
+    color: $text-color-primary;
+  }
+}
+
+.messenger-modal__body {
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  padding: 0 $spacing-16 $spacing-12;
+  gap: $spacing-12;
+}
+
+.messenger-modal__footer {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: flex-end;
+  padding: $spacing-12 $spacing-16 $spacing-16;
+  border-top: 1px solid $border-color-dark;
+  gap: $spacing-8;
+}
+
+.messenger-modal__label {
+  display: block;
+  margin-bottom: $spacing-4;
+  color: $text-color-secondary;
+  font-size: $font-size-12;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.messenger-modal__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: $spacing-8 $spacing-10;
+  border: 1px solid $border-color-dark;
+  border-radius: $border-radius-6;
+  background-color: $background-color-input;
+  color: $text-color-primary;
+  font-size: $font-size-14;
+
+  &::placeholder {
+    color: $text-color-placeholder;
+  }
+
+  &:focus {
+    outline: 2px solid $color-accent;
+    outline-offset: 0;
+  }
+}
+
+.messenger-modal__user-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.messenger-modal__hint {
+  padding: $spacing-12;
+  color: $text-color-secondary;
+  font-size: $font-size-14;
+}
+
+.messenger-modal__user-row {
+  display: flex;
+  align-items: center;
+  padding: $spacing-10 $spacing-8;
+  border-radius: $border-radius-6;
+  cursor: pointer;
+  gap: $spacing-10;
+
+  &:hover {
+    background-color: $background-color-surface;
+  }
+
+  &--active {
+    background-color: rgb(88 101 242 / 22%);
+  }
+}
+
+.messenger-modal__user-row--picked {
+  .messenger-modal__check {
+    opacity: 1;
+  }
+}
+
+.messenger-modal__user-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: $color-muted;
+
+  &--gray {
+    background-color: $color-muted;
+  }
+}
+
+.messenger-modal__user-meta {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.messenger-modal__user-name {
+  overflow: hidden;
+  color: $text-color-primary;
+  font-size: $font-size-14;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.messenger-modal__user-login {
+  color: $text-color-secondary;
+  font-size: $font-size-12;
+}
+
+.messenger-modal__check {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: $color-accent;
+  color: $text-color-primary;
+  font-size: $font-size-12;
+  line-height: 22px;
+  opacity: 0;
+  text-align: center;
+}
+
+.messenger-modal__btn {
+  padding: $spacing-8 $spacing-16;
+  border-radius: $border-radius-6;
+  cursor: pointer;
+  font-size: $font-size-14;
+
+  &--ghost {
+    border: 1px solid transparent;
+    background: transparent;
+    color: $text-color-secondary;
+
+    &:hover {
+      color: $text-color-primary;
+    }
+  }
+
+  &--primary {
+    border: none;
+    background-color: $color-accent;
+    color: $text-color-primary;
+
+    &:hover:not(:disabled) {
+      background-color: $color-accent-dark;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+  }
+}
+
+.messenger-modal__avatar-row {
+  display: flex;
+  align-items: center;
+  gap: $spacing-12;
+}
+
+.messenger-modal__avatar-row-field {
+  min-width: 0;
+  flex: 1;
+}
+
+.messenger-modal__avatar-btn {
+  display: flex;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed $border-color-dark;
+  border-radius: 50%;
+  background-color: $background-color-input;
+  color: $color-accent;
+  cursor: pointer;
+  font-size: $font-size-24;
+
+  &:hover {
+    border-color: $color-accent;
+  }
+}
+
+.messenger-modal__chips {
+  display: flex;
+  min-height: 28px;
+  flex-wrap: wrap;
+  gap: $spacing-4;
+}
+
+.messenger-modal__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-4 $spacing-8;
+  border-radius: 999px;
+  background-color: rgb(88 101 242 / 25%);
+  color: $text-color-primary;
+  font-size: $font-size-12;
+  gap: $spacing-4;
+}
+
+.messenger-modal__chip-remove {
+  padding: 0 $spacing-4;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
