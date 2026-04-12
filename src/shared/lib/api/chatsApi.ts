@@ -33,4 +33,15 @@ export const chatsApi = {
   removeUsers(data: ChatsUsersRequest): Promise<unknown> {
     return apiDelete("/chats/users", data);
   },
+
+  /**
+   * Общий чат с пользователем `userId` (двусторонний). Path-параметр — id другого пользователя.
+   */
+  getCommonChatWithUser(userId: number): Promise<ApiChat[]> {
+    return apiGet<ApiChat[]>(`/chats/${userId}/common`);
+  },
+
+  uploadChatAvatar(formData: FormData): Promise<ApiChat> {
+    return apiPut<ApiChat>("/chats/avatar", formData);
+  },
 };
