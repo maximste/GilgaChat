@@ -1,23 +1,46 @@
-import { MOCK_MESSENGER_CHATS } from "@/shared/lib/mocks";
+import {
+  chatsController,
+  getProfileFromStore,
+  searchUsersByLogin,
+} from "@/app/controllers";
+import { createDemoChatTimeline } from "@/shared/lib/mocks";
 import type { Block } from "@/shared/ui/block";
 import { ChatPage } from "@/widgets/chatPage";
+import { setupMessengerCreateUi } from "@/widgets/messengerCreate";
 import { NoChatStub } from "@/widgets/noChatStub";
 import {
   SIDEBAR_SELECT_CHAT_EVENT,
   type SidebarSelectChatDetail,
 } from "@/widgets/sidebar";
 
-/** Монтирует правую колонку: заглушка без выбора, по клику — чат или заглушка «нет сообщений». */
-export function setupMessengerChatPage(): void {
-  const contentEl = document.getElementById("messenger-content");
-  const layout = document.querySelector<HTMLElement>(".messenger-layout");
+export { setupMessengerCreateUi } from "@/widgets/messengerCreate";
 
-  if (!contentEl || !layout) {
-    return;
+/**
+ * Монтирует правую колонку: заглушка без выбора, по клику — чат или заглушка «нет сообщений».
+ *
+ * @param layoutRoot Корень `MessengerLayout` (`.messenger-layout`). Нужен явно: `componentDidMount`
+ * срабатывает до вставки блока в `document`, поэтому `document.getElementById` в этот момент не находит `#messenger-content`.
+ */
+export function setupMessengerChatPage(layoutRoot: HTMLElement): {
+  selectChat: (chatId: string) => void;
+} {
+  const noop = (): void => {};
+  const contentEl = layoutRoot.querySelector("#messenger-content");
+
+  if (!(contentEl instanceof HTMLElement)) {
+    return { selectChat: noop };
   }
 
+  const maybeSidebar = layoutRoot.classList.contains("messenger-layout")
+    ? layoutRoot
+    : layoutRoot.querySelector<HTMLElement>(".messenger-layout");
+
+  if (!maybeSidebar) {
+    return { selectChat: noop };
+  }
+
+  const sidebar = maybeSidebar;
   const mainEl = contentEl;
-  const sidebarEl = layout;
 
   let currentBlock: Block | null = null;
 
@@ -32,13 +55,13 @@ export function setupMessengerChatPage(): void {
   }
 
   function setActiveItem(chatId: string): void {
-    sidebarEl
+    sidebar
       .querySelectorAll(".messenger-sidebar__item--active")
       .forEach((node) => {
         node.classList.remove("messenger-sidebar__item--active");
       });
 
-    const item = sidebarEl.querySelector<HTMLButtonElement>(
+    const item = sidebar.querySelector<HTMLButtonElement>(
       `.messenger-sidebar__item[data-chat="${CSS.escape(chatId)}"]`,
     );
 
@@ -47,9 +70,23 @@ export function setupMessengerChatPage(): void {
 
   function selectChat(chatId: string): void {
     setActiveItem(chatId);
-    const meta = MOCK_MESSENGER_CHATS[chatId];
+    const idNum = Number(chatId);
 
-    if (!meta) {
+    if (Number.isNaN(idNum)) {
+      mount(
+        new NoChatStub({
+          title: "Чат не найден",
+          description: "Выберите другой диалог в списке слева.",
+          fillVertical: true,
+        }),
+      );
+
+      return;
+    }
+
+    const chat = chatsController.findChatById(idNum);
+
+    if (!chat) {
       mount(
         new NoChatStub({
           title: "Чат не найден",
@@ -63,8 +100,9 @@ export function setupMessengerChatPage(): void {
 
     mount(
       new ChatPage(mainEl, {
-        peerName: meta.peerName,
-        timeline: meta.timeline,
+        peerName: chat.title,
+        timeline: createDemoChatTimeline(chat.title),
+        showStatusDot: chatsController.chatHeaderShowsStatusDot(idNum),
       }),
     );
   }
@@ -77,11 +115,22 @@ export function setupMessengerChatPage(): void {
     }),
   );
 
-  sidebarEl.addEventListener(SIDEBAR_SELECT_CHAT_EVENT, (event: Event) => {
+  sidebar.addEventListener(SIDEBAR_SELECT_CHAT_EVENT, (event: Event) => {
     const { chatId } = (event as CustomEvent<SidebarSelectChatDetail>).detail;
 
     if (chatId) {
       selectChat(chatId);
     }
   });
+
+  setupMessengerCreateUi(layoutRoot, {
+    selectChat,
+    searchUsersByLogin,
+    openDmWithUser: (user) => chatsController.openDmWithUser(user),
+    createGroupWithMembers: (opts) =>
+      chatsController.createGroupWithMembers(opts),
+    getProfileFromStore,
+  });
+
+  return { selectChat };
 }

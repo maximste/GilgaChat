@@ -1,15 +1,14 @@
+import { APP_PATHS, appHref } from "@/shared/config/routes";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./ServerErrorPage.hbs?raw";
 
 import "./ServerErrorPage.scss";
 
-type ServerErrorPageBlockProps = BlockOwnProps;
+type ServerErrorPageBlockProps = BlockOwnProps & { homeHref: string };
 
 export class ServerErrorPage extends Block<ServerErrorPageBlockProps> {
   protected template = template;
-
-  private container: HTMLElement;
 
   protected events = {
     click: (event: Event) => {
@@ -17,28 +16,13 @@ export class ServerErrorPage extends Block<ServerErrorPageBlockProps> {
 
       if (target.closest("[data-try-again]")) {
         window.location.reload();
-
-        return;
-      }
-
-      if (target.closest("[data-go-home]")) {
-        event.preventDefault();
-        window.location.hash = "";
       }
     },
   };
 
-  constructor(container: HTMLElement) {
-    super({} as ServerErrorPageBlockProps);
-    this.container = container;
-  }
-
-  public render(): void {
-    super.render();
-    const root = this.element();
-
-    if (root) {
-      this.container.replaceChildren(root);
-    }
+  constructor() {
+    super({
+      homeHref: appHref(APP_PATHS.messenger),
+    } as ServerErrorPageBlockProps);
   }
 }

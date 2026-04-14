@@ -12,7 +12,7 @@ import {
 } from "./fieldValidators";
 
 const authFormValidators: Record<string, FieldValidator> = {
-  email: (v) => validateEmail(v),
+  login: (v) => validateLogin(v),
   password: (v) => validatePassword(v),
 };
 

@@ -2,8 +2,8 @@ type ValuesBag = Record<string, string>;
 
 type FieldValidator = (value: string, values: ValuesBag) => string | null;
 
-const NAME_LATIN = /^[A-Z][a-z]*(?:-[a-z]+)*$/;
-const NAME_CYR = /^[А-ЯЁ][а-яё]*(?:-[а-яё]+)*$/;
+const NAME_LATIN = /^[a-zA-Z]+(?:-[a-zA-Z]+)*$/;
+const NAME_CYR = /^[а-яёА-ЯЁ]+(?:-[а-яёА-ЯЁ]+)*$/;
 
 function validatePersonalName(value: string): string | null {
   const v = value.trim();
@@ -11,7 +11,7 @@ function validatePersonalName(value: string): string | null {
   if (!v) return "Обязательное поле";
   if (NAME_LATIN.test(v) || NAME_CYR.test(v)) return null;
 
-  return "Имя: латиница или кириллица, с заглавной буквы, без пробелов и цифр, допустим дефис";
+  return "Имя: латиница или кириллица, без пробелов и цифр, допустим дефис";
 }
 
 /** login: 3–20, латиница, цифры/дефис/_, не только цифры, без пробелов */

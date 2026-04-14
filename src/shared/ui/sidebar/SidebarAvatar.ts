@@ -9,12 +9,15 @@ export type SidebarAvatarVariant = "user" | "icon";
 export interface SidebarAvatarProps {
   variant: SidebarAvatarVariant;
   size: SidebarAvatarSize;
+  /** Для variant=user: URL фото; иначе плейсхолдер. */
+  avatarUrl?: string;
   /** Для variant=icon: класс иконки FA без префикса fa-solid */
   iconClass?: string;
 }
 
 type SidebarAvatarBlockProps = SidebarAvatarProps & {
   isUserVariant: boolean;
+  hasUserAvatar: boolean;
   rootClassName: string;
 } & BlockOwnProps;
 
@@ -43,6 +46,7 @@ class SidebarAvatar extends Block<SidebarAvatarBlockProps> {
       ...props,
       iconClass: props.iconClass ?? "",
       isUserVariant: props.variant === "user",
+      hasUserAvatar: Boolean(props.avatarUrl?.trim()),
       rootClassName: resolveAvatarClass(props.variant, props.size),
     } as SidebarAvatarBlockProps);
   }

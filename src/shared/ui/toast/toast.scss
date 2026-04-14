@@ -1,0 +1,103 @@
+@use "shared/styles/variables" as *;
+
+/* stylelint-disable order/properties-order, order/properties-alphabetical-order -- конфликт idiomatic vs alphabetical в конфиге */
+
+.gilga-toast-stack {
+  position: fixed;
+  z-index: 300;
+  top: $spacing-16;
+  right: $spacing-16;
+  display: flex;
+  max-width: min(360px, calc(100vw - #{$spacing-32}));
+  flex-direction: column;
+  align-items: flex-end;
+  gap: $spacing-8;
+  pointer-events: none;
+
+  .gilga-toast {
+    pointer-events: auto;
+  }
+}
+
+.gilga-toast {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: $spacing-12;
+  padding: $spacing-12 $spacing-16;
+  border: 1px solid $border-color-dark;
+  border-radius: $border-radius-8;
+  animation: gilga-toast-in 0.2s ease-out;
+  background-color: $background-color-on-surface-black;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 45%);
+
+  &--error {
+    border-color: color-mix(in srgb, $color-danger 55%, $border-color-dark);
+    background-color: color-mix(
+      in srgb,
+      $color-danger 12%,
+      $background-color-on-surface-black
+    );
+  }
+
+  &--out {
+    animation: gilga-toast-out 0.2s ease-in forwards;
+  }
+}
+
+.gilga-toast__message {
+  flex: 1;
+  margin: 0;
+  color: $text-color-primary;
+  font-size: $font-size-14;
+  line-height: $line-height-20;
+  overflow-wrap: anywhere;
+}
+
+.gilga-toast__close {
+  flex-shrink: 0;
+  padding: 0 $spacing-4;
+  border: none;
+  background: none;
+  color: $text-color-secondary;
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+
+  &:hover {
+    color: $text-color-primary;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 2px;
+  }
+}
+
+@keyframes gilga-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes gilga-toast-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+}

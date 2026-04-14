@@ -1,9 +1,6 @@
 import { createDemoChatTimeline } from "@/shared/lib/mocks";
 import type { ChatTimelineItem } from "@/shared/lib/types/ChatTimelineTypes";
-import {
-  mapChatTimelineToRows,
-  timelineHasMessages,
-} from "@/shared/lib/utils/chatTimeline";
+import { mapChatTimelineToRows, timelineHasMessages } from "@/shared/lib/utils";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import {
@@ -18,10 +15,12 @@ export interface ChatPageProps {
   peerName?: string;
   /** Лента сообщений; без передачи подставляется демо-лента */
   timeline?: ChatTimelineItem[];
+  showStatusDot?: boolean;
 }
 
 type ChatPageBlockProps = ChatPageProps & {
   peerName: string;
+  showStatusDot: boolean;
   timeline: ChatTimelineItem[];
   hasMessages: boolean;
   timelineRows: ReturnType<typeof mapChatTimelineToRows>;
@@ -67,6 +66,7 @@ export class ChatPage extends Block<ChatPageBlockProps> {
 
     super({
       peerName,
+      showStatusDot: props.showStatusDot ?? true,
       timeline,
       hasMessages,
       timelineRows,

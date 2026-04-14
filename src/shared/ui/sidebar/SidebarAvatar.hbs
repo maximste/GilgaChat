@@ -1,5 +1,9 @@
 {{#if isUserVariant}}
-  <span class="{{rootClassName}}" aria-hidden="true"></span>
+  <span class="{{rootClassName}}" aria-hidden="true">
+    {{#if hasUserAvatar}}
+      <img class="messenger-sidebar__avatar-img" src="{{avatarUrl}}" alt="" />
+    {{/if}}
+  </span>
 {{else}}
   <span class="{{rootClassName}}" aria-hidden="true">
     <i class="fa-solid {{iconClass}}" aria-hidden="true"></i>

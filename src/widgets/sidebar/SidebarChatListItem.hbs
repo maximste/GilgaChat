@@ -6,7 +6,11 @@
       {{{SidebarSecondaryLine text=previewLine}}}
     </div>
   {{else}}
-    {{{SidebarAvatar variant="icon" size="list" iconClass=iconClass}}}
+    {{#if avatarUrl}}
+      {{{SidebarAvatar variant="user" size="list" avatarUrl=avatarUrl}}}
+    {{else}}
+      {{{SidebarAvatar variant="icon" size="list" iconClass=iconClass}}}
+    {{/if}}
     <div class="messenger-sidebar__item-info">
       {{{SidebarPrimaryLine text=primaryLineText wrapClassName="messenger-sidebar__item-name"}}}
       {{{SidebarSecondaryLine text=previewLine}}}
