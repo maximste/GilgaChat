@@ -7,3 +7,4 @@ export { Link } from "./link";
 export { Search, type SearchProps } from "./search";
 export * from "./sidebar";
 export { Textarea, TextareaTemplate } from "./textarea";
+export { showErrorToast } from "./toast";
