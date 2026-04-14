@@ -9,6 +9,7 @@ import type {
   GetChatUsersQuery,
 } from "@/shared/lib/api/types";
 import { store } from "@/shared/lib/store";
+import { HttpStatus } from "@/shared/lib/utils";
 
 export type ChatKind = "dm" | "group";
 
@@ -102,7 +103,7 @@ export const chatsController = {
     try {
       return await chatsApi.getChatUsers(chatId, query);
     } catch (e) {
-      if (e instanceof ApiError && e.status === 404) {
+      if (e instanceof ApiError && e.status === HttpStatus.NotFound) {
         return [];
       }
 
@@ -136,7 +137,7 @@ export const chatsController = {
         return chatId;
       }
     } catch (e) {
-      if (!(e instanceof ApiError && e.status === 404)) {
+      if (!(e instanceof ApiError && e.status === HttpStatus.NotFound)) {
         throw e;
       }
     }

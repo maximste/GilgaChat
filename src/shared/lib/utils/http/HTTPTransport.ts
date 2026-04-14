@@ -1,4 +1,5 @@
 import { type QueryStringData, queryStringify } from "../string/queryStringify";
+import { HttpStatus } from "./httpStatus";
 
 const METHODS = {
   GET: "GET",
@@ -91,7 +92,10 @@ class HTTPTransport {
       });
 
       xhr.onload = function () {
-        if (xhr.status >= 200 && xhr.status < 300) {
+        if (
+          xhr.status >= HttpStatus.Ok &&
+          xhr.status < HttpStatus.MultipleChoices
+        ) {
           let response: unknown;
 
           if (xhr.responseType) {
