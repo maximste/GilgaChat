@@ -1,0 +1,30 @@
+@use "shared/styles/variables" as *;
+
+.group-member-picker__dropdown-anchor {
+  min-width: 0;
+}
+
+.group-member-picker__dropdown-panel {
+  position: fixed;
+  z-index: 110;
+  max-height: min(40vh, 280px);
+  box-sizing: border-box;
+  padding: 0;
+  border: 1px solid $border-color-dark;
+  border-radius: $border-radius-6;
+  margin: 0;
+  background-color: $background-color-on-surface-black;
+  box-shadow: 0 16px 40px rgb(0 0 0 / 45%);
+  overflow: hidden auto;
+
+  &[hidden] {
+    display: none;
+  }
+
+  .messenger-modal__user-list.group-member-pick-results__ul {
+    min-height: 0;
+    max-height: none;
+    padding: 0;
+    margin: 0;
+  }
+}
