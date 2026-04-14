@@ -1,12 +1,15 @@
 import { ApiError, chatsApi } from "@/shared/lib/api";
 import type {
   ApiChat,
+  ApiChatMember,
   ApiUser,
   ChatsUsersRequest,
   CreateChatRequest,
   DeleteChatRequest,
+  GetChatUsersQuery,
 } from "@/shared/lib/api/types";
 import { store } from "@/shared/lib/store";
+import { HttpStatus } from "@/shared/lib/utils";
 
 export type ChatKind = "dm" | "group";
 
@@ -62,6 +65,14 @@ export const chatsController = {
     return kind !== "group";
   },
 
+  isGroupChat(chatId: number): boolean {
+    const kind = (store.getState().chats as ChatsSlice | undefined)?.kindById?.[
+      chatId
+    ];
+
+    return kind !== "dm";
+  },
+
   async createChat(data: CreateChatRequest): Promise<number> {
     const { id } = await chatsApi.create(data);
 
@@ -83,6 +94,21 @@ export const chatsController = {
   async removeUsersFromChat(data: ChatsUsersRequest): Promise<void> {
     await chatsApi.removeUsers(data);
     await this.loadChats();
+  },
+
+  async getChatUsers(
+    chatId: number,
+    query?: GetChatUsersQuery,
+  ): Promise<ApiChatMember[]> {
+    try {
+      return await chatsApi.getChatUsers(chatId, query);
+    } catch (e) {
+      if (e instanceof ApiError && e.status === HttpStatus.NotFound) {
+        return [];
+      }
+
+      throw e;
+    }
   },
 
   getChatsFromStore(): ApiChat[] {
@@ -111,7 +137,7 @@ export const chatsController = {
         return chatId;
       }
     } catch (e) {
-      if (!(e instanceof ApiError && e.status === 404)) {
+      if (!(e instanceof ApiError && e.status === HttpStatus.NotFound)) {
         throw e;
       }
     }

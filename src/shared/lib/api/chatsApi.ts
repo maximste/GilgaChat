@@ -1,10 +1,12 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "./apiClient";
 import type {
   ApiChat,
+  ApiChatMember,
   ChatsUsersRequest,
   CreateChatRequest,
   CreateChatResponse,
   DeleteChatRequest,
+  GetChatUsersQuery,
 } from "./types";
 
 export type GetChatsQuery = {
@@ -32,6 +34,28 @@ export const chatsApi = {
 
   removeUsers(data: ChatsUsersRequest): Promise<unknown> {
     return apiDelete("/chats/users", data);
+  },
+
+  async getChatUsers(
+    chatId: number,
+    query?: GetChatUsersQuery,
+  ): Promise<ApiChatMember[]> {
+    const raw = await apiGet<unknown>(`/chats/${chatId}/users`, query);
+
+    if (Array.isArray(raw)) {
+      return raw as ApiChatMember[];
+    }
+
+    if (
+      raw &&
+      typeof raw === "object" &&
+      "users" in raw &&
+      Array.isArray((raw as { users: unknown }).users)
+    ) {
+      return (raw as { users: ApiChatMember[] }).users;
+    }
+
+    return [];
   },
 
   /**

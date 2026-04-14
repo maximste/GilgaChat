@@ -1,4 +1,5 @@
 @use "shared/styles/variables" as *;
+@use "shared/ui/iconButton/IconButton.scss" as *;
 
 .chat-page__header {
   display: flex;

@@ -1,0 +1,95 @@
+@use "shared/styles/variables" as *;
+
+.chat-members-panel {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: $spacing-16;
+
+  &__scroll {
+    min-height: 0;
+    flex: 1;
+    overflow: hidden auto;
+  }
+
+  &__section-title {
+    margin: 0 0 $spacing-8;
+    color: $text-color-secondary;
+    font-size: $font-size-12;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__list {
+    padding: 0;
+    margin: 0 0 $spacing-16;
+    list-style: none;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-8 0;
+    border-bottom: 1px solid $border-color-dark;
+    color: $text-color-primary;
+    font-size: $font-size-14;
+    gap: $spacing-12;
+  }
+
+  &__row:last-child {
+    border-bottom: none;
+  }
+
+  &__login {
+    color: $text-color-secondary;
+    font-weight: 400;
+  }
+
+  &__add-actions {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: $spacing-12;
+  }
+
+  &__add-btn {
+    align-self: flex-start;
+    padding: $spacing-8 $spacing-16;
+    border: none;
+    border-radius: $border-radius-8;
+    background-color: $color-accent;
+    color: $text-color-primary;
+    cursor: pointer;
+    font-size: $font-size-14;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+  }
+
+  &__remove-btn {
+    flex-shrink: 0;
+    padding: $spacing-4 $spacing-10;
+    border: 1px solid $border-color-dark;
+    border-radius: $border-radius-6;
+    background: transparent;
+    color: $text-color-secondary;
+    cursor: pointer;
+    font-size: $font-size-12;
+
+    &:hover {
+      border-color: $color-danger;
+      color: $color-danger;
+    }
+  }
+
+  &__empty {
+    margin: 0 0 $spacing-12;
+    color: $text-color-secondary;
+    font-size: $font-size-14;
+  }
+}

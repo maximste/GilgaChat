@@ -85,3 +85,14 @@ export type ChatsUsersRequest = {
   users: number[];
   chatId: number;
 };
+
+export type GetChatUsersQuery = {
+  offset?: number;
+  limit?: number;
+  name?: string;
+  email?: string;
+};
+
+export type ApiChatMember = ApiUser & {
+  role?: string;
+};

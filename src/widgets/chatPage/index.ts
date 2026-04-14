@@ -1,4 +1,8 @@
-export { ChatPage, type ChatPageProps } from "./ChatPage";
+export {
+  ChatPage,
+  type ChatPageHostDeps,
+  type ChatPageProps,
+} from "./ChatPage";
 export {
   createDemoChatTimeline,
   MOCK_MESSENGER_CHATS,

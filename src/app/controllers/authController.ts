@@ -7,6 +7,7 @@ import type {
 } from "@/shared/lib/api/types";
 import type { Router } from "@/shared/lib/router";
 import { store } from "@/shared/lib/store";
+import { HttpStatus } from "@/shared/lib/utils";
 import { showErrorToast } from "@/shared/ui/toast";
 
 import { chatsController } from "./chatsController";
@@ -30,7 +31,7 @@ function applyLoggedInUser(user: ApiUser): void {
 }
 
 function isSessionAlreadyActiveError(e: unknown): boolean {
-  if (!(e instanceof ApiError) || e.status !== 400) {
+  if (!(e instanceof ApiError) || e.status !== HttpStatus.BadRequest) {
     return false;
   }
 
@@ -61,7 +62,11 @@ export async function initAuthSession(): Promise<void> {
     applyLoggedInUser(user);
     await chatsController.loadChats();
   } catch (e) {
-    if (e instanceof ApiError && (e.status === 401 || e.status === 400)) {
+    if (
+      e instanceof ApiError &&
+      (e.status === HttpStatus.Unauthorized ||
+        e.status === HttpStatus.BadRequest)
+    ) {
       store.setState("user", { profile: null, sidebar: undefined });
       store.setState("chats.list", []);
       store.setState("chats.kindById", {});

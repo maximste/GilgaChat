@@ -61,11 +61,26 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
         node.classList.remove("messenger-sidebar__item--active");
       });
 
+    if (!chatId) {
+      return;
+    }
+
     const item = sidebar.querySelector<HTMLButtonElement>(
       `.messenger-sidebar__item[data-chat="${CSS.escape(chatId)}"]`,
     );
 
     item?.classList.add("messenger-sidebar__item--active");
+  }
+
+  function clearChatSelection(): void {
+    setActiveItem("");
+    mount(
+      new NoChatStub({
+        title: "Выберите чат",
+        description: "Выберите диалог или группу в списке слева.",
+        fillVertical: true,
+      }),
+    );
   }
 
   function selectChat(chatId: string): void {
@@ -99,11 +114,22 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
     }
 
     mount(
-      new ChatPage(mainEl, {
-        peerName: chat.title,
-        timeline: createDemoChatTimeline(chat.title),
-        showStatusDot: chatsController.chatHeaderShowsStatusDot(idNum),
-      }),
+      new ChatPage(
+        mainEl,
+        {
+          peerName: chat.title,
+          chatId: idNum,
+          isGroup: chatsController.isGroupChat(idNum),
+          timeline: createDemoChatTimeline(chat.title),
+          showStatusDot: chatsController.chatHeaderShowsStatusDot(idNum),
+        },
+        {
+          layoutRoot,
+          clearChatSelection,
+          searchUsersByLogin,
+          getProfileFromStore,
+        },
+      ),
     );
   }
 

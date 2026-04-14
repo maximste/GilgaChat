@@ -6,7 +6,9 @@ export {
   mapChatTimelineToRows,
   timelineHasMessages,
 } from "./chat/chatTimeline";
+export { HttpStatus, type HttpStatusCode } from "./http/httpStatus";
 export {
+  type HTTPMethodFn,
   type HTTPRequestOptions,
   HTTPTransport,
   type RequestBodyData,
