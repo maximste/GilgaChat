@@ -22,9 +22,7 @@ export interface EditProfileFormProps {
   newPassword?: string;
 }
 
-export type EditProfileFormSavePayload = EditProfileFormProps & {
-  avatarFile?: File;
-};
+export type EditProfileFormSavePayload = EditProfileFormProps;
 
 export interface EditProfileFormCallbacks {
   onCancel: () => void;
@@ -214,13 +212,13 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
 
   protected events = {
     submit: (event: Event) => {
-      const form = (event as SubmitEvent).target;
-
-      if (!(form instanceof HTMLFormElement)) {
-        return;
-      }
-
       handleValidatedSubmit(event, editProfileFormValidators, (values) => {
+        const form = (event as SubmitEvent).target;
+
+        if (!(form instanceof HTMLFormElement)) {
+          return;
+        }
+
         const data: EditProfileFormSavePayload = {
           login: values.login.trim(),
           displayName: values.display_name.trim(),
@@ -232,13 +230,7 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
           newPassword: values.new_password?.trim() || undefined,
         };
 
-        const avatarEl = form.elements.namedItem("avatar");
-        const avatarFile =
-          avatarEl instanceof HTMLInputElement
-            ? avatarEl.files?.[0]
-            : undefined;
-
-        void this.callbacks.onSave?.({ ...data, avatarFile });
+        void this.callbacks.onSave?.(data);
       });
     },
     focusout: (event: Event) => {
@@ -252,51 +244,6 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
       if (cancel) {
         this.callbacks.onCancel();
       }
-    },
-    change: (event: Event) => {
-      const target = event.target;
-
-      if (
-        !(target instanceof HTMLInputElement) ||
-        target.id !== "editProfileAvatar"
-      ) {
-        return;
-      }
-
-      const root = this.element();
-      const nameEl = root?.querySelector<HTMLElement>("[data-avatar-filename]");
-
-      if (!nameEl) {
-        return;
-      }
-
-      const file = target.files?.[0];
-
-      if (file) {
-        nameEl.textContent = file.name;
-        nameEl.hidden = false;
-      } else {
-        nameEl.textContent = "";
-        nameEl.hidden = true;
-      }
-    },
-    keydown: (event: Event) => {
-      const e = event as KeyboardEvent;
-
-      if (e.key !== "Enter" && e.key !== " ") {
-        return;
-      }
-
-      const el = (e.target as HTMLElement).closest(".edit-profile__avatar-btn");
-
-      if (!el || !this.element()?.contains(el)) {
-        return;
-      }
-
-      e.preventDefault();
-      this.element()
-        ?.querySelector<HTMLInputElement>("#editProfileAvatar")
-        ?.click();
     },
   };
 

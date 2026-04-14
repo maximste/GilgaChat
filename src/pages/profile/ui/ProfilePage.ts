@@ -9,6 +9,7 @@ import { EditProfileForm } from "@/features/editProfile";
 import { APP_PATHS, appHref } from "@/shared/config/routes";
 import { ApiError } from "@/shared/lib/api";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
+import { showErrorToast } from "@/shared/ui/toast";
 
 import template from "./ProfilePage.hbs?raw";
 
@@ -45,8 +46,47 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
   protected template = template;
 
   protected events = {
+    change: (event: Event) => {
+      const target = event.target;
+
+      if (
+        !(target instanceof HTMLInputElement) ||
+        target.id !== "profilePageAvatarFile"
+      ) {
+        return;
+      }
+
+      const file = target.files?.[0];
+
+      target.value = "";
+
+      if (file) {
+        void this.handleAvatarUpload(file);
+      }
+    },
     click: (event: Event) => {
       const target = event.target as HTMLElement;
+
+      if (target.closest(".profile-card__avatar-fab")) {
+        event.preventDefault();
+        this.toggleAvatarMenu();
+
+        return;
+      }
+
+      if (target.closest('[data-action="change-avatar"]')) {
+        event.preventDefault();
+        this.closeAvatarMenu();
+        this.element()
+          ?.querySelector<HTMLInputElement>("#profilePageAvatarFile")
+          ?.click();
+
+        return;
+      }
+
+      if (!target.closest(".profile-card__avatar-actions")) {
+        this.closeAvatarMenu();
+      }
 
       if (target.closest(".profile-page__btn--danger")) {
         void logout(getAppRouter());
@@ -60,8 +100,54 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
     },
   };
 
-  private readonly handleEditProfile = (): void => {
+  private closeAvatarMenu(): void {
     const root = this.element();
+    const menu = root?.querySelector<HTMLElement>("#profileAvatarMenu");
+    const fab = root?.querySelector<HTMLElement>(".profile-card__avatar-fab");
+
+    if (menu) {
+      menu.hidden = true;
+    }
+
+    if (fab) {
+      fab.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  private toggleAvatarMenu(): void {
+    const root = this.element();
+    const menu = root?.querySelector<HTMLElement>("#profileAvatarMenu");
+    const fab = root?.querySelector<HTMLElement>(".profile-card__avatar-fab");
+
+    if (!menu || !fab) {
+      return;
+    }
+
+    const open = menu.hidden;
+
+    menu.hidden = !open;
+    fab.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  private async handleAvatarUpload(file: File): Promise<void> {
+    try {
+      await uploadAvatar(file);
+    } catch (e) {
+      showErrorToast(
+        e instanceof ApiError ? e.message : "Failed to upload avatar",
+      );
+    }
+  }
+
+  private readonly handleEditProfile = (): void => {
+    this.closeAvatarMenu();
+    const root = this.element();
+    const backRow = root?.querySelector("[data-profile-back]");
+
+    if (backRow instanceof HTMLElement) {
+      backRow.hidden = true;
+    }
+
     const contentEl = root?.querySelector(".profile-page__content");
 
     if (!contentEl || !(contentEl instanceof HTMLElement)) return;
@@ -80,10 +166,6 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
         onCancel: () => this.render(),
         onSave: async (data) => {
           try {
-            if (data.avatarFile) {
-              await uploadAvatar(data.avatarFile);
-            }
-
             await updateProfile({
               first_name: data.firstName,
               second_name: data.surname,
@@ -102,7 +184,7 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
 
             this.render();
           } catch (e) {
-            window.alert(
+            showErrorToast(
               e instanceof ApiError ? e.message : "Failed to save profile",
             );
           }
@@ -125,7 +207,7 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
       backLink: {
         href: appHref(APP_PATHS.messenger),
         text: "← Back to Messenger",
-        className: "profile-page__back-link",
+        className: "profile-card__back-link",
       },
       editProfileButton: {
         type: "button",
