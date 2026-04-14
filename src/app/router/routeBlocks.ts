@@ -4,6 +4,7 @@ import { RegisterForm } from "@/features/registration";
 import { setupMessengerChatPage } from "@/pages/messenger";
 import { ApiError } from "@/shared/lib/api";
 import { connect } from "@/shared/ui/block";
+import { showErrorToast } from "@/shared/ui/toast";
 import { MainLayout } from "@/widgets/mainLayout";
 import { MessengerLayout } from "@/widgets/messengerLayout";
 
@@ -50,7 +51,7 @@ export class AuthScreenBlock extends MainLayout {
         } catch (e) {
           const msg = e instanceof ApiError ? e.message : "Sign in failed";
 
-          window.alert(msg);
+          showErrorToast(msg);
         }
       },
     });
@@ -86,7 +87,7 @@ export class RegisterScreenBlock extends MainLayout {
         } catch (e) {
           const msg = e instanceof ApiError ? e.message : "Registration failed";
 
-          window.alert(msg);
+          showErrorToast(msg);
         }
       },
     });

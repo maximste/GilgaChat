@@ -2,6 +2,7 @@ import { ApiError } from "@/shared/lib/api";
 import type { ApiUser } from "@/shared/lib/api/types";
 import { escapeHtml } from "@/shared/lib/utils";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
+import { showErrorToast } from "@/shared/ui/toast";
 
 import { normalizeUserSearchResponse } from "../../lib/normalizeUserSearchResponse";
 import { userDisplayName } from "../../lib/userDisplayName";
@@ -185,7 +186,7 @@ class CreateDmForm extends Block<CreateDmFormProps> {
       this.services.closeModal();
     } catch (e) {
       this.syncSubmit();
-      window.alert(e instanceof ApiError ? e.message : String(e));
+      showErrorToast(e instanceof ApiError ? e.message : String(e));
     }
   }
 
@@ -219,7 +220,7 @@ class CreateDmForm extends Block<CreateDmFormProps> {
           this.applyListFromSearch(login, users);
         })
         .catch((err: unknown) => {
-          window.alert(err instanceof ApiError ? err.message : String(err));
+          showErrorToast(err instanceof ApiError ? err.message : String(err));
         });
     }, DEBOUNCE_MS);
   };

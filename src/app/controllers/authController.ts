@@ -7,6 +7,7 @@ import type {
 } from "@/shared/lib/api/types";
 import type { Router } from "@/shared/lib/router";
 import { store } from "@/shared/lib/store";
+import { showErrorToast } from "@/shared/ui/toast";
 
 import { chatsController } from "./chatsController";
 import { apiUserToSidebar } from "./mapUserToSidebar";
@@ -116,7 +117,7 @@ export async function logout(router: Router): Promise<void> {
   router.go(APP_PATHS.login);
 
   if (!serverLogoutOk) {
-    window.alert(
+    showErrorToast(
       "Could not log out on the server. If sign-in then says you are already logged in, refresh the page.",
     );
   }

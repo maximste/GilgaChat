@@ -1,6 +1,7 @@
 import { ApiError } from "@/shared/lib/api";
 import type { ApiUser } from "@/shared/lib/api/types";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
+import { showErrorToast } from "@/shared/ui/toast";
 
 import type { MessengerModalShell } from "../MessengerModalShell";
 import { AvatarFilePicker } from "../pickers/AvatarFilePicker";
@@ -102,7 +103,7 @@ class CreateGroupForm extends Block<CreateGroupFormProps> {
       this.services.closeModal();
     } catch (e) {
       this.syncSubmitButton();
-      window.alert(e instanceof ApiError ? e.message : String(e));
+      showErrorToast(e instanceof ApiError ? e.message : String(e));
     }
   }
 

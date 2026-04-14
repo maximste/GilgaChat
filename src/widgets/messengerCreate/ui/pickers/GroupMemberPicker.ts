@@ -2,6 +2,7 @@ import { ApiError } from "@/shared/lib/api";
 import type { ApiUser } from "@/shared/lib/api/types";
 import { escapeHtml } from "@/shared/lib/utils";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
+import { showErrorToast } from "@/shared/ui/toast";
 
 import { normalizeUserSearchResponse } from "../../lib/normalizeUserSearchResponse";
 import { userDisplayName } from "../../lib/userDisplayName";
@@ -252,7 +253,7 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
         });
       })
       .catch((err: unknown) => {
-        window.alert(err instanceof ApiError ? err.message : String(err));
+        showErrorToast(err instanceof ApiError ? err.message : String(err));
       });
   }
 
