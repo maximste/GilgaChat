@@ -7,6 +7,7 @@ export {
   timelineHasMessages,
 } from "./chat/chatTimeline";
 export {
+  type HTTPMethodFn,
   type HTTPRequestOptions,
   HTTPTransport,
   type RequestBodyData,

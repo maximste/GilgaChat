@@ -27,51 +27,42 @@ export interface HTTPRequestOptions {
   withCredentials?: boolean;
 }
 
+/** Один HTTP-глагол: URL, опции без обязательного `method` (подставляется фабрикой). */
+export type HTTPMethodFn = <R = unknown>(
+  url: string,
+  options?: Partial<HTTPRequestOptions>,
+) => Promise<R>;
+
 class HTTPTransport {
-  get = (url: string, options: HTTPRequestOptions = {}) => {
-    return this.request(
-      url,
-      { ...options, method: METHODS.GET },
-      options.timeout,
-    );
-  };
+  private createMethod(method: HttpMethod): HTTPMethodFn {
+    return <R = unknown>(
+      url: string,
+      options: Partial<HTTPRequestOptions> = {},
+    ) => this.request<R>(url, { ...options, method });
+  }
 
-  post = (url: string, options: HTTPRequestOptions = {}) => {
-    return this.request(
-      url,
-      { ...options, method: METHODS.POST },
-      options.timeout,
-    );
-  };
+  protected readonly get = this.createMethod(METHODS.GET);
 
-  put = (url: string, options: HTTPRequestOptions = {}) => {
-    return this.request(
-      url,
-      { ...options, method: METHODS.PUT },
-      options.timeout,
-    );
-  };
+  protected readonly post = this.createMethod(METHODS.POST);
 
-  delete = (url: string, options: HTTPRequestOptions = {}) => {
-    return this.request(
-      url,
-      { ...options, method: METHODS.DELETE },
-      options.timeout,
-    );
-  };
+  protected readonly put = this.createMethod(METHODS.PUT);
 
-  request = (
+  protected readonly delete = this.createMethod(METHODS.DELETE);
+
+  request<R = unknown>(
     url: string,
     options: HTTPRequestOptions = {},
-    timeout = 5000,
-  ): Promise<unknown> => {
+  ): Promise<R> {
     const {
       headers = {},
       method,
       data,
       responseType,
       withCredentials,
+      timeout: optTimeout,
     } = options;
+
+    const timeout = optTimeout ?? 5000;
 
     return new Promise((resolve, reject) => {
       if (!method) {
@@ -119,7 +110,7 @@ class HTTPTransport {
             }
           }
 
-          resolve(response);
+          resolve(response as R);
         } else {
           reject({
             status: xhr.status,
@@ -164,7 +155,7 @@ class HTTPTransport {
         xhr.send(data);
       }
     });
-  };
+  }
 }
 
 export { HTTPTransport };
