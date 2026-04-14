@@ -6,6 +6,23 @@
     <h1 class="chat-page__title">{{peerName}}</h1>
   </div>
   <div class="chat-page__toolbar" role="toolbar" aria-label="Действия в чате">
-    {{{IconButton type="button" icon="fa-solid fa-trash" ariaLabel="Удалить чат" className="chat-page__toolbar-btn"}}}
+    {{#if showGroupMemberActions}}
+      <button
+        type="button"
+        class="icon-button chat-page__toolbar-btn"
+        data-chat-action="group-members"
+        aria-label="Участники группы"
+      >
+        <i class="fa-solid fa-users" aria-hidden="true"></i>
+      </button>
+    {{/if}}
+    <button
+      type="button"
+      class="icon-button chat-page__toolbar-btn chat-page__toolbar-btn--delete"
+      data-chat-action="delete-chat"
+      aria-label="Удалить чат"
+    >
+      <i class="fa-solid fa-trash" aria-hidden="true"></i>
+    </button>
   </div>
 </header>

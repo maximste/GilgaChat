@@ -8,10 +8,13 @@ export interface ChatHeaderProps {
   peerName: string;
   /** Личный чат: зелёная точка «онлайн»; для группы — false. */
   showStatusDot?: boolean;
+  /** Группа: кнопка «Участники» (добавление / удаление). */
+  showGroupMemberActions?: boolean;
 }
 
 type ChatHeaderBlockProps = ChatHeaderProps & {
   showStatusDot: boolean;
+  showGroupMemberActions: boolean;
 } & BlockOwnProps;
 
 class ChatHeader extends Block<ChatHeaderBlockProps> {
@@ -23,6 +26,7 @@ class ChatHeader extends Block<ChatHeaderBlockProps> {
     super({
       ...props,
       showStatusDot: props.showStatusDot ?? true,
+      showGroupMemberActions: props.showGroupMemberActions ?? false,
     } as ChatHeaderBlockProps);
   }
 }

@@ -1,0 +1,26 @@
+<div class="chat-members-drawer-backdrop" ref="backdrop" role="presentation">
+  <div
+    class="chat-members-drawer"
+    ref="panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="chat-members-drawer-title"
+  >
+    <div class="chat-members-drawer__head">
+      <h2 id="chat-members-drawer-title" class="chat-members-drawer__title">Участники чата</h2>
+      <button type="button" class="chat-members-drawer__close" ref="closeBtn" aria-label="Закрыть">&times;</button>
+    </div>
+    <div class="chat-members-drawer__body">
+      <div class="chat-members-panel">
+        <div class="chat-members-panel__add-actions">
+          <div ref="pickerMount"></div>
+          <button type="button" class="chat-members-panel__add-btn" ref="addBtn" disabled>Добавить выбранных</button>
+        </div>
+        <div class="chat-members-panel__scroll">
+          <h3 class="chat-members-panel__section-title">В чате</h3>
+          <ul class="chat-members-panel__list" ref="listHost"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
