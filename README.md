@@ -191,9 +191,11 @@ npm run build
 
 1. В репозитории: **Settings → Pages**.
 2. В блоке **Build and deployment** выберите **Source: GitHub Actions**.
-3. Ветка **deploy**: при каждом пуше в неё workflow `.github/workflows/deploy-pages.yml` запускает сборку на GitHub (Node.js 22, `npm ci`, `npm run build`) и публикует каталог `dist/` на GitHub Pages.
+3. Ветка **deploy**: при каждом пуше в неё workflow `.github/workflows/deploy-pages.yml` запускает сборку на GitHub (Node.js 22, `npm ci`, `npm run build`, `BASE_PATH=/GilgaChat/`) и публикует каталог `dist/` на GitHub Pages.
 
 Сайт будет доступен по адресу вида `https://<username>.github.io/<repo>/`. Для SPA важно задать **base** в `vite.config.ts` равным `'/<repo>/'` (например, `'/GilgaChat/'`), иначе pathname-маршруты (`/messenger`, `/settings`, …) и статика будут отдаваться с неправильного пути.
+
+**Перезагрузка (F5) и тот же экран:** в **dev** и **`vite preview`** запросы к вложенным путям переписываются на `index.html` (middleware в `vite.config.ts`). На **GitHub Pages** серверных rewrite нет: в **`dist`** кладётся **`404.html`** — копия **`index.html`**. Для «виртуальных» URL вроде `/GilgaChat/messenger` хостинг отдаёт этот HTML (механизм платформы для «не найденного файла»), браузер загружает то же приложение, **Router** по **`location.pathname`** снова показывает нужный экран. Переходы по ссылкам и «Назад»/«Вперёд» — в клиенте (**History API**, `setupSpaLinks`).
 
 ## Планы
 
