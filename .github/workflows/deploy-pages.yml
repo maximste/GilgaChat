@@ -42,6 +42,8 @@ jobs:
           sed -i "s|'static/index.html'|'index.html'|g" vite.config.ts
           sed -i 's|"static/index.html"|"index.html"|g' vite.config.ts
 
+      # Плагин в vite.config.ts копирует dist/index.html → dist/404.html: на GitHub Pages нет
+      # rewrite на index.html, поэтому для F5 на /GilgaChat/messenger хостинг отдаёт тот же HTML через 404.html.
       - name: Build
         run: npm run build
         env:
