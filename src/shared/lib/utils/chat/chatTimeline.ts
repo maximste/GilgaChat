@@ -1,4 +1,4 @@
-import type { ChatTimelineItem } from "../types/ChatTimelineTypes";
+import type { ChatTimelineItem } from "../../types/ChatTimelineTypes";
 
 /** Вью-модель строки ленты для шаблона (без дискриминированного union в Handlebars) */
 export interface ChatTimelineRowVm {

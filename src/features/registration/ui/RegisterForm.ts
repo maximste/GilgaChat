@@ -1,3 +1,5 @@
+import { APP_PATHS, appHref } from "@/shared/config/routes";
+import type { SignUpRequest } from "@/shared/lib/api/types";
 import type { LinkProps } from "@/shared/lib/types";
 import {
   handleValidatedSubmit,
@@ -12,9 +14,10 @@ import template from "./RegisterForm.hbs?raw";
 
 import "./RegisterForm.scss";
 
-interface RegisterFormProps {
+export interface RegisterFormProps {
   title: string;
   subtitle?: string;
+  onSignUp?: (payload: SignUpRequest) => void | Promise<void>;
 }
 
 type RegisterFormBlockProps = RegisterFormProps & {
@@ -33,18 +36,8 @@ type RegisterFormBlockProps = RegisterFormProps & {
 export class RegisterForm extends Block<RegisterFormBlockProps> {
   protected template = template;
 
-  protected events = {
-    submit: (event: Event) => {
-      handleValidatedSubmit(event, registerFormValidators);
-    },
-    focusout: (event: Event) => {
-      runFieldValidatorOnFocusOut(event, registerFormValidators);
-    },
-  };
-
-  private container: HTMLElement;
-
-  constructor(container: HTMLElement, props: RegisterFormProps) {
+  constructor(props: RegisterFormProps) {
+    const onSignUp = props.onSignUp;
     const fieldClass = "register-form__field";
     const labelClass = "register-form__label";
     const inputClass = "register-form__input";
@@ -171,21 +164,28 @@ export class RegisterForm extends Block<RegisterFormBlockProps> {
       },
       signInLink: {
         text: "Sign in",
-        href: "#auth",
+        href: appHref(APP_PATHS.login),
         className: "register-form__link",
       },
     };
 
     super(initial);
-    this.container = container;
-  }
-
-  public render(): void {
-    super.render();
-    const root = this.element();
-
-    if (root) {
-      this.container.replaceChildren(root);
-    }
+    this.events = {
+      submit: (event: Event) => {
+        handleValidatedSubmit(event, registerFormValidators, (values) => {
+          void onSignUp?.({
+            first_name: String(values.first_name ?? "").trim(),
+            second_name: String(values.second_name ?? "").trim(),
+            login: String(values.login ?? "").trim(),
+            email: String(values.email ?? "").trim(),
+            password: String(values.password ?? ""),
+            phone: String(values.phone ?? "").trim(),
+          });
+        });
+      },
+      focusout: (event: Event) => {
+        runFieldValidatorOnFocusOut(event, registerFormValidators);
+      },
+    };
   }
 }

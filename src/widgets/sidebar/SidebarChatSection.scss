@@ -5,7 +5,10 @@
 }
 
 .messenger-sidebar__section-head {
+  display: flex;
   width: 100%;
+  align-items: center;
+  justify-content: space-between;
   padding: $spacing-8 0;
   border: none;
   background: none;
@@ -13,11 +16,36 @@
   cursor: pointer;
   font-size: $font-size-12;
   font-weight: 600;
+  gap: $spacing-8;
   letter-spacing: 0.05em;
   text-align: left;
 
   &:hover {
     color: $text-color-primary;
+  }
+}
+
+.messenger-sidebar__section-head-text {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.messenger-sidebar__section-chevron {
+  flex-shrink: 0;
+  font-size: $font-size-12;
+  opacity: 0.75;
+  transition: transform 0.15s ease;
+}
+
+.messenger-sidebar__section--collapsed {
+  .messenger-sidebar__section-body {
+    display: none;
+  }
+
+  .messenger-sidebar__section-chevron {
+    transform: rotate(-90deg);
   }
 }
 

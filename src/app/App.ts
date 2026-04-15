@@ -1,12 +1,5 @@
-import { renderAuthPage } from "@/pages/auth";
-import { setupMessengerChatPage } from "@/pages/messenger";
-import { renderNotFoundPage } from "@/pages/notFound";
-import { renderProfilePage } from "@/pages/profile";
-import { renderRegisterPage } from "@/pages/register";
-import { renderServerErrorPage } from "@/pages/serverError";
-import { Block } from "@/shared/ui/block";
-import { MainLayout } from "@/widgets/mainLayout";
-import { MessengerLayout } from "@/widgets/messengerLayout";
+import { initAuthSession } from "./controllers";
+import { createAppRouter, setupSpaLinks } from "./router";
 
 function showError(message: string): void {
   const app = document.getElementById("app");
@@ -14,34 +7,21 @@ function showError(message: string): void {
   if (app) {
     app.innerHTML = `<p class="app-error">App error: ${message}</p>`;
   }
+
   console.error("[GilgaChat]", message);
 }
 
-const DEFAULT_PROFILE_PROPS = {
-  name: "John Smith",
-  username: "@johnsmith",
-  displayName: "John Smith",
-  login: "johnsmith",
-  email: "john.smith@example.com",
-  firstName: "John",
-  surname: "Smith",
-  phone: "+1 (555) 123-4567",
-};
-
 export class App {
-  private layoutContent: HTMLElement | null = null;
-
-  private appRoot: Block | null = null;
-
   constructor() {
-    this.init();
-  }
-
-  private init(): void {
-    const run = (): void => {
+    const run = async (): Promise<void> => {
       try {
-        this.setupNavigation();
-        this.renderCurrentView();
+        const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+        await initAuthSession();
+        const router = createAppRouter();
+
+        setupSpaLinks(router, basePath);
+        router.start();
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
 
@@ -51,102 +31,11 @@ export class App {
     };
 
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", run);
+      document.addEventListener("DOMContentLoaded", () => {
+        void run();
+      });
     } else {
-      run();
-    }
-  }
-
-  /**
-   * Смена корневого виджета в #app: снимает жизненный цикл с предыдущего Block и монтирует новый.
-   */
-  private mountAppRoot(block: Block): boolean {
-    const container = document.getElementById("app");
-
-    if (!container) {
-      showError("App container #app not found");
-
-      return false;
-    }
-
-    this.appRoot?.destroy();
-    this.appRoot = block;
-    const el = block.element();
-
-    if (!el) {
-      return false;
-    }
-
-    container.replaceChildren(el);
-
-    return true;
-  }
-
-  private renderLayout(): void {
-    const layout = new MainLayout({
-      goBackLink: {
-        href: "#",
-        text: "Go back",
-        className: "main-layout__go-back",
-      },
-      content: "",
-    });
-
-    if (!this.mountAppRoot(layout)) {
-      showError("MainLayout failed to render");
-
-      return;
-    }
-
-    this.layoutContent = document.getElementById("layout-content");
-
-    if (!this.layoutContent) {
-      showError("Layout content #layout-content not found");
-    }
-  }
-
-  private setupNavigation(): void {
-    window.addEventListener("hashchange", () => this.renderCurrentView());
-  }
-
-  private showMessengerView(): void {
-    if (!this.mountAppRoot(new MessengerLayout())) {
-      return;
-    }
-
-    setupMessengerChatPage();
-    this.layoutContent = null;
-  }
-
-  private renderCurrentView(): void {
-    if (!document.getElementById("app")) return;
-
-    const hash = window.location.hash;
-    const isMessengerView = hash === "" || hash === "#messenger";
-
-    if (isMessengerView) {
-      this.showMessengerView();
-
-      return;
-    }
-
-    if (!this.layoutContent) {
-      this.renderLayout();
-    }
-    if (!this.layoutContent) return;
-
-    if (hash === "#auth") {
-      renderAuthPage(this.layoutContent);
-    } else if (hash === "#register") {
-      renderRegisterPage(this.layoutContent);
-    } else if (hash === "#profile") {
-      renderProfilePage(this.layoutContent, DEFAULT_PROFILE_PROPS);
-    } else if (hash === "#404") {
-      renderNotFoundPage(this.layoutContent);
-    } else if (hash === "#500") {
-      renderServerErrorPage(this.layoutContent);
-    } else {
-      this.showMessengerView();
+      void run();
     }
   }
 }

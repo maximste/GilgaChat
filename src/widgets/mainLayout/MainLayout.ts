@@ -1,4 +1,3 @@
-import type { LinkProps } from "@/shared/lib/types";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./MainLayout.hbs?raw";
@@ -6,7 +5,6 @@ import template from "./MainLayout.hbs?raw";
 import "./MainLayout.scss";
 
 export interface MainLayoutProps {
-  goBackLink: LinkProps;
   content?: string;
 }
 

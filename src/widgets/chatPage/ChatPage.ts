@@ -1,27 +1,44 @@
+import { chatsController } from "@/app/controllers";
+import { ApiError } from "@/shared/lib/api";
+import type { ApiUser } from "@/shared/lib/api/types";
 import { createDemoChatTimeline } from "@/shared/lib/mocks";
 import type { ChatTimelineItem } from "@/shared/lib/types/ChatTimelineTypes";
-import {
-  mapChatTimelineToRows,
-  timelineHasMessages,
-} from "@/shared/lib/utils/chatTimeline";
+import { mapChatTimelineToRows, timelineHasMessages } from "@/shared/lib/utils";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
+import { showConfirmDialog } from "@/shared/ui/confirmDialog";
+import { showErrorToast } from "@/shared/ui/toast";
 
 import {
   CHAT_MESSAGE_SENT_EVENT,
   type ChatMessageSentDetail,
 } from "./chatMessageEvents";
 import template from "./ChatPage.hbs?raw";
+import { openChatGroupMembersDrawer } from "./openChatGroupMembersDrawer";
 
 import "./ChatPage.scss";
 
 export interface ChatPageProps {
   peerName?: string;
+  chatId?: number;
+  isGroup?: boolean;
   /** Лента сообщений; без передачи подставляется демо-лента */
   timeline?: ChatTimelineItem[];
+  showStatusDot?: boolean;
 }
+
+/** Зависимости от экрана мессенджера (модалки, очистка выбора, поиск пользователей). */
+export type ChatPageHostDeps = {
+  /** Корень layout: отсюда ищется `[data-messenger-modals]` (оверлеи и выезжающие панели). */
+  layoutRoot: HTMLElement;
+  clearChatSelection: () => void;
+  searchUsersByLogin: (login: string) => Promise<unknown>;
+  getProfileFromStore: () => ApiUser | null;
+};
 
 type ChatPageBlockProps = ChatPageProps & {
   peerName: string;
+  showStatusDot: boolean;
+  showGroupMemberActions: boolean;
   timeline: ChatTimelineItem[];
   hasMessages: boolean;
   timelineRows: ReturnType<typeof mapChatTimelineToRows>;
@@ -31,6 +48,12 @@ export class ChatPage extends Block<ChatPageBlockProps> {
   protected template = template;
 
   private container: HTMLElement;
+
+  private readonly hostDeps: ChatPageHostDeps | null;
+
+  private readonly routeChatId: number | null;
+
+  private readonly routeIsGroup: boolean;
 
   private readonly onChatMessageSent = (event: Event): void => {
     const { text } = (event as CustomEvent<ChatMessageSentDetail>).detail;
@@ -59,20 +82,36 @@ export class ChatPage extends Block<ChatPageBlockProps> {
     });
   };
 
-  constructor(container: HTMLElement, props: ChatPageProps = {}) {
+  constructor(
+    container: HTMLElement,
+    props: ChatPageProps = {},
+    hostDeps: ChatPageHostDeps | null = null,
+  ) {
     const peerName = props.peerName ?? "Sarah Chen";
     const timeline = props.timeline ?? createDemoChatTimeline(peerName);
     const hasMessages = timelineHasMessages(timeline);
     const timelineRows = mapChatTimelineToRows(timeline);
+    const routeChatId =
+      typeof props.chatId === "number" && !Number.isNaN(props.chatId)
+        ? props.chatId
+        : null;
+    const routeIsGroup = Boolean(props.isGroup);
 
     super({
       peerName,
+      chatId: props.chatId,
+      isGroup: routeIsGroup,
+      showStatusDot: props.showStatusDot ?? true,
+      showGroupMemberActions: routeIsGroup,
       timeline,
       hasMessages,
       timelineRows,
     } as ChatPageBlockProps);
 
     this.container = container;
+    this.hostDeps = hostDeps;
+    this.routeChatId = routeChatId;
+    this.routeIsGroup = routeIsGroup;
   }
 
   protected componentDidMount(): void {
@@ -88,6 +127,77 @@ export class ChatPage extends Block<ChatPageBlockProps> {
       this.onChatMessageSent as EventListener,
     );
   }
+
+  protected events = {
+    click: (event: Event) => {
+      const target = (event.target as HTMLElement).closest(
+        "[data-chat-action]",
+      );
+
+      const action = target?.getAttribute("data-chat-action");
+      const chatId = this.routeChatId;
+      const deps = this.hostDeps;
+
+      if (!action || chatId === null || !deps) {
+        return;
+      }
+
+      if (action === "group-members") {
+        if (!this.routeIsGroup) {
+          return;
+        }
+
+        const modalsHost =
+          deps.layoutRoot.querySelector<HTMLElement>(
+            "[data-messenger-modals]",
+          ) ?? deps.layoutRoot;
+
+        openChatGroupMembersDrawer(modalsHost, {
+          chatId,
+          searchUsersByLogin: deps.searchUsersByLogin,
+          getProfileFromStore: deps.getProfileFromStore,
+          getChatUsers: (id) =>
+            chatsController.getChatUsers(id, { limit: 500 }),
+          addUsersToChat: (id, userIds) =>
+            chatsController.addUsersToChat({ chatId: id, users: userIds }),
+          removeUsersFromChat: (id, userIds) =>
+            chatsController.removeUsersFromChat({ chatId: id, users: userIds }),
+        });
+
+        return;
+      }
+
+      if (action === "delete-chat") {
+        void (async () => {
+          const ok = await showConfirmDialog({
+            title: "Удалить чат?",
+            message: "Это действие необратимо.",
+            confirmLabel: "Удалить",
+            cancelLabel: "Отмена",
+            isDanger: true,
+          });
+
+          if (!ok) {
+            return;
+          }
+
+          try {
+            await chatsController.deleteChat({ chatId });
+            deps.clearChatSelection();
+          } catch (e: unknown) {
+            const msg =
+              e instanceof ApiError
+                ? e.message
+                : e instanceof Error
+                  ? e.message
+                  : String(e);
+
+            showErrorToast(msg);
+          }
+        })();
+      }
+    },
+  };
 
   public render(): void {
     super.render();

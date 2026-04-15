@@ -1,0 +1,61 @@
+@use "shared/styles/variables" as *;
+
+.messenger-fab-host {
+  position: absolute;
+  z-index: 2;
+  right: $spacing-12;
+  bottom: calc(72px + $spacing-12);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: $spacing-4;
+}
+
+.messenger-fab {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: $color-accent;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 35%);
+  color: $text-color-primary;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-accent-dark;
+  }
+}
+
+.messenger-fab__icon {
+  font-size: 1.75rem;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.messenger-fab-menu {
+  min-width: 180px;
+  padding: $spacing-4 0;
+  border: 1px solid $border-color-dark;
+  border-radius: $border-radius-8;
+  background-color: $background-color-on-surface-black;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+}
+
+.messenger-fab-menu__item {
+  display: block;
+  width: 100%;
+  padding: $spacing-8 $spacing-12;
+  border: none;
+  background: transparent;
+  color: $text-color-primary;
+  cursor: pointer;
+  font-size: $font-size-14;
+  text-align: left;
+
+  &:hover {
+    background-color: $background-color-surface;
+  }
+}

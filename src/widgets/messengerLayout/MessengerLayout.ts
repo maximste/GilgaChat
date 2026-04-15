@@ -17,17 +17,6 @@ export interface MessengerLayoutProps extends SidebarProps {
 
 type MessengerLayoutBlockProps = MessengerLayoutProps & BlockOwnProps;
 
-const defaultTopLinks: SidebarProps["topLinks"] = [
-  { href: "#auth", text: "Sign in", className: "messenger-sidebar__top-link" },
-  {
-    href: "#register",
-    text: "Sign up",
-    className: "messenger-sidebar__top-link",
-  },
-  { href: "#404", text: "404", className: "messenger-sidebar__top-link" },
-  { href: "#500", text: "500", className: "messenger-sidebar__top-link" },
-];
-
 const defaultDirectMessages: DirectMessageItem[] = [
   {
     firstName: "Sarah",
@@ -61,8 +50,7 @@ class MessengerLayout extends Block<MessengerLayoutBlockProps> {
 
   constructor(props: Partial<MessengerLayoutProps> = {}) {
     super({
-      appTitle: props.appTitle ?? "Messenger",
-      topLinks: props.topLinks ?? defaultTopLinks,
+      appTitle: props.appTitle ?? "GilgaChat",
       currentUser: props.currentUser ?? {
         firstName: "Alex",
         lastName: "Morgan",

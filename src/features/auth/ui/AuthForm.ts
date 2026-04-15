@@ -1,3 +1,4 @@
+import { APP_PATHS, appHref } from "@/shared/config/routes";
 import type { LinkProps } from "@/shared/lib/types";
 import {
   authFormValidators,
@@ -12,33 +13,29 @@ import template from "./AuthForm.hbs?raw";
 
 import "./AuthForm.scss";
 
-interface AuthFormProps {
+export interface AuthFormProps {
   title: string;
   subtitle?: string;
+  /** После успешной валидации: в API уходит `login` и `password` (как в POST /auth/signin). */
+  onSignIn?: (payload: {
+    login: string;
+    password: string;
+  }) => void | Promise<void>;
 }
 
 type AuthFormBlockProps = AuthFormProps & {
-  emailFormField: FormFieldProps;
+  loginFormField: FormFieldProps;
   passwordFormField: FormFieldProps;
   restorePasswordLink: LinkProps;
+  signUpLink: LinkProps;
   signInButton: ButtonProps;
 } & BlockOwnProps;
 
 export class AuthForm extends Block<AuthFormBlockProps> {
   protected template = template;
 
-  protected events = {
-    submit: (event: Event) => {
-      handleValidatedSubmit(event, authFormValidators);
-    },
-    focusout: (event: Event) => {
-      runFieldValidatorOnFocusOut(event, authFormValidators);
-    },
-  };
-
-  private container: HTMLElement;
-
-  constructor(container: HTMLElement, props: AuthFormProps) {
+  constructor(props: AuthFormProps) {
+    const onSignIn = props.onSignIn;
     const fieldClass = "login-form__field";
     const labelClass = "login-form__label";
     const inputClass = "login-form__input";
@@ -46,21 +43,22 @@ export class AuthForm extends Block<AuthFormBlockProps> {
     const initial: AuthFormBlockProps = {
       title: props.title,
       subtitle: props.subtitle,
-      emailFormField: {
+      loginFormField: {
         label: {
-          text: "Email",
-          for: "userEmail",
+          text: "Login",
+          for: "userLogin",
           className: labelClass,
         },
         input: {
-          id: "userEmail",
-          type: "email",
-          name: "email",
+          id: "userLogin",
+          type: "text",
+          name: "login",
           required: true,
+          placeholder: "Your login",
           className: inputClass,
         },
         className: fieldClass,
-        icon: "fa-solid fa-envelope",
+        icon: "fa-solid fa-user",
       },
       passwordFormField: {
         label: {
@@ -83,6 +81,11 @@ export class AuthForm extends Block<AuthFormBlockProps> {
         href: "/recovery",
         className: "login-form__link",
       },
+      signUpLink: {
+        text: "Sign up",
+        href: appHref(APP_PATHS.signUp),
+        className: "login-form__sign-up-link",
+      },
       signInButton: {
         type: "submit",
         text: "Sign In",
@@ -91,15 +94,18 @@ export class AuthForm extends Block<AuthFormBlockProps> {
     };
 
     super(initial);
-    this.container = container;
-  }
-
-  public render(): void {
-    super.render();
-    const root = this.element();
-
-    if (root) {
-      this.container.replaceChildren(root);
-    }
+    this.events = {
+      submit: (event: Event) => {
+        handleValidatedSubmit(event, authFormValidators, (values) => {
+          void onSignIn?.({
+            login: String(values.login ?? "").trim(),
+            password: String(values.password ?? ""),
+          });
+        });
+      },
+      focusout: (event: Event) => {
+        runFieldValidatorOnFocusOut(event, authFormValidators);
+      },
+    };
   }
 }

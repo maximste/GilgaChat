@@ -2,6 +2,7 @@
 @use "shared/ui/sidebar/sidebarStatusDot";
 
 .messenger-sidebar {
+  position: relative;
   display: flex;
   width: 280px;
   min-width: 280px;

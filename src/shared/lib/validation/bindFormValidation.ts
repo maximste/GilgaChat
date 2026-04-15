@@ -121,28 +121,24 @@ function runFieldValidatorOnFocusOut(
   setFieldErrorDom(form, name, msg);
 }
 
-/**
- * Обработчик submit: preventDefault, полная проверка, console.log заполненных полей, onValid.
- * Слушатель вешается на корень компонента (submit всплывает с &lt;form&gt;).
- */
 function handleValidatedSubmit(
   event: Event,
   validators: Record<string, FieldValidator>,
   onValid?: (values: ValuesBag, filled: Record<string, string>) => void,
 ): void {
+  event.preventDefault();
+
   const form = (event as SubmitEvent).target;
 
-  if (!(form instanceof HTMLFormElement)) return;
-
-  event.preventDefault();
+  if (!(form instanceof HTMLFormElement)) {
+    return;
+  }
 
   const result = validateAllFormFields(form, validators);
 
   if (!result.ok) return;
 
   const filled = collectFilledFields(result.values);
-
-  console.log(filled);
 
   onValid?.(result.values, filled);
 }

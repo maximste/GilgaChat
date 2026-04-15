@@ -4,4 +4,5 @@ import type { LinkProps } from "./LinkTypes";
 import type { TextareaProps } from "./TextareaTypes";
 
 export type { ChatTimelineItem } from "./ChatTimelineTypes";
+export type { Indexed } from "./IndexedTypes";
 export type { InputProps, InputType, LabelProps, LinkProps, TextareaProps };
