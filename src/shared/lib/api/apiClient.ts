@@ -1,5 +1,5 @@
 import { apiAbsolutePath } from "@/shared/config/api";
-import { type HTTPRequestOptions,HTTPTransport } from "@/shared/lib/utils";
+import { type HTTPRequestOptions, HTTPTransport } from "@/shared/lib/utils";
 
 import { ApiError, parseReasonFromXhrResponseText } from "./ApiError";
 
@@ -35,10 +35,12 @@ export async function apiRequest<T = unknown>(
 ): Promise<T> {
   const url = apiAbsolutePath(path);
 
+  const withCredentials = options.withCredentials ?? true;
+
   try {
     return (await transport.request(url, {
       ...options,
-      withCredentials: true,
+      withCredentials,
     })) as T;
   } catch (e) {
     throw toApiError(e);
