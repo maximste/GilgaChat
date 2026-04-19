@@ -1,14 +1,13 @@
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./Sidebar.hbs?raw";
-import type { DirectMessageItem, GroupItem, SidebarCurrentUser } from "./types";
+import type { GroupItem, SidebarCurrentUser } from "./types";
 
 import "./Sidebar.scss";
 
 export interface SidebarProps {
   appTitle: string;
   currentUser: SidebarCurrentUser;
-  directMessages: DirectMessageItem[];
   groups: GroupItem[];
 }
 

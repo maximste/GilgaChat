@@ -6,14 +6,6 @@ export interface SidebarCurrentUser {
   avatarUrl?: string;
 }
 
-export interface DirectMessageItem {
-  chatId?: string;
-  firstName: string;
-  lastName: string;
-  preview: string;
-  statusType: "green" | "yellow" | "gray";
-}
-
 export interface GroupItem {
   chatId?: string;
   name: string;

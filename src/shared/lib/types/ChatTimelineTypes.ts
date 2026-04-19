@@ -9,6 +9,10 @@ export type ChatTimelineItem =
       reaction?: string;
       reactionCount?: number;
       showReadReceipt?: boolean;
+      /** Id сообщения на сервере (дедуп / отладка). */
+      serverMessageId?: string;
+      /** Превью картинки для file/sticker с image/* */
+      mediaImageUrl?: string;
     }
   | {
       incoming: false;
@@ -16,4 +20,6 @@ export type ChatTimelineItem =
       text?: string;
       imageCaption?: string;
       hasImage?: boolean;
+      serverMessageId?: string;
+      mediaImageUrl?: string;
     };

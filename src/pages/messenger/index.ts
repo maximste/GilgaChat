@@ -3,7 +3,6 @@ import {
   getProfileFromStore,
   searchUsersByLogin,
 } from "@/app/controllers";
-import { createDemoChatTimeline } from "@/shared/lib/mocks";
 import type { Block } from "@/shared/ui/block";
 import { ChatPage } from "@/widgets/chatPage";
 import { setupMessengerCreateUi } from "@/widgets/messengerCreate";
@@ -77,7 +76,7 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
     mount(
       new NoChatStub({
         title: "Выберите чат",
-        description: "Выберите диалог или группу в списке слева.",
+        description: "Выберите группу в списке слева.",
         fillVertical: true,
       }),
     );
@@ -91,7 +90,7 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
       mount(
         new NoChatStub({
           title: "Чат не найден",
-          description: "Выберите другой диалог в списке слева.",
+          description: "Выберите другую группу в списке слева.",
           fillVertical: true,
         }),
       );
@@ -105,7 +104,7 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
       mount(
         new NoChatStub({
           title: "Чат не найден",
-          description: "Выберите другой диалог в списке слева.",
+          description: "Выберите другую группу в списке слева.",
           fillVertical: true,
         }),
       );
@@ -119,9 +118,8 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
         {
           peerName: chat.title,
           chatId: idNum,
-          isGroup: chatsController.isGroupChat(idNum),
-          timeline: createDemoChatTimeline(chat.title),
-          showStatusDot: chatsController.chatHeaderShowsStatusDot(idNum),
+          isGroup: true,
+          showStatusDot: false,
         },
         {
           layoutRoot,
@@ -136,7 +134,7 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
   mount(
     new NoChatStub({
       title: "Выберите чат",
-      description: "Выберите диалог или группу в списке слева.",
+      description: "Выберите группу в списке слева.",
       fillVertical: true,
     }),
   );
@@ -152,7 +150,6 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
   setupMessengerCreateUi(layoutRoot, {
     selectChat,
     searchUsersByLogin,
-    openDmWithUser: (user) => chatsController.openDmWithUser(user),
     createGroupWithMembers: (opts) =>
       chatsController.createGroupWithMembers(opts),
     getProfileFromStore,

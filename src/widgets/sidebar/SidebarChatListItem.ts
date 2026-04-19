@@ -7,7 +7,6 @@ import "./SidebarChatListItem.scss";
 
 export interface SidebarChatListItemProps {
   chatId?: string;
-  isDmVariant: boolean;
   chatIdPrefix: string;
   index: number | string;
   firstName?: string;
@@ -31,9 +30,7 @@ class SidebarChatListItem extends Block<SidebarChatListItemBlockProps> {
   protected template = template;
 
   constructor(props: SidebarChatListItemProps) {
-    const primaryLineText = props.isDmVariant
-      ? `${props.lastName ?? ""} ${props.firstName ?? ""}`.trim()
-      : (props.name ?? "");
+    const primaryLineText = props.name ?? "";
 
     super({
       ...props,

@@ -1,36 +1,17 @@
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
-import type {
-  DirectMessageItem,
-  GroupItem,
-  SidebarProps,
-} from "@/widgets/sidebar";
+import type { GroupItem, SidebarProps } from "@/widgets/sidebar";
 
 import template from "./MessengerLayout.hbs?raw";
 
 import "./MessengerLayout.scss";
 
-export type { DirectMessageItem, GroupItem };
+export type { GroupItem };
 
 export interface MessengerLayoutProps extends SidebarProps {
   content?: string;
 }
 
 type MessengerLayoutBlockProps = MessengerLayoutProps & BlockOwnProps;
-
-const defaultDirectMessages: DirectMessageItem[] = [
-  {
-    firstName: "Sarah",
-    lastName: "Chen",
-    preview: "typing...",
-    statusType: "green",
-  },
-  {
-    firstName: "Marcus",
-    lastName: "Johnson",
-    preview: "Sure, I'll check it out later today",
-    statusType: "yellow",
-  },
-];
 
 const defaultGroups: GroupItem[] = [
   {
@@ -56,7 +37,6 @@ class MessengerLayout extends Block<MessengerLayoutBlockProps> {
         lastName: "Morgan",
         status: "Playing games",
       },
-      directMessages: props.directMessages ?? defaultDirectMessages,
       groups: props.groups ?? defaultGroups,
       content: props.content ?? "",
     } as MessengerLayoutBlockProps);

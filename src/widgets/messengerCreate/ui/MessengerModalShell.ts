@@ -7,7 +7,6 @@ import "./MessengerModal.scss";
 type MessengerModalShellProps = {
   title: string;
   subtitle?: string;
-  /** Например `messenger-modal--group` или `messenger-modal--dm`. */
   modalClass: string;
   primaryLabel: string;
 } & BlockOwnProps;

@@ -14,6 +14,7 @@ export interface ChatTimelineRowVm {
   showReadReceipt?: boolean;
   imageCaption?: string;
   hasImage?: boolean;
+  mediaImageUrl?: string;
 }
 
 /** Есть ли в ленте хотя бы одно сообщение (не только разделители дат) */
@@ -45,6 +46,8 @@ export function mapChatTimelineToRows(
         reaction: item.reaction,
         reactionCount: item.reactionCount,
         showReadReceipt: item.showReadReceipt,
+        mediaImageUrl: item.mediaImageUrl,
+        hasImage: Boolean(item.mediaImageUrl),
       };
     }
 
@@ -55,7 +58,8 @@ export function mapChatTimelineToRows(
       time: item.time,
       text: item.text,
       imageCaption: item.imageCaption,
-      hasImage: item.hasImage,
+      hasImage: Boolean(item.hasImage || item.mediaImageUrl),
+      mediaImageUrl: item.mediaImageUrl,
     };
   });
 }

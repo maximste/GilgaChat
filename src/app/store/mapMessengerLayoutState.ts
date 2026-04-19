@@ -2,11 +2,7 @@ import { resourceFileUrl } from "@/shared/config/api";
 import type { ApiChat } from "@/shared/lib/api/types";
 import type { Indexed } from "@/shared/lib/types";
 import type { MessengerLayoutProps } from "@/widgets/messengerLayout";
-import type {
-  DirectMessageItem,
-  GroupItem,
-  SidebarCurrentUser,
-} from "@/widgets/sidebar";
+import type { GroupItem, SidebarCurrentUser } from "@/widgets/sidebar";
 
 const DEFAULT_SIDEBAR_USER: SidebarCurrentUser = {
   firstName: "Alex",
@@ -22,19 +18,19 @@ type ChatsSlice = {
   list?: ApiChat[];
 };
 
-function mapChatsToGroups(chats: ApiChat[]): GroupItem[] {
-  return chats.map((c) => ({
+function mapChatToGroupItem(c: ApiChat): GroupItem {
+  return {
     chatId: String(c.id),
     name: c.title,
     preview: c.last_message?.content ?? "",
     iconClass: "fa-comments",
     avatarUrl: c.avatar?.trim() ? resourceFileUrl(c.avatar.trim()) : undefined,
-  }));
+  };
 }
 
 export type MessengerLayoutStoreSlice = Pick<
   MessengerLayoutProps,
-  "currentUser" | "directMessages" | "groups"
+  "currentUser" | "groups"
 >;
 
 export function mapMessengerLayoutState(
@@ -45,7 +41,6 @@ export function mapMessengerLayoutState(
 
   return {
     currentUser: user?.sidebar ?? DEFAULT_SIDEBAR_USER,
-    directMessages: [] satisfies DirectMessageItem[],
-    groups: mapChatsToGroups(chats?.list ?? []),
+    groups: (chats?.list ?? []).map(mapChatToGroupItem),
   };
 }

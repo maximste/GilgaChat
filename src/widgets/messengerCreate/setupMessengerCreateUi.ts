@@ -1,5 +1,4 @@
 import type { MessengerCreateDeps } from "./types";
-import { CreateDmForm } from "./ui/forms/CreateDmForm";
 import { CreateGroupForm } from "./ui/forms/CreateGroupForm";
 import { MessengerFab } from "./ui/MessengerFab";
 import { MessengerModalShell } from "./ui/MessengerModalShell";
@@ -22,7 +21,7 @@ export type SetupMessengerCreateUiOptions = MessengerCreateDeps & {
 };
 
 /**
- * FAB «+», меню Create DM / Create Group, модалки: shell + форма в body.
+ * FAB «+» и модалка создания группы.
  */
 export function setupMessengerCreateUi(
   layoutRoot: HTMLElement,
@@ -41,42 +40,6 @@ export function setupMessengerCreateUi(
   const modalsRoot = ensureModalsRoot(layoutRoot);
 
   const fab = new MessengerFab({
-    onOpenDm: () => {
-      const shell = new MessengerModalShell({
-        title: "Create Direct Message",
-        subtitle: "Select a user to start a conversation with.",
-        modalClass: "messenger-modal--dm",
-        primaryLabel: "Create DM",
-      });
-
-      const dmRef: { form: CreateDmForm | null } = { form: null };
-
-      const closeDm = (): void => {
-        dmRef.form?.destroy();
-        shell.element()?.remove();
-        shell.destroy();
-      };
-
-      dmRef.form = new CreateDmForm(
-        {
-          searchUsersByLogin: options.searchUsersByLogin,
-          openDmWithUser: options.openDmWithUser,
-          onDone: (chatId) => {
-            options.selectChat(String(chatId));
-          },
-          closeModal: closeDm,
-        },
-        shell,
-      );
-
-      shell.setHandlers({
-        onClose: closeDm,
-        onSubmit: () => void dmRef.form!.submit(),
-      });
-
-      shell.mount(modalsRoot);
-      shell.mountBody(dmRef.form.element()!);
-    },
     onOpenGroup: () => {
       const shell = new MessengerModalShell({
         title: "Create Group",

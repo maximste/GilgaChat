@@ -45,16 +45,8 @@ export type MockMessengerChatConfig = {
   timeline: ChatTimelineItem[];
 };
 
-/** Демо-карта чатов по `data-chat` (dm-0, group-1, …) до подключения бэкенда */
+/** Демо-карта чатов по `data-chat` (group-0, …) до подключения бэкенда */
 export const MOCK_MESSENGER_CHATS: Record<string, MockMessengerChatConfig> = {
-  "dm-0": {
-    peerName: "Sarah Chen",
-    timeline: createDemoChatTimeline("Sarah Chen"),
-  },
-  "dm-1": {
-    peerName: "Marcus Johnson",
-    timeline: [],
-  },
   "group-0": {
     peerName: "Project Alpha Team",
     timeline: [],
