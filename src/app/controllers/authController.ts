@@ -42,6 +42,18 @@ function isSessionAlreadyActiveError(e: unknown): boolean {
   );
 }
 
+/**
+ * Сброс сессии на API без throw. После нескольких неудачных регистраций/логинов
+ * в cookie часто остаётся «битая» сессия — без этого следующие запросы снова падают.
+ */
+async function tryClearRemoteAuthSession(): Promise<void> {
+  try {
+    await authApi.logout();
+  } catch {
+    /* не мешаем потоку */
+  }
+}
+
 async function finalizeLogin(router: Router): Promise<void> {
   const user = await authApi.getUser();
 
@@ -65,12 +77,13 @@ export async function initAuthSession(): Promise<void> {
     if (
       e instanceof ApiError &&
       (e.status === HttpStatus.Unauthorized ||
-        e.status === HttpStatus.BadRequest)
+        e.status === HttpStatus.BadRequest ||
+        e.status === HttpStatus.Forbidden)
     ) {
       store.setState("user", { profile: null, sidebar: undefined });
       store.setState("chats.list", []);
-      store.setState("chats.kindById", {});
       setSession({ authenticated: false });
+      await tryClearRemoteAuthSession();
     } else {
       console.error("[auth]", e);
     }
@@ -98,7 +111,17 @@ export async function signUp(
   data: SignUpRequest,
   router: Router,
 ): Promise<void> {
+  await tryClearRemoteAuthSession();
   await authApi.signUp(data);
+
+  try {
+    await authApi.signIn({ login: data.login, password: data.password });
+  } catch (e) {
+    if (!isSessionAlreadyActiveError(e)) {
+      throw e;
+    }
+  }
+
   await finalizeLogin(router);
 }
 
@@ -117,7 +140,6 @@ export async function logout(router: Router): Promise<void> {
 
   store.setState("user", { profile: null, sidebar: undefined });
   store.setState("chats.list", []);
-  store.setState("chats.kindById", {});
   store.setState("session", { initialized: true, authenticated: false });
   router.go(APP_PATHS.login);
 
