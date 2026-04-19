@@ -2,6 +2,7 @@ import { apiDelete, apiGet, apiPost, apiPut } from "./apiClient";
 import type {
   ApiChat,
   ApiChatMember,
+  ChatSocketTokenResponse,
   ChatsUsersRequest,
   CreateChatRequest,
   CreateChatResponse,
@@ -58,14 +59,15 @@ export const chatsApi = {
     return [];
   },
 
-  /**
-   * Общий чат с пользователем `userId` (двусторонний). Path-параметр — id другого пользователя.
-   */
-  getCommonChatWithUser(userId: number): Promise<ApiChat[]> {
-    return apiGet<ApiChat[]>(`/chats/${userId}/common`);
-  },
-
   uploadChatAvatar(formData: FormData): Promise<ApiChat> {
     return apiPut<ApiChat>("/chats/avatar", formData);
+  },
+
+  /**
+   * Токен для подключения к WebSocket чата (вместе с cookie сессии).
+   * HTTP: `POST /api/v2/chats/token/:id`, `:id` — id чата.
+   */
+  postSocketToken(chatId: number): Promise<ChatSocketTokenResponse> {
+    return apiPost<ChatSocketTokenResponse>(`/chats/token/${chatId}`, {});
   },
 };

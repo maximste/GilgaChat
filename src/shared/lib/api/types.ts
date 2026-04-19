@@ -77,6 +77,10 @@ export type CreateChatResponse = {
   id: number;
 };
 
+export type ChatSocketTokenResponse = {
+  token: string;
+};
+
 export type DeleteChatRequest = {
   chatId: number;
 };
