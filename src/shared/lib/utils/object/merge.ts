@@ -7,10 +7,9 @@
  * 3. If both sides have a plain object at that key — merge them recursively (nested keys combine).
  * 4. Otherwise — take the value from `rhs` (primitives, arrays, null, etc. replace the left side).
  */
-
 import type { Indexed } from "../../types";
 
-export function isPlainObject(value: unknown): value is Indexed {
+function isPlainObject(value: unknown): value is Indexed {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
@@ -32,3 +31,4 @@ function merge(lhs: Indexed, rhs: Indexed): Indexed {
 }
 
 export { merge };
+export { isPlainObject };

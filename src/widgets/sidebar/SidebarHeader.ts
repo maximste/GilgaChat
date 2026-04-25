@@ -4,7 +4,7 @@ import template from "./SidebarHeader.hbs?raw";
 
 import "./SidebarHeader.scss";
 
-export interface SidebarHeaderProps {
+interface SidebarHeaderProps {
   appTitle: string;
 }
 
@@ -19,5 +19,5 @@ class SidebarHeader extends Block<SidebarHeaderBlockProps> {
     super(props as SidebarHeaderBlockProps);
   }
 }
-
 export { SidebarHeader };
+export { type SidebarHeaderProps };

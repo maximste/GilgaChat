@@ -7,7 +7,7 @@ type Listener = () => void;
  * Глобальное иммутабельное состояние: обновление через merge + set по path,
  * подписчики уведомляются после каждого реального изменения данных.
  */
-export class Store {
+class Store {
   private state: Indexed = {};
 
   private readonly listeners = new Set<Listener>();
@@ -20,13 +20,11 @@ export class Store {
     const patchHolder: Indexed = {};
 
     set(patchHolder, path, value);
-
     const nextState = merge(this.state, patchHolder);
 
     if (isEqual(this.state, nextState)) {
       return;
     }
-
     this.state = nextState;
     this.emit();
   }
@@ -45,5 +43,6 @@ export class Store {
     }
   }
 }
+const store = new Store();
 
-export const store = new Store();
+export { Store, store };

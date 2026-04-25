@@ -1,4 +1,4 @@
-export type ApiUser = {
+type ApiUser = {
   id: number;
   first_name: string;
   second_name: string;
@@ -9,12 +9,12 @@ export type ApiUser = {
   avatar: string | null;
 };
 
-export type SignInRequest = {
+type SignInRequest = {
   login: string;
   password: string;
 };
 
-export type SignUpRequest = {
+type SignUpRequest = {
   first_name: string;
   second_name: string;
   login: string;
@@ -23,11 +23,11 @@ export type SignUpRequest = {
   phone: string;
 };
 
-export type SignUpResponse = {
+type SignUpResponse = {
   id: number;
 };
 
-export type UserProfileRequest = {
+type UserProfileRequest = {
   first_name: string;
   second_name: string;
   display_name: string;
@@ -36,16 +36,16 @@ export type UserProfileRequest = {
   phone: string;
 };
 
-export type ChangePasswordRequest = {
+type ChangePasswordRequest = {
   oldPassword: string;
   newPassword: string;
 };
 
-export type UserSearchRequest = {
+type UserSearchRequest = {
   login: string;
 };
 
-export type ChatLastMessageUser = {
+type ChatLastMessageUser = {
   first_name: string;
   second_name: string;
   avatar: string | null;
@@ -54,13 +54,13 @@ export type ChatLastMessageUser = {
   phone: string;
 };
 
-export type ChatLastMessage = {
+type ChatLastMessage = {
   user: ChatLastMessageUser;
   time: string;
   content: string;
 };
 
-export type ApiChat = {
+type ApiChat = {
   id: number;
   title: string;
   avatar: string | null;
@@ -69,30 +69,54 @@ export type ApiChat = {
   last_message: ChatLastMessage | null;
 };
 
-export type CreateChatRequest = {
+type CreateChatRequest = {
   title: string;
 };
 
-export type CreateChatResponse = {
+type CreateChatResponse = {
   id: number;
 };
 
-export type DeleteChatRequest = {
+type ChatSocketTokenResponse = {
+  token: string;
+};
+
+type DeleteChatRequest = {
   chatId: number;
 };
 
-export type ChatsUsersRequest = {
+type ChatsUsersRequest = {
   users: number[];
   chatId: number;
 };
 
-export type GetChatUsersQuery = {
+type GetChatUsersQuery = {
   offset?: number;
   limit?: number;
   name?: string;
   email?: string;
 };
 
-export type ApiChatMember = ApiUser & {
+type ApiChatMember = ApiUser & {
   role?: string;
+};
+
+export {
+  type ApiChat,
+  type ApiChatMember,
+  type ApiUser,
+  type ChangePasswordRequest,
+  type ChatLastMessage,
+  type ChatLastMessageUser,
+  type ChatSocketTokenResponse,
+  type ChatsUsersRequest,
+  type CreateChatRequest,
+  type CreateChatResponse,
+  type DeleteChatRequest,
+  type GetChatUsersQuery,
+  type SignInRequest,
+  type SignUpRequest,
+  type SignUpResponse,
+  type UserProfileRequest,
+  type UserSearchRequest,
 };

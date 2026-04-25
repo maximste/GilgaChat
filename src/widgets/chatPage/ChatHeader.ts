@@ -4,17 +4,18 @@ import template from "./ChatHeader.hbs?raw";
 
 import "./ChatHeader.scss";
 
-export interface ChatHeaderProps {
+interface ChatHeaderProps {
   peerName: string;
-  /** Личный чат: зелёная точка «онлайн»; для группы — false. */
+  avatarUrl?: string;
   showStatusDot?: boolean;
-  /** Группа: кнопка «Участники» (добавление / удаление). */
   showGroupMemberActions?: boolean;
+  canChangeAvatar?: boolean;
 }
 
 type ChatHeaderBlockProps = ChatHeaderProps & {
   showStatusDot: boolean;
   showGroupMemberActions: boolean;
+  canChangeAvatar: boolean;
 } & BlockOwnProps;
 
 class ChatHeader extends Block<ChatHeaderBlockProps> {
@@ -27,8 +28,9 @@ class ChatHeader extends Block<ChatHeaderBlockProps> {
       ...props,
       showStatusDot: props.showStatusDot ?? true,
       showGroupMemberActions: props.showGroupMemberActions ?? false,
+      canChangeAvatar: props.canChangeAvatar ?? false,
     } as ChatHeaderBlockProps);
   }
 }
-
 export { ChatHeader };
+export { type ChatHeaderProps };

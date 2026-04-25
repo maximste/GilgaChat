@@ -1,11 +1,15 @@
 @use "shared/styles/variables" as *;
 
 .messenger-sidebar__user {
+  position: sticky;
+  z-index: 1;
+  bottom: 0;
   display: flex;
   flex-shrink: 0;
   align-items: center;
   padding: $spacing-12;
   border-top: 1px solid $border-color-dark;
+  margin-top: auto;
   background-color: $background-color-on-surface-black;
   gap: $gap-size-8;
 }

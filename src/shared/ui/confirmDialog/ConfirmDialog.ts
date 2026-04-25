@@ -4,7 +4,7 @@ import template from "./ConfirmDialog.hbs?raw";
 
 import "./confirmDialog.scss";
 
-export type ConfirmDialogProps = {
+type ConfirmDialogProps = {
   title: string;
   message: string;
   confirmLabel: string;
@@ -14,11 +14,11 @@ export type ConfirmDialogProps = {
   titleId: string;
 } & BlockOwnProps;
 
-export type ConfirmDialogOptions = {
+type ConfirmDialogOptions = {
   onResult: (confirmed: boolean) => void;
 };
 
-export class ConfirmDialog extends Block<ConfirmDialogProps> {
+class ConfirmDialog extends Block<ConfirmDialogProps> {
   protected template = template;
 
   private readonly dialogOptions: ConfirmDialogOptions;
@@ -43,14 +43,12 @@ export class ConfirmDialog extends Block<ConfirmDialogProps> {
     if (this.settled) {
       return;
     }
-
     this.settled = true;
     const el = this.element();
 
     if (el) {
       el.remove();
     }
-
     this.destroy();
     this.dialogOptions.onResult(value);
   }
@@ -71,16 +69,15 @@ export class ConfirmDialog extends Block<ConfirmDialogProps> {
 
         return;
       }
-
       if (target === this.refs.cancelBtn) {
         this.finish(false);
 
         return;
       }
-
       if (target === this.refs.confirmBtn) {
         this.finish(true);
       }
     },
   };
 }
+export { ConfirmDialog, type ConfirmDialogOptions, type ConfirmDialogProps };

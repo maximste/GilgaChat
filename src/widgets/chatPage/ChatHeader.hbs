@@ -1,5 +1,25 @@
 <header class="chat-page__header">
   <div class="chat-page__header-main">
+    <button
+      type="button"
+      class="chat-page__avatar-btn"
+      data-chat-action="change-avatar"
+      aria-label="Изменить иконку чата"
+      {{#unless canChangeAvatar}}disabled{{/unless}}
+    >
+      {{#if avatarUrl}}
+        <img class="chat-page__avatar-img" src="{{avatarUrl}}" alt="" loading="lazy" />
+      {{else}}
+        <span class="chat-page__avatar-fallback" aria-hidden="true">
+          <i class="fa-solid fa-users"></i>
+        </span>
+      {{/if}}
+      {{#if canChangeAvatar}}
+        <span class="chat-page__avatar-edit" aria-hidden="true">
+          <i class="fa-solid fa-pen"></i>
+        </span>
+      {{/if}}
+    </button>
     {{#if showStatusDot}}
       <span class="chat-page__status-dot" aria-hidden="true"></span>
     {{/if}}

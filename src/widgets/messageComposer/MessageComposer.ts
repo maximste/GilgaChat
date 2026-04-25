@@ -10,14 +10,14 @@ import template from "./MessageComposer.hbs?raw";
 import "@/shared/ui/formField/FormField.scss";
 import "./MessageComposer.scss";
 
-export type MessageComposerProps = {
+type MessageComposerProps = {
   /** Имя собеседника для плейсхолдера «Message …» */
   peerName: string;
 } & BlockOwnProps;
 
 type MessageComposerBlockProps = MessageComposerProps;
 
-export class MessageComposer extends Block<MessageComposerBlockProps> {
+class MessageComposer extends Block<MessageComposerBlockProps> {
   static componentName = "MessageComposer";
 
   protected template = template;
@@ -32,14 +32,12 @@ export class MessageComposer extends Block<MessageComposerBlockProps> {
     if (!form || !ta) {
       return;
     }
-
     const raw = ta.value;
     const err = messageFormValidators.message(raw, { message: raw });
 
     if (err) {
       return;
     }
-
     const text = raw.trim();
 
     form.dispatchEvent(
@@ -48,7 +46,6 @@ export class MessageComposer extends Block<MessageComposerBlockProps> {
         detail: { text },
       }),
     );
-
     ta.value = "";
   }
 
@@ -73,13 +70,11 @@ export class MessageComposer extends Block<MessageComposerBlockProps> {
       if (ke.key !== "Enter" || ke.shiftKey) {
         return;
       }
-
       const el = ke.target;
 
       if (!(el instanceof HTMLTextAreaElement) || el.name !== "message") {
         return;
       }
-
       ke.preventDefault();
       el.form?.requestSubmit();
     },
@@ -92,3 +87,4 @@ export class MessageComposer extends Block<MessageComposerBlockProps> {
     } as MessageComposerBlockProps);
   }
 }
+export { MessageComposer, type MessageComposerProps };
