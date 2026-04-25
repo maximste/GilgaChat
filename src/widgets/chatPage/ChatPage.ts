@@ -78,6 +78,10 @@ class ChatPage extends Block<ChatPageBlockProps> {
     }
   >();
 
+  private isGroupMemberDirectoryLoading = false;
+
+  private isGroupMemberDirectoryLoaded = false;
+
   private readonly onChatMessageSent = (event: Event): void => {
     const { text } = (event as CustomEvent<ChatMessageSentDetail>).detail;
 
@@ -199,10 +203,22 @@ class ChatPage extends Block<ChatPageBlockProps> {
     void session.start();
   }
 
-  private async loadGroupMemberDirectory(): Promise<void> {
+  private async loadGroupMemberDirectory(force = false): Promise<void> {
     if (!this.routeIsGroup || this.routeChatId === null) {
       return;
     }
+    if (!force) {
+      if (
+        this.isGroupMemberDirectoryLoading ||
+        this.isGroupMemberDirectoryLoaded
+      ) {
+        return;
+      }
+    } else if (this.isGroupMemberDirectoryLoading) {
+      return;
+    }
+
+    this.isGroupMemberDirectoryLoading = true;
     try {
       const members = await chatsController.getChatUsers(this.routeChatId, {
         limit: 500,
@@ -212,16 +228,25 @@ class ChatPage extends Block<ChatPageBlockProps> {
       for (const member of members) {
         const displayName =
           member.display_name?.trim() || member.login || `User ${member.id}`;
-        const avatarPath = member.avatar?.trim();
+        const avatarPathRaw = member.avatar?.trim();
+        const avatarPath =
+          avatarPathRaw &&
+          avatarPathRaw !== "null" &&
+          avatarPathRaw !== "undefined"
+            ? avatarPathRaw
+            : undefined;
 
         this.groupMemberDirectory.set(String(member.id), {
           displayName,
           avatarUrl: avatarPath ? resourceFileUrl(avatarPath) : undefined,
         });
       }
+      this.isGroupMemberDirectoryLoaded = true;
       this.messageSession?.refreshTimeline();
     } catch {
       // Quietly keep fallback labels if participant list is unavailable.
+    } finally {
+      this.isGroupMemberDirectoryLoading = false;
     }
   }
 
@@ -257,14 +282,14 @@ class ChatPage extends Block<ChatPageBlockProps> {
               chatId: id,
               users: userIds,
             });
-            await this.loadGroupMemberDirectory();
+            await this.loadGroupMemberDirectory(true);
           },
           removeUsersFromChat: async (id, userIds) => {
             await chatsController.removeUsersFromChat({
               chatId: id,
               users: userIds,
             });
-            await this.loadGroupMemberDirectory();
+            await this.loadGroupMemberDirectory(true);
           },
         });
 
