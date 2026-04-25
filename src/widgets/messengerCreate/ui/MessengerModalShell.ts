@@ -79,7 +79,6 @@ class MessengerModalShell extends Block<MessengerModalShellProps> {
 
       return;
     }
-
     if (
       target.closest(".messenger-modal__close") ||
       target === this.refs.cancelBtn ||
@@ -89,7 +88,6 @@ class MessengerModalShell extends Block<MessengerModalShellProps> {
 
       return;
     }
-
     if (target === this.refs.submitBtn || target.closest("[data-act=submit]")) {
       this.onSubmit();
     }
@@ -99,5 +97,4 @@ class MessengerModalShell extends Block<MessengerModalShellProps> {
     click: this.onRootClick,
   };
 }
-
 export { MessengerModalShell, type MessengerModalShellProps };

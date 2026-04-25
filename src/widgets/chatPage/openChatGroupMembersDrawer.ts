@@ -3,12 +3,10 @@ import {
   type ChatMembersDrawerServices,
 } from "./ChatMembersDrawer";
 
-export type { ChatMembersDrawerServices };
-
 /**
  * Открывает панель участников группового чата (drawer справа).
  */
-export function openChatGroupMembersDrawer(
+function openChatGroupMembersDrawer(
   mountRoot: HTMLElement,
   services: ChatMembersDrawerServices,
 ): void {
@@ -16,3 +14,6 @@ export function openChatGroupMembersDrawer(
 
   drawer.mount(mountRoot);
 }
+
+export type { ChatMembersDrawerServices };
+export { openChatGroupMembersDrawer };

@@ -5,7 +5,7 @@ import template from "./SidebarChatListItem.hbs?raw";
 
 import "./SidebarChatListItem.scss";
 
-export interface SidebarChatListItemProps {
+interface SidebarChatListItemProps {
   chatId?: string;
   chatIdPrefix: string;
   index: number | string;
@@ -40,5 +40,5 @@ class SidebarChatListItem extends Block<SidebarChatListItemBlockProps> {
     } as SidebarChatListItemBlockProps);
   }
 }
-
 export { SidebarChatListItem };
+export { type SidebarChatListItemProps };

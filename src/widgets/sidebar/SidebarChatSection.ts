@@ -5,9 +5,9 @@ import type { GroupItem } from "./types";
 
 import "./SidebarChatSection.scss";
 
-export type SidebarChatSectionKind = "groups";
+type SidebarChatSectionKind = "groups";
 
-export interface SidebarChatSectionProps {
+interface SidebarChatSectionProps {
   /** Совпадает с `data-section` у заголовка */
   sectionData: SidebarChatSectionKind;
   title: string;
@@ -33,7 +33,6 @@ class SidebarChatSection extends Block<SidebarChatSectionBlockProps> {
       if (!head || !root?.contains(head)) {
         return;
       }
-
       const wasExpanded = head.getAttribute("aria-expanded") === "true";
 
       head.setAttribute("aria-expanded", String(!wasExpanded));
@@ -53,5 +52,5 @@ class SidebarChatSection extends Block<SidebarChatSectionBlockProps> {
     } as SidebarChatSectionBlockProps);
   }
 }
-
 export { SidebarChatSection };
+export { type SidebarChatSectionKind, type SidebarChatSectionProps };

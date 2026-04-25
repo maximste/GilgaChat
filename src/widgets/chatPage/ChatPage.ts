@@ -18,7 +18,7 @@ import { openChatGroupMembersDrawer } from "./openChatGroupMembersDrawer";
 
 import "./ChatPage.scss";
 
-export interface ChatPageProps {
+interface ChatPageProps {
   peerName?: string;
   chatId?: number;
   isGroup?: boolean;
@@ -28,7 +28,7 @@ export interface ChatPageProps {
 }
 
 /** Зависимости от экрана мессенджера (модалки, очистка выбора, поиск пользователей). */
-export type ChatPageHostDeps = {
+type ChatPageHostDeps = {
   /** Корень layout: отсюда ищется `[data-messenger-modals]` (оверлеи и выезжающие панели). */
   layoutRoot: HTMLElement;
   clearChatSelection: () => void;
@@ -49,7 +49,6 @@ function toErrorMessage(error: unknown): string {
   if (error instanceof ApiError) {
     return error.message;
   }
-
   if (error instanceof Error) {
     return error.message;
   }
@@ -57,7 +56,7 @@ function toErrorMessage(error: unknown): string {
   return String(error);
 }
 
-export class ChatPage extends Block<ChatPageBlockProps> {
+class ChatPage extends Block<ChatPageBlockProps> {
   protected template = template;
 
   private container: HTMLElement;
@@ -76,24 +75,20 @@ export class ChatPage extends Block<ChatPageBlockProps> {
     if (!text?.trim()) {
       return;
     }
-
     if (this.routeChatId !== null && this.messageSession) {
       this.messageSession.sendText(text.trim());
 
       return;
     }
-
     const time = new Date().toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "2-digit",
     });
-
     const newItem: ChatTimelineItem = {
       incoming: false,
       time,
       text: text.trim(),
     };
-
     const timeline = [...this.props.timeline, newItem];
 
     this.setProps({
@@ -132,7 +127,6 @@ export class ChatPage extends Block<ChatPageBlockProps> {
       hasMessages,
       timelineRows,
     } as ChatPageBlockProps);
-
     this.container = container;
     this.hostDeps = hostDeps;
     this.routeChatId = routeChatId;
@@ -167,14 +161,11 @@ export class ChatPage extends Block<ChatPageBlockProps> {
     if (!deps || chatId === null) {
       return;
     }
-
     if (this.messageSession?.chatId === chatId) {
       return;
     }
-
     this.messageSession?.destroy();
     this.messageSession = null;
-
     const session = new ChatMessagesSession({
       chatId,
       peerDisplayName: this.props.peerName,
@@ -201,7 +192,6 @@ export class ChatPage extends Block<ChatPageBlockProps> {
       const target = (event.target as HTMLElement).closest(
         "[data-chat-action]",
       );
-
       const action = target?.getAttribute("data-chat-action");
       const chatId = this.routeChatId;
       const deps = this.hostDeps;
@@ -209,12 +199,10 @@ export class ChatPage extends Block<ChatPageBlockProps> {
       if (!action || chatId === null || !deps) {
         return;
       }
-
       if (action === "group-members") {
         if (!this.routeIsGroup) {
           return;
         }
-
         const modalsHost =
           deps.layoutRoot.querySelector<HTMLElement>(
             "[data-messenger-modals]",
@@ -234,7 +222,6 @@ export class ChatPage extends Block<ChatPageBlockProps> {
 
         return;
       }
-
       if (action === "delete-chat") {
         void (async () => {
           const ok = await showConfirmDialog({
@@ -248,7 +235,6 @@ export class ChatPage extends Block<ChatPageBlockProps> {
           if (!ok) {
             return;
           }
-
           try {
             await chatsController.deleteChat({ chatId });
             deps.clearChatSelection();
@@ -271,3 +257,4 @@ export class ChatPage extends Block<ChatPageBlockProps> {
     }
   }
 }
+export { ChatPage, type ChatPageHostDeps, type ChatPageProps };

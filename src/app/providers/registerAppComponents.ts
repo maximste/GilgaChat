@@ -14,7 +14,7 @@ import {
 } from "@/widgets/sidebar";
 
 /** Регистрация Handlebars-хелперов для вложенных Block на уровне приложения. */
-export function registerAppComponents(): void {
+function registerAppComponents(): void {
   registerComponent(ChatHeader);
   registerComponent(ChatThread);
   registerComponent(ChatFooter);
@@ -27,3 +27,5 @@ export function registerAppComponents(): void {
   registerComponent(SidebarChatListItem);
   registerComponent(SidebarUserPanel);
 }
+
+export { registerAppComponents };

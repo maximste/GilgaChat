@@ -4,7 +4,7 @@ import template from "./MessengerFab.hbs?raw";
 
 import "./MessengerFab.scss";
 
-export interface MessengerFabProps {
+interface MessengerFabProps {
   onOpenGroup: () => void;
 }
 
@@ -32,5 +32,5 @@ class MessengerFab extends Block<MessengerFabBlockProps> {
     super(props as MessengerFabBlockProps);
   }
 }
-
 export { MessengerFab };
+export { type MessengerFabProps };

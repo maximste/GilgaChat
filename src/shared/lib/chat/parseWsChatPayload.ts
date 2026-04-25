@@ -26,7 +26,7 @@ function parseFile(raw: unknown): WsChatFileMeta | undefined {
 }
 
 /** Элемент массива ответа `get old` (нужен `id` для следующего запроса `get old`). */
-export function normalizeHistoryMessage(
+function normalizeHistoryMessage(
   raw: Record<string, unknown>,
 ): WsNormalizedChatMessage | null {
   const kind = asString(raw.type) as WsNormalizedChatMessage["kind"];
@@ -34,13 +34,11 @@ export function normalizeHistoryMessage(
   if (kind !== "message" && kind !== "file" && kind !== "sticker") {
     return null;
   }
-
   const rawId = raw.id ?? raw.message_id ?? raw.messageId ?? raw.msg_id;
 
   if (rawId === undefined || rawId === null || asString(rawId) === "") {
     return null;
   }
-
   const id = asString(rawId);
 
   return {
@@ -54,7 +52,7 @@ export function normalizeHistoryMessage(
 }
 
 /** Broadcast нового сообщения. */
-export function normalizeBroadcastMessage(
+function normalizeBroadcastMessage(
   raw: Record<string, unknown>,
 ): WsNormalizedChatMessage | null {
   const kind = asString(raw.type) as WsNormalizedChatMessage["kind"];
@@ -62,7 +60,6 @@ export function normalizeBroadcastMessage(
   if (kind !== "message" && kind !== "file" && kind !== "sticker") {
     return null;
   }
-
   const id = asString(raw.id);
 
   if (!id) {
@@ -78,3 +75,5 @@ export function normalizeBroadcastMessage(
     file: parseFile(raw.file),
   };
 }
+
+export { normalizeBroadcastMessage, normalizeHistoryMessage };

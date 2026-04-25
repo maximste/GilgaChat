@@ -14,7 +14,7 @@ import template from "./RegisterForm.hbs?raw";
 
 import "./RegisterForm.scss";
 
-export interface RegisterFormProps {
+interface RegisterFormProps {
   title: string;
   subtitle?: string;
   onSignUp?: (payload: SignUpRequest) => void | Promise<void>;
@@ -33,7 +33,7 @@ type RegisterFormBlockProps = RegisterFormProps & {
   signInLink: LinkProps;
 } & BlockOwnProps;
 
-export class RegisterForm extends Block<RegisterFormBlockProps> {
+class RegisterForm extends Block<RegisterFormBlockProps> {
   protected template = template;
 
   constructor(props: RegisterFormProps) {
@@ -41,7 +41,6 @@ export class RegisterForm extends Block<RegisterFormBlockProps> {
     const fieldClass = "register-form__field";
     const labelClass = "register-form__label";
     const inputClass = "register-form__input";
-
     const initial: RegisterFormBlockProps = {
       title: props.title,
       subtitle: props.subtitle,
@@ -189,3 +188,4 @@ export class RegisterForm extends Block<RegisterFormBlockProps> {
     };
   }
 }
+export { RegisterForm, type RegisterFormProps };

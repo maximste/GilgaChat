@@ -1,7 +1,7 @@
 import type { ApiUser } from "@/shared/lib/api/types";
 
 /** Зависимости со страницы/app — виджет не импортирует `@/app`. */
-export type MessengerCreateDeps = {
+type MessengerCreateDeps = {
   searchUsersByLogin: (login: string) => Promise<ApiUser[]>;
   createGroupWithMembers: (options: {
     title: string;
@@ -10,3 +10,5 @@ export type MessengerCreateDeps = {
   }) => Promise<number>;
   getProfileFromStore: () => ApiUser | null;
 };
+
+export { type MessengerCreateDeps };

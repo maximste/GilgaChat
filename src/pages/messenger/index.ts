@@ -12,15 +12,13 @@ import {
   type SidebarSelectChatDetail,
 } from "@/widgets/sidebar";
 
-export { setupMessengerCreateUi } from "@/widgets/messengerCreate";
-
 /**
  * Монтирует правую колонку: заглушка без выбора, по клику — чат или заглушка «нет сообщений».
  *
  * @param layoutRoot Корень `MessengerLayout` (`.messenger-layout`). Нужен явно: `componentDidMount`
  * срабатывает до вставки блока в `document`, поэтому `document.getElementById` в этот момент не находит `#messenger-content`.
  */
-export function setupMessengerChatPage(layoutRoot: HTMLElement): {
+function setupMessengerChatPage(layoutRoot: HTMLElement): {
   selectChat: (chatId: string) => void;
 } {
   const noop = (): void => {};
@@ -29,7 +27,6 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
   if (!(contentEl instanceof HTMLElement)) {
     return { selectChat: noop };
   }
-
   const maybeSidebar = layoutRoot.classList.contains("messenger-layout")
     ? layoutRoot
     : layoutRoot.querySelector<HTMLElement>(".messenger-layout");
@@ -37,10 +34,8 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
   if (!maybeSidebar) {
     return { selectChat: noop };
   }
-
   const sidebar = maybeSidebar;
   const mainEl = contentEl;
-
   let currentBlock: Block | null = null;
 
   function mount(block: Block): void {
@@ -59,11 +54,9 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
       .forEach((node) => {
         node.classList.remove("messenger-sidebar__item--active");
       });
-
     if (!chatId) {
       return;
     }
-
     const item = sidebar.querySelector<HTMLButtonElement>(
       `.messenger-sidebar__item[data-chat="${CSS.escape(chatId)}"]`,
     );
@@ -97,7 +90,6 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
 
       return;
     }
-
     const chat = chatsController.findChatById(idNum);
 
     if (!chat) {
@@ -111,7 +103,6 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
 
       return;
     }
-
     mount(
       new ChatPage(
         mainEl,
@@ -138,7 +129,6 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
       fillVertical: true,
     }),
   );
-
   sidebar.addEventListener(SIDEBAR_SELECT_CHAT_EVENT, (event: Event) => {
     const { chatId } = (event as CustomEvent<SidebarSelectChatDetail>).detail;
 
@@ -146,7 +136,6 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
       selectChat(chatId);
     }
   });
-
   setupMessengerCreateUi(layoutRoot, {
     selectChat,
     searchUsersByLogin,
@@ -157,3 +146,6 @@ export function setupMessengerChatPage(layoutRoot: HTMLElement): {
 
   return { selectChat };
 }
+
+export { setupMessengerCreateUi } from "@/widgets/messengerCreate";
+export { setupMessengerChatPage };

@@ -5,9 +5,11 @@ import template from "./NotFoundPage.hbs?raw";
 
 import "./NotFoundPage.scss";
 
-type NotFoundPageBlockProps = BlockOwnProps & { homeHref: string };
+type NotFoundPageBlockProps = BlockOwnProps & {
+  homeHref: string;
+};
 
-export class NotFoundPage extends Block<NotFoundPageBlockProps> {
+class NotFoundPage extends Block<NotFoundPageBlockProps> {
   protected template = template;
 
   protected events = {
@@ -28,3 +30,4 @@ export class NotFoundPage extends Block<NotFoundPageBlockProps> {
     super({ homeHref: appHref(APP_PATHS.messenger) } as NotFoundPageBlockProps);
   }
 }
+export { NotFoundPage };

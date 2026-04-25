@@ -11,8 +11,8 @@ import {
 } from "./parseWsChatPayload";
 import { buildTimelineFromWsMessages } from "./wsMessagesToTimeline";
 
-const PING_MS = 25_000;
-const GET_OLD_WAIT_MS = 20_000;
+const PING_MS = 25000;
+const GET_OLD_WAIT_MS = 20000;
 
 function extractSocketToken(res: ChatSocketTokenResponse): string {
   const responseRecord = res as Record<string, unknown>;
@@ -25,7 +25,7 @@ function extractSocketToken(res: ChatSocketTokenResponse): string {
   return rawToken.trim();
 }
 
-export type ChatMessagesSessionOptions = {
+type ChatMessagesSessionOptions = {
   chatId: number;
   peerDisplayName: string;
   isGroup: boolean;
@@ -44,7 +44,7 @@ type GetOldWaiter = {
  * Одно соединение на чат: токен, WS, ping, догрузка истории через `get old`,
  * broadcast и отправка текста.
  */
-export class ChatMessagesSession {
+class ChatMessagesSession {
   readonly chatId: number;
 
   private readonly peerDisplayName: string;
@@ -80,7 +80,6 @@ export class ChatMessagesSession {
     if (this.destroyed) {
       return;
     }
-
     const user = this.getCurrentUser();
 
     if (!user) {
@@ -89,7 +88,6 @@ export class ChatMessagesSession {
 
       return;
     }
-
     let token: string;
 
     try {
@@ -102,7 +100,6 @@ export class ChatMessagesSession {
 
       return;
     }
-
     const url = buildChatWebSocketUrl(user.id, this.chatId, token);
 
     try {
@@ -112,27 +109,21 @@ export class ChatMessagesSession {
 
           return;
         }
-
         const socket = new WebSocket(url);
 
         this.ws = socket;
-
         socket.onopen = () => {
           resolve();
         };
-
         socket.onerror = () => {
           reject(new Error("WebSocket error"));
         };
-
         socket.onclose = () => {
           if (this.ws === socket) {
             this.ws = null;
           }
-
           this.stopPing();
         };
-
         socket.onmessage = (messageEvent) => {
           this.handleSocketMessage(messageEvent.data, user);
         };
@@ -143,11 +134,9 @@ export class ChatMessagesSession {
 
       return;
     }
-
     if (this.destroyed || !this.ws) {
       return;
     }
-
     this.startPing();
     await this.hydrateMessages(user);
   }
@@ -158,7 +147,6 @@ export class ChatMessagesSession {
     if (!trimmed || !this.ws || this.ws.readyState !== WebSocket.OPEN) {
       return;
     }
-
     this.ws.send(JSON.stringify({ type: "message", content: trimmed }));
   }
 
@@ -166,7 +154,6 @@ export class ChatMessagesSession {
     this.destroyed = true;
     this.rejectGetOldWaiter(new Error("closed"));
     this.stopPing();
-
     if (this.ws) {
       this.ws.onmessage = null;
       this.ws.onclose = null;
@@ -196,7 +183,6 @@ export class ChatMessagesSession {
     if (!this.getOldWaiter) {
       return;
     }
-
     const waiter = this.getOldWaiter;
 
     this.getOldWaiter = null;
@@ -238,7 +224,6 @@ export class ChatMessagesSession {
     if (this.destroyed || !this.ws) {
       return;
     }
-
     let cursor = "0";
 
     try {
@@ -255,18 +240,15 @@ export class ChatMessagesSession {
         } catch {
           break;
         }
-
         if (batchRaw.length === 0) {
           break;
         }
-
         const normalized: WsNormalizedChatMessage[] = [];
 
         for (const row of batchRaw) {
           if (!isRecord(row)) {
             continue;
           }
-
           const message =
             normalizeHistoryMessage(row) ?? normalizeBroadcastMessage(row);
 
@@ -274,25 +256,20 @@ export class ChatMessagesSession {
             normalized.push(message);
           }
         }
-
         if (normalized.length === 0) {
           break;
         }
-
         for (const message of normalized) {
           this.messages.set(message.id, message);
         }
-
         if (normalized.length < 20) {
           break;
         }
-
         const nextCursor = normalized[normalized.length - 1].id;
 
         if (nextCursor === cursor && cursor !== "0") {
           break;
         }
-
         cursor = nextCursor;
       }
     } finally {
@@ -304,11 +281,9 @@ export class ChatMessagesSession {
     if (this.destroyed) {
       return;
     }
-
     if (typeof data !== "string") {
       return;
     }
-
     let parsed: unknown;
 
     try {
@@ -316,7 +291,6 @@ export class ChatMessagesSession {
     } catch {
       return;
     }
-
     if (Array.isArray(parsed)) {
       const batch = parsed.filter(isRecord);
 
@@ -330,21 +304,17 @@ export class ChatMessagesSession {
 
       return;
     }
-
     if (!isRecord(parsed)) {
       return;
     }
-
     const messageType = parsed.type;
 
     if (messageType === "pong" || messageType === "ping") {
       return;
     }
-
     if (messageType === "user connected") {
       return;
     }
-
     const msg = normalizeBroadcastMessage(parsed);
 
     if (msg) {
@@ -357,7 +327,6 @@ export class ChatMessagesSession {
     if (this.destroyed) {
       return;
     }
-
     const items = buildTimelineFromWsMessages([...this.messages.values()], {
       currentUserId: user.id,
       peerDisplayName: this.peerDisplayName,
@@ -367,3 +336,4 @@ export class ChatMessagesSession {
     this.onTimelineChange(items);
   }
 }
+export { ChatMessagesSession, type ChatMessagesSessionOptions };

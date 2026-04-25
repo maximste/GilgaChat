@@ -34,7 +34,6 @@ function isSessionAlreadyActiveError(e: unknown): boolean {
   if (!(e instanceof ApiError) || e.status !== HttpStatus.BadRequest) {
     return false;
   }
-
   const reason = e.reason?.trim().toLowerCase() ?? "";
 
   return (
@@ -65,9 +64,8 @@ async function finalizeLogin(router: Router): Promise<void> {
 /**
  * Проверка сессии по cookie при старте приложения.
  */
-export async function initAuthSession(): Promise<void> {
+async function initAuthSession(): Promise<void> {
   setSession({ initialized: false, authenticated: false });
-
   try {
     const user = await authApi.getUser();
 
@@ -92,10 +90,7 @@ export async function initAuthSession(): Promise<void> {
   }
 }
 
-export async function signIn(
-  data: SignInRequest,
-  router: Router,
-): Promise<void> {
+async function signIn(data: SignInRequest, router: Router): Promise<void> {
   try {
     await authApi.signIn(data);
   } catch (e) {
@@ -103,17 +98,12 @@ export async function signIn(
       throw e;
     }
   }
-
   await finalizeLogin(router);
 }
 
-export async function signUp(
-  data: SignUpRequest,
-  router: Router,
-): Promise<void> {
+async function signUp(data: SignUpRequest, router: Router): Promise<void> {
   await tryClearRemoteAuthSession();
   await authApi.signUp(data);
-
   try {
     await authApi.signIn({ login: data.login, password: data.password });
   } catch (e) {
@@ -121,11 +111,10 @@ export async function signUp(
       throw e;
     }
   }
-
   await finalizeLogin(router);
 }
 
-export async function logout(router: Router): Promise<void> {
+async function logout(router: Router): Promise<void> {
   let serverLogoutOk = true;
 
   try {
@@ -137,12 +126,10 @@ export async function logout(router: Router): Promise<void> {
       e,
     );
   }
-
   store.setState("user", { profile: null, sidebar: undefined });
   store.setState("chats.list", []);
   store.setState("session", { initialized: true, authenticated: false });
   router.go(APP_PATHS.login);
-
   if (!serverLogoutOk) {
     showErrorToast(
       "Could not log out on the server. If sign-in then says you are already logged in, refresh the page.",
@@ -150,11 +137,20 @@ export async function logout(router: Router): Promise<void> {
   }
 }
 
-export function isAuthInitialized(): boolean {
+function isAuthInitialized(): boolean {
   return !!(store.getState().session as SessionSlice | undefined)?.initialized;
 }
 
-export function isAuthenticated(): boolean {
+function isAuthenticated(): boolean {
   return !!(store.getState().session as SessionSlice | undefined)
     ?.authenticated;
 }
+
+export {
+  initAuthSession,
+  isAuthenticated,
+  isAuthInitialized,
+  logout,
+  signIn,
+  signUp,
+};

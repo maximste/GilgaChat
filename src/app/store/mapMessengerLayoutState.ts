@@ -28,14 +28,12 @@ function mapChatToGroupItem(c: ApiChat): GroupItem {
   };
 }
 
-export type MessengerLayoutStoreSlice = Pick<
+type MessengerLayoutStoreSlice = Pick<
   MessengerLayoutProps,
   "currentUser" | "groups"
 >;
 
-export function mapMessengerLayoutState(
-  state: Indexed,
-): MessengerLayoutStoreSlice {
+function mapMessengerLayoutState(state: Indexed): MessengerLayoutStoreSlice {
   const user = state.user as UserSlice | undefined;
   const chats = state.chats as ChatsSlice | undefined;
 
@@ -44,3 +42,5 @@ export function mapMessengerLayoutState(
     groups: (chats?.list ?? []).map(mapChatToGroupItem),
   };
 }
+
+export { mapMessengerLayoutState, type MessengerLayoutStoreSlice };

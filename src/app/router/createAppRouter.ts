@@ -12,7 +12,7 @@ import {
 } from "./routeBlocks";
 import { setAppRouter } from "./routerHolder";
 
-export function createAppRouter(): Router {
+function createAppRouter(): Router {
   const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
   const router = new Router("#app", {
     basePath,
@@ -30,3 +30,5 @@ export function createAppRouter(): Router {
     .use(APP_PATHS.notFound, NotFoundPage)
     .use(APP_PATHS.serverError, ServerErrorPage);
 }
+
+export { createAppRouter };

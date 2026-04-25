@@ -13,7 +13,7 @@ import template from "./AuthForm.hbs?raw";
 
 import "./AuthForm.scss";
 
-export interface AuthFormProps {
+interface AuthFormProps {
   title: string;
   subtitle?: string;
   /** После успешной валидации: в API уходит `login` и `password` (как в POST /auth/signin). */
@@ -31,7 +31,7 @@ type AuthFormBlockProps = AuthFormProps & {
   signInButton: ButtonProps;
 } & BlockOwnProps;
 
-export class AuthForm extends Block<AuthFormBlockProps> {
+class AuthForm extends Block<AuthFormBlockProps> {
   protected template = template;
 
   constructor(props: AuthFormProps) {
@@ -39,7 +39,6 @@ export class AuthForm extends Block<AuthFormBlockProps> {
     const fieldClass = "login-form__field";
     const labelClass = "login-form__label";
     const inputClass = "login-form__input";
-
     const initial: AuthFormBlockProps = {
       title: props.title,
       subtitle: props.subtitle,
@@ -109,3 +108,4 @@ export class AuthForm extends Block<AuthFormBlockProps> {
     };
   }
 }
+export { AuthForm, type AuthFormProps };

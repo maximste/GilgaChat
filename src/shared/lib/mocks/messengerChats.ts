@@ -1,7 +1,7 @@
 import type { ChatTimelineItem } from "../types/ChatTimelineTypes";
 
 /** Демо-лента сообщений до подключения API */
-export function createDemoChatTimeline(peerName: string): ChatTimelineItem[] {
+function createDemoChatTimeline(peerName: string): ChatTimelineItem[] {
   return [
     { dateLabel: "Saturday, February 21" },
     {
@@ -40,13 +40,13 @@ export function createDemoChatTimeline(peerName: string): ChatTimelineItem[] {
   ];
 }
 
-export type MockMessengerChatConfig = {
+type MockMessengerChatConfig = {
   peerName: string;
   timeline: ChatTimelineItem[];
 };
 
 /** Демо-карта чатов по `data-chat` (group-0, …) до подключения бэкенда */
-export const MOCK_MESSENGER_CHATS: Record<string, MockMessengerChatConfig> = {
+const MOCK_MESSENGER_CHATS: Record<string, MockMessengerChatConfig> = {
   "group-0": {
     peerName: "Project Alpha Team",
     timeline: [],
@@ -55,4 +55,10 @@ export const MOCK_MESSENGER_CHATS: Record<string, MockMessengerChatConfig> = {
     peerName: "Weekend Plans",
     timeline: createDemoChatTimeline("Weekend Plans"),
   },
+};
+
+export {
+  createDemoChatTimeline,
+  MOCK_MESSENGER_CHATS,
+  type MockMessengerChatConfig,
 };

@@ -15,7 +15,7 @@ import template from "./ProfilePage.hbs?raw";
 
 import "./ProfilePage.scss";
 
-export interface ProfilePageProps {
+interface ProfilePageProps {
   name: string;
   username: string;
   displayName: string;
@@ -29,7 +29,11 @@ export interface ProfilePageProps {
 }
 
 type ProfilePageBlockProps = ProfilePageProps & {
-  backLink: { href: string; text: string; className: string };
+  backLink: {
+    href: string;
+    text: string;
+    className: string;
+  };
   editProfileButton: {
     type: "button";
     text: string;
@@ -42,7 +46,7 @@ type ProfilePageBlockProps = ProfilePageProps & {
   };
 } & BlockOwnProps;
 
-export class ProfilePage extends Block<ProfilePageBlockProps> {
+class ProfilePage extends Block<ProfilePageBlockProps> {
   protected template = template;
 
   protected events = {
@@ -55,11 +59,9 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
       ) {
         return;
       }
-
       const file = target.files?.[0];
 
       target.value = "";
-
       if (file) {
         void this.handleAvatarUpload(file);
       }
@@ -73,7 +75,6 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
 
         return;
       }
-
       if (target.closest('[data-action="change-avatar"]')) {
         event.preventDefault();
         this.closeAvatarMenu();
@@ -83,17 +84,14 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
 
         return;
       }
-
       if (!target.closest(".profile-card__avatar-actions")) {
         this.closeAvatarMenu();
       }
-
       if (target.closest(".profile-page__btn--danger")) {
         void logout(getAppRouter());
 
         return;
       }
-
       if (target.closest(".profile-page__btn--primary")) {
         this.handleEditProfile();
       }
@@ -108,7 +106,6 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
     if (menu) {
       menu.hidden = true;
     }
-
     if (fab) {
       fab.setAttribute("aria-expanded", "false");
     }
@@ -122,7 +119,6 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
     if (!menu || !fab) {
       return;
     }
-
     const open = menu.hidden;
 
     menu.hidden = !open;
@@ -147,11 +143,9 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
     if (backRow instanceof HTMLElement) {
       backRow.hidden = true;
     }
-
     const contentEl = root?.querySelector(".profile-page__content");
 
     if (!contentEl || !(contentEl instanceof HTMLElement)) return;
-
     new EditProfileForm(
       contentEl,
       {
@@ -174,14 +168,12 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
               email: data.email,
               phone: data.phone,
             });
-
             if (data.oldPassword && data.newPassword) {
               await changePassword({
                 oldPassword: data.oldPassword,
                 newPassword: data.newPassword,
               });
             }
-
             this.render();
           } catch (e) {
             showErrorToast(
@@ -222,3 +214,4 @@ export class ProfilePage extends Block<ProfilePageBlockProps> {
     });
   }
 }
+export { ProfilePage, type ProfilePageProps };

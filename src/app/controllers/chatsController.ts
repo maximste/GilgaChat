@@ -10,13 +10,12 @@ import type {
 import { store } from "@/shared/lib/store";
 import { HttpStatus } from "@/shared/lib/utils";
 
-export const chatsController = {
+const chatsController = {
   async loadChats(): Promise<void> {
     const list = await chatsApi.getList();
 
     store.setState("chats.list", list);
   },
-
   async createChat(data: CreateChatRequest): Promise<number> {
     const { id } = await chatsApi.create(data);
 
@@ -24,22 +23,18 @@ export const chatsController = {
 
     return id;
   },
-
   async deleteChat(data: DeleteChatRequest): Promise<void> {
     await chatsApi.delete(data);
     await this.loadChats();
   },
-
   async addUsersToChat(data: ChatsUsersRequest): Promise<void> {
     await chatsApi.addUsers(data);
     await this.loadChats();
   },
-
   async removeUsersFromChat(data: ChatsUsersRequest): Promise<void> {
     await chatsApi.removeUsers(data);
     await this.loadChats();
   },
-
   async getChatUsers(
     chatId: number,
     query?: GetChatUsersQuery,
@@ -50,21 +45,23 @@ export const chatsController = {
       if (e instanceof ApiError && e.status === HttpStatus.NotFound) {
         return [];
       }
-
       throw e;
     }
   },
-
   getChatsFromStore(): ApiChat[] {
     return (
-      (store.getState().chats as { list?: ApiChat[] } | undefined)?.list ?? []
+      (
+        store.getState().chats as
+          | {
+              list?: ApiChat[];
+            }
+          | undefined
+      )?.list ?? []
     );
   },
-
   findChatById(id: number): ApiChat | undefined {
     return this.getChatsFromStore().find((c) => c.id === id);
   },
-
   /** Группа: создать чат, добавить участников, опционально аватар */
   async createGroupWithMembers(options: {
     title: string;
@@ -77,7 +74,6 @@ export const chatsController = {
     if (userIds.length > 0) {
       await chatsApi.addUsers({ chatId: id, users: userIds });
     }
-
     let avatarFromUpload: string | null = null;
 
     if (avatarFile) {
@@ -89,9 +85,7 @@ export const chatsController = {
 
       avatarFromUpload = updated.avatar ?? null;
     }
-
     await this.loadChats();
-
     if (avatarFromUpload) {
       const list = this.getChatsFromStore();
       const idx = list.findIndex((c) => c.id === id);
@@ -108,3 +102,5 @@ export const chatsController = {
     return id;
   },
 };
+
+export { chatsController };

@@ -1,4 +1,4 @@
-export interface SidebarCurrentUser {
+interface SidebarCurrentUser {
   firstName: string;
   lastName: string;
   status: string;
@@ -6,10 +6,12 @@ export interface SidebarCurrentUser {
   avatarUrl?: string;
 }
 
-export interface GroupItem {
+interface GroupItem {
   chatId?: string;
   name: string;
   preview: string;
   iconClass: string;
   avatarUrl?: string;
 }
+
+export { type GroupItem, type SidebarCurrentUser };

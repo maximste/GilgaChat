@@ -16,7 +16,7 @@ const ConnectedMessengerLayout = connect(mapMessengerLayoutState)(
 );
 
 // @ts-expect-error TS2515 — база из `connect` (конкретный Block с template); TS обрезает тип до абстрактного Block.
-export class MessengerRouteBlock extends ConnectedMessengerLayout {
+class MessengerRouteBlock extends ConnectedMessengerLayout {
   protected componentDidMount(): void {
     super.componentDidMount();
     const root = this.element();
@@ -26,8 +26,7 @@ export class MessengerRouteBlock extends ConnectedMessengerLayout {
     }
   }
 }
-
-export class AuthScreenBlock extends MainLayout {
+class AuthScreenBlock extends MainLayout {
   constructor() {
     super({
       content: "",
@@ -41,7 +40,6 @@ export class AuthScreenBlock extends MainLayout {
     if (!(slot instanceof HTMLElement)) {
       return;
     }
-
     const form = new AuthForm({
       title: "Welcome back",
       subtitle: "Sign in to continue to GilgaChat",
@@ -62,8 +60,7 @@ export class AuthScreenBlock extends MainLayout {
     }
   }
 }
-
-export class RegisterScreenBlock extends MainLayout {
+class RegisterScreenBlock extends MainLayout {
   constructor() {
     super({
       content: "",
@@ -77,7 +74,6 @@ export class RegisterScreenBlock extends MainLayout {
     if (!(slot instanceof HTMLElement)) {
       return;
     }
-
     const form = new RegisterForm({
       title: "Create Account",
       subtitle: "Sign up to get started",
@@ -98,3 +94,4 @@ export class RegisterScreenBlock extends MainLayout {
     }
   }
 }
+export { AuthScreenBlock, MessengerRouteBlock, RegisterScreenBlock };

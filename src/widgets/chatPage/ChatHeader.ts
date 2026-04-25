@@ -4,7 +4,7 @@ import template from "./ChatHeader.hbs?raw";
 
 import "./ChatHeader.scss";
 
-export interface ChatHeaderProps {
+interface ChatHeaderProps {
   peerName: string;
   /** Личный чат: зелёная точка «онлайн»; для группы — false. */
   showStatusDot?: boolean;
@@ -30,5 +30,5 @@ class ChatHeader extends Block<ChatHeaderBlockProps> {
     } as ChatHeaderBlockProps);
   }
 }
-
 export { ChatHeader };
+export { type ChatHeaderProps };

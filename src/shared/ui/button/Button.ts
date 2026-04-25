@@ -3,7 +3,7 @@ import template from "./Button.hbs?raw";
 
 import "./Button.scss";
 
-export interface ButtonProps {
+interface ButtonProps {
   type: "reset" | "submit" | "button";
   text?: string;
   disabled?: boolean;
@@ -25,5 +25,5 @@ class Button extends Block<ButtonBlockProps> {
     super(props);
   }
 }
-
 export { Button };
+export { type ButtonProps };

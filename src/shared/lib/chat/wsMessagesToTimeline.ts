@@ -44,7 +44,6 @@ function bodyText(msg: WsNormalizedChatMessage): string {
   if (msg.kind === "message") {
     return msg.content;
   }
-
   if (msg.kind === "sticker") {
     return "Sticker";
   }
@@ -56,7 +55,6 @@ function mediaUrl(msg: WsNormalizedChatMessage): string | undefined {
   if (!msg.file?.path) {
     return undefined;
   }
-
   const contentType = (msg.file.content_type ?? "").toLowerCase();
 
   if (contentType.startsWith("image/")) {
@@ -69,7 +67,7 @@ function mediaUrl(msg: WsNormalizedChatMessage): string | undefined {
 /**
  * Сортирует по времени (и по id), строит разделители дат и элементы ленты.
  */
-export function buildTimelineFromWsMessages(
+function buildTimelineFromWsMessages(
   messages: WsNormalizedChatMessage[],
   options: {
     currentUserId: number;
@@ -85,14 +83,12 @@ export function buildTimelineFromWsMessages(
     if (Number.isNaN(timeA) || Number.isNaN(timeB)) {
       return a.id.localeCompare(b.id, undefined, { numeric: true });
     }
-
     if (timeA !== timeB) {
       return timeA - timeB;
     }
 
     return a.id.localeCompare(b.id, undefined, { numeric: true });
   });
-
   const rows: ChatTimelineItem[] = [];
   let lastDateKey = "";
 
@@ -103,7 +99,6 @@ export function buildTimelineFromWsMessages(
       lastDateKey = dayKey;
       rows.push({ dateLabel: datePillLabel(msg.time) });
     }
-
     const incoming = msg.userId !== me;
     const time = formatTimeLabel(msg.time);
     const text = bodyText(msg);
@@ -136,3 +131,5 @@ export function buildTimelineFromWsMessages(
 
   return rows;
 }
+
+export { buildTimelineFromWsMessages };

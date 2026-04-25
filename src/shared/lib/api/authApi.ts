@@ -6,11 +6,10 @@ import type {
   SignUpResponse,
 } from "./types";
 
-export const authApi = {
+const authApi = {
   signIn(data: SignInRequest): Promise<unknown> {
     return apiPost("/auth/signin", data);
   },
-
   /**
    * Регистрация без cookie: иначе Safari/другой браузер может послать протухшую
    * сессию на ya-praktikum.tech и API ответит «Cookie is not valid».
@@ -23,11 +22,9 @@ export const authApi = {
       withCredentials: false,
     });
   },
-
   logout(): Promise<unknown> {
     return apiPost("/auth/logout", {});
   },
-
   async getUser(): Promise<ApiUser> {
     const raw = await apiGet<unknown>("/auth/user");
 
@@ -38,3 +35,5 @@ export const authApi = {
     return raw as ApiUser;
   },
 };
+
+export { authApi };

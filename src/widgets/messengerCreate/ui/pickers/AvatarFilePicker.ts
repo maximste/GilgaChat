@@ -37,7 +37,6 @@ class AvatarFilePicker extends Block<AvatarFilePickerProps> {
     if (!placeholder || !img) {
       return;
     }
-
     if (this.avatarFile && this.avatarPreviewObjectUrl) {
       img.src = this.avatarPreviewObjectUrl;
       img.hidden = false;
@@ -45,7 +44,6 @@ class AvatarFilePicker extends Block<AvatarFilePickerProps> {
 
       return;
     }
-
     img.removeAttribute("src");
     img.hidden = true;
     placeholder.hidden = false;
@@ -60,11 +58,9 @@ class AvatarFilePicker extends Block<AvatarFilePickerProps> {
     ) {
       this.revokeAvatarPreview();
       this.avatarFile = target.files?.[0] ?? null;
-
       if (this.avatarFile) {
         this.avatarPreviewObjectUrl = URL.createObjectURL(this.avatarFile);
       }
-
       this.updatePreviewDom();
     }
   };
@@ -75,13 +71,11 @@ class AvatarFilePicker extends Block<AvatarFilePickerProps> {
     if (e.key !== "Enter" && e.key !== " ") {
       return;
     }
-
     const label = this.refs.avatarLabel;
 
     if (!(label instanceof HTMLElement) || !label.contains(e.target as Node)) {
       return;
     }
-
     e.preventDefault();
     (this.refs.avatarInput as HTMLInputElement | undefined)?.click();
   };
@@ -91,5 +85,4 @@ class AvatarFilePicker extends Block<AvatarFilePickerProps> {
     keydown: this.onKeydown,
   };
 }
-
 export { AvatarFilePicker };

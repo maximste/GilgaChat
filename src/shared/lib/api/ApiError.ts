@@ -1,8 +1,8 @@
-export type ApiErrorBody = {
+type ApiErrorBody = {
   reason?: string;
 };
 
-export class ApiError extends Error {
+class ApiError extends Error {
   readonly status: number;
 
   readonly reason?: string;
@@ -15,9 +15,7 @@ export class ApiError extends Error {
   }
 }
 
-export function parseReasonFromXhrResponseText(
-  text: string,
-): string | undefined {
+function parseReasonFromXhrResponseText(text: string): string | undefined {
   try {
     const data = JSON.parse(text) as ApiErrorBody;
 
@@ -30,3 +28,5 @@ export function parseReasonFromXhrResponseText(
 
   return undefined;
 }
+
+export { ApiError, type ApiErrorBody, parseReasonFromXhrResponseText };

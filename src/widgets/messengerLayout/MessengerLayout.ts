@@ -5,9 +5,7 @@ import template from "./MessengerLayout.hbs?raw";
 
 import "./MessengerLayout.scss";
 
-export type { GroupItem };
-
-export interface MessengerLayoutProps extends SidebarProps {
+interface MessengerLayoutProps extends SidebarProps {
   content?: string;
 }
 
@@ -42,5 +40,6 @@ class MessengerLayout extends Block<MessengerLayoutBlockProps> {
     } as MessengerLayoutBlockProps);
   }
 }
-
+export type { GroupItem };
 export { MessengerLayout };
+export { type MessengerLayoutProps };

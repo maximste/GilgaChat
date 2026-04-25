@@ -14,5 +14,4 @@ class Link extends Block<LinkBlockProps> {
     super(props);
   }
 }
-
 export { Link };
