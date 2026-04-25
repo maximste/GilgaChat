@@ -1,6 +1,7 @@
 import { chatsController } from "@/app/controllers";
 import { ApiError } from "@/shared/lib/api";
 import type { ApiUser } from "@/shared/lib/api/types";
+import { ChatMessagesSession } from "@/shared/lib/chat";
 import { createDemoChatTimeline } from "@/shared/lib/mocks";
 import type { ChatTimelineItem } from "@/shared/lib/types/ChatTimelineTypes";
 import { mapChatTimelineToRows, timelineHasMessages } from "@/shared/lib/utils";
@@ -44,6 +45,18 @@ type ChatPageBlockProps = ChatPageProps & {
   timelineRows: ReturnType<typeof mapChatTimelineToRows>;
 } & BlockOwnProps;
 
+function toErrorMessage(error: unknown): string {
+  if (error instanceof ApiError) {
+    return error.message;
+  }
+
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return String(error);
+}
+
 export class ChatPage extends Block<ChatPageBlockProps> {
   protected template = template;
 
@@ -55,10 +68,18 @@ export class ChatPage extends Block<ChatPageBlockProps> {
 
   private readonly routeIsGroup: boolean;
 
+  private messageSession: ChatMessagesSession | null = null;
+
   private readonly onChatMessageSent = (event: Event): void => {
     const { text } = (event as CustomEvent<ChatMessageSentDetail>).detail;
 
     if (!text?.trim()) {
+      return;
+    }
+
+    if (this.routeChatId !== null && this.messageSession) {
+      this.messageSession.sendText(text.trim());
+
       return;
     }
 
@@ -88,7 +109,11 @@ export class ChatPage extends Block<ChatPageBlockProps> {
     hostDeps: ChatPageHostDeps | null = null,
   ) {
     const peerName = props.peerName ?? "Sarah Chen";
-    const timeline = props.timeline ?? createDemoChatTimeline(peerName);
+    const hasNumericChatId =
+      typeof props.chatId === "number" && !Number.isNaN(props.chatId);
+    const timeline =
+      props.timeline ??
+      (hasNumericChatId ? [] : createDemoChatTimeline(peerName));
     const hasMessages = timelineHasMessages(timeline);
     const timelineRows = mapChatTimelineToRows(timeline);
     const routeChatId =
@@ -119,6 +144,7 @@ export class ChatPage extends Block<ChatPageBlockProps> {
       CHAT_MESSAGE_SENT_EVENT,
       this.onChatMessageSent as EventListener,
     );
+    this.ensureRemoteMessageSession();
   }
 
   protected componentWillUnmount(): void {
@@ -126,6 +152,48 @@ export class ChatPage extends Block<ChatPageBlockProps> {
       CHAT_MESSAGE_SENT_EVENT,
       this.onChatMessageSent as EventListener,
     );
+  }
+
+  public destroy(): void {
+    this.messageSession?.destroy();
+    this.messageSession = null;
+    super.destroy();
+  }
+
+  private ensureRemoteMessageSession(): void {
+    const deps = this.hostDeps;
+    const chatId = this.routeChatId;
+
+    if (!deps || chatId === null) {
+      return;
+    }
+
+    if (this.messageSession?.chatId === chatId) {
+      return;
+    }
+
+    this.messageSession?.destroy();
+    this.messageSession = null;
+
+    const session = new ChatMessagesSession({
+      chatId,
+      peerDisplayName: this.props.peerName,
+      isGroup: this.routeIsGroup,
+      getCurrentUser: () => deps.getProfileFromStore(),
+      onTimelineChange: (items) => {
+        this.setProps({
+          timeline: items,
+          hasMessages: timelineHasMessages(items),
+          timelineRows: mapChatTimelineToRows(items),
+        });
+      },
+      onError: (message) => {
+        showErrorToast(message);
+      },
+    });
+
+    this.messageSession = session;
+    void session.start();
   }
 
   protected events = {
@@ -184,15 +252,10 @@ export class ChatPage extends Block<ChatPageBlockProps> {
           try {
             await chatsController.deleteChat({ chatId });
             deps.clearChatSelection();
-          } catch (e: unknown) {
-            const msg =
-              e instanceof ApiError
-                ? e.message
-                : e instanceof Error
-                  ? e.message
-                  : String(e);
+          } catch (error: unknown) {
+            const errorMessage = toErrorMessage(error);
 
-            showErrorToast(msg);
+            showErrorToast(errorMessage);
           }
         })();
       }
