@@ -29,23 +29,71 @@
   }
 
   &__row {
-    display: flex;
+    display: grid;
     align-items: center;
-    justify-content: space-between;
     padding: $spacing-8 0;
     border-bottom: 1px solid $border-color-dark;
-    color: $text-color-primary;
-    font-size: $font-size-14;
     gap: $spacing-12;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
   &__row:last-child {
     border-bottom: none;
   }
 
-  &__login {
+  &__member-main {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: $spacing-10;
+  }
+
+  &__member-avatar {
+    display: flex;
+    overflow: hidden;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgb(255 255 255 / 8%);
     color: $text-color-secondary;
+    font-size: $font-size-14;
+  }
+
+  &__member-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__member-meta {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__member-name {
+    overflow: hidden;
+    min-width: 0;
+    color: $text-color-primary;
+    font-size: $font-size-14;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__login {
+    overflow: hidden;
+    min-width: 0;
+    color: $text-color-secondary;
+    font-size: $font-size-14;
     font-weight: 400;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__add-actions {
@@ -72,6 +120,7 @@
   }
 
   &__remove-btn {
+    min-width: 64px;
     flex-shrink: 0;
     padding: $spacing-4 $spacing-10;
     border: 1px solid $border-color-dark;

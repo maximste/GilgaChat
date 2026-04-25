@@ -3,6 +3,7 @@ import {
   getProfileFromStore,
   searchUsersByLogin,
 } from "@/app/controllers";
+import { resourceFileUrl } from "@/shared/config/api";
 import type { Block } from "@/shared/ui/block";
 import { ChatPage } from "@/widgets/chatPage";
 import { setupMessengerCreateUi } from "@/widgets/messengerCreate";
@@ -108,6 +109,9 @@ function setupMessengerChatPage(layoutRoot: HTMLElement): {
         mainEl,
         {
           peerName: chat.title,
+          avatarUrl: chat.avatar?.trim()
+            ? resourceFileUrl(chat.avatar.trim())
+            : undefined,
           chatId: idNum,
           isGroup: true,
           showStatusDot: false,

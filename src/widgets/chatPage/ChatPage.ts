@@ -21,6 +21,7 @@ import "./ChatPage.scss";
 
 interface ChatPageProps {
   peerName?: string;
+  avatarUrl?: string;
   chatId?: number;
   isGroup?: boolean;
   /** Лента сообщений; без передачи подставляется демо-лента */
@@ -39,12 +40,19 @@ type ChatPageHostDeps = {
 
 type ChatPageBlockProps = ChatPageProps & {
   peerName: string;
+  avatarUrl?: string;
   showStatusDot: boolean;
   showGroupMemberActions: boolean;
+  canChangeAvatar: boolean;
   timeline: ChatTimelineItem[];
   hasMessages: boolean;
   timelineRows: ReturnType<typeof mapChatTimelineToRows>;
 } & BlockOwnProps;
+
+type ThreadScrollSnapshot = {
+  distanceFromBottom: number;
+  wasNearBottom: boolean;
+};
 
 function toErrorMessage(error: unknown): string {
   if (error instanceof ApiError) {
@@ -82,6 +90,8 @@ class ChatPage extends Block<ChatPageBlockProps> {
 
   private isGroupMemberDirectoryLoaded = false;
 
+  private isUploadingAvatar = false;
+
   private readonly onChatMessageSent = (event: Event): void => {
     const { text } = (event as CustomEvent<ChatMessageSentDetail>).detail;
 
@@ -104,11 +114,7 @@ class ChatPage extends Block<ChatPageBlockProps> {
     };
     const timeline = [...this.props.timeline, newItem];
 
-    this.setProps({
-      timeline,
-      hasMessages: timelineHasMessages(timeline),
-      timelineRows: mapChatTimelineToRows(timeline),
-    });
+    this.updateTimelineWithScroll(timeline);
   };
 
   constructor(
@@ -132,10 +138,12 @@ class ChatPage extends Block<ChatPageBlockProps> {
 
     super({
       peerName,
+      avatarUrl: props.avatarUrl,
       chatId: props.chatId,
       isGroup: routeIsGroup,
       showStatusDot: props.showStatusDot ?? true,
       showGroupMemberActions: routeIsGroup,
+      canChangeAvatar: routeIsGroup && routeChatId !== null,
       timeline,
       hasMessages,
       timelineRows,
@@ -188,11 +196,7 @@ class ChatPage extends Block<ChatPageBlockProps> {
         this.groupMemberDirectory.get(userId) ?? null,
       getCurrentUser: () => deps.getProfileFromStore(),
       onTimelineChange: (items) => {
-        this.setProps({
-          timeline: items,
-          hasMessages: timelineHasMessages(items),
-          timelineRows: mapChatTimelineToRows(items),
-        });
+        this.updateTimelineWithScroll(items);
       },
       onError: (message) => {
         showErrorToast(message);
@@ -250,6 +254,100 @@ class ChatPage extends Block<ChatPageBlockProps> {
     }
   }
 
+  private captureThreadScrollSnapshot(): ThreadScrollSnapshot | null {
+    const thread =
+      this.element()?.querySelector<HTMLElement>(".chat-page__thread");
+
+    if (!thread) {
+      return null;
+    }
+    const distanceFromBottom =
+      thread.scrollHeight - thread.clientHeight - thread.scrollTop;
+
+    return {
+      distanceFromBottom: Math.max(0, distanceFromBottom),
+      wasNearBottom: distanceFromBottom <= 24,
+    };
+  }
+
+  private restoreThreadScroll(snapshot: ThreadScrollSnapshot | null): void {
+    if (!snapshot) {
+      return;
+    }
+    const thread =
+      this.element()?.querySelector<HTMLElement>(".chat-page__thread");
+
+    if (!thread) {
+      return;
+    }
+    if (snapshot.wasNearBottom) {
+      thread.scrollTop = thread.scrollHeight;
+
+      return;
+    }
+    thread.scrollTop = Math.max(
+      0,
+      thread.scrollHeight - thread.clientHeight - snapshot.distanceFromBottom,
+    );
+  }
+
+  private updateTimelineWithScroll(timeline: ChatTimelineItem[]): void {
+    const scrollSnapshot = this.captureThreadScrollSnapshot();
+
+    this.setProps({
+      timeline,
+      hasMessages: timelineHasMessages(timeline),
+      timelineRows: mapChatTimelineToRows(timeline),
+    });
+    this.restoreThreadScroll(scrollSnapshot);
+  }
+
+  private triggerAvatarFileSelect(): void {
+    const input = this.element()?.querySelector<HTMLInputElement>(
+      "[data-chat-avatar-input]",
+    );
+
+    if (!input || this.isUploadingAvatar) {
+      return;
+    }
+    input.click();
+  }
+
+  private async handleAvatarInputChange(
+    input: HTMLInputElement,
+  ): Promise<void> {
+    const chatId = this.routeChatId;
+    const deps = this.hostDeps;
+    const file = input.files?.[0] ?? null;
+
+    input.value = "";
+    if (chatId === null || !deps || !file || this.isUploadingAvatar) {
+      return;
+    }
+    this.isUploadingAvatar = true;
+    try {
+      await chatsController.updateChatAvatar(chatId, file);
+      const refreshed = chatsController.findChatById(chatId);
+      const avatarPathRaw = refreshed?.avatar?.trim();
+      const avatarPath =
+        avatarPathRaw &&
+        avatarPathRaw !== "null" &&
+        avatarPathRaw !== "undefined"
+          ? avatarPathRaw
+          : undefined;
+
+      this.setProps({
+        avatarUrl: avatarPath ? resourceFileUrl(avatarPath) : undefined,
+      });
+    } catch (error: unknown) {
+      const errorMessage = toErrorMessage(error);
+
+      showErrorToast(errorMessage);
+    } finally {
+      this.isUploadingAvatar = false;
+    }
+  }
+
   protected events = {
     click: (event: Event) => {
       const target = (event.target as HTMLElement).closest(
@@ -260,6 +358,11 @@ class ChatPage extends Block<ChatPageBlockProps> {
       const deps = this.hostDeps;
 
       if (!action || chatId === null || !deps) {
+        return;
+      }
+      if (action === "change-avatar") {
+        this.triggerAvatarFileSelect();
+
         return;
       }
       if (action === "group-members") {
@@ -317,6 +420,16 @@ class ChatPage extends Block<ChatPageBlockProps> {
             showErrorToast(errorMessage);
           }
         })();
+      }
+    },
+    change: (event: Event) => {
+      const target = event.target;
+
+      if (
+        target instanceof HTMLInputElement &&
+        target.matches("[data-chat-avatar-input]")
+      ) {
+        void this.handleAvatarInputChange(target);
       }
     },
   };

@@ -1,8 +1,12 @@
 @use "shared/styles/variables" as *;
 
 .messenger-sidebar__item {
-  display: flex;
+  display: grid;
+  overflow: hidden;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
   align-items: flex-start;
   padding: $spacing-8;
   border: none;
@@ -12,6 +16,7 @@
   cursor: pointer;
   font: inherit;
   gap: $gap-size-8;
+  grid-template-columns: auto minmax(0, 1fr);
   text-align: left;
   transition: background-color 0.15s ease;
 
@@ -30,4 +35,9 @@
   flex: 1;
   flex-direction: column;
   gap: 2px;
+}
+
+.messenger-sidebar__item-info > * {
+  min-width: 0;
+  max-width: 100%;
 }

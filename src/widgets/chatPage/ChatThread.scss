@@ -1,9 +1,11 @@
 @use "shared/styles/variables" as *;
 
 .chat-page__thread {
+  overflow: hidden auto;
+  min-width: 0;
+  min-height: 0;
   flex: 1;
   padding: $spacing-16;
-  overflow-y: auto;
 }
 
 .chat-page__empty {

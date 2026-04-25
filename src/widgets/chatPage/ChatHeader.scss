@@ -2,6 +2,9 @@
 @use "shared/ui/iconButton/IconButton.scss" as *;
 
 .chat-page__header {
+  position: sticky;
+  z-index: 1;
+  top: 0;
   display: flex;
   flex-shrink: 0;
   align-items: center;
@@ -16,6 +19,62 @@
   min-width: 0;
   align-items: center;
   gap: $spacing-10;
+}
+
+.chat-page__avatar-btn {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid $border-color-dark;
+  border-radius: 50%;
+  background-color: $background-color-surface;
+  color: $text-color-secondary;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    cursor: pointer;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.8;
+  }
+}
+
+.chat-page__avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chat-page__avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-14;
+}
+
+.chat-page__avatar-edit {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  display: flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid $border-color-dark;
+  border-radius: 50%;
+  background-color: $color-accent;
+  box-shadow: 0 0 0 1px $background-color-on-surface-black;
+  color: $text-color-primary;
+  font-size: 9px;
 }
 
 .chat-page__status-dot {
