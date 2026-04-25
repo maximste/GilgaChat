@@ -29,6 +29,10 @@ type ChatMessagesSessionOptions = {
   chatId: number;
   peerDisplayName: string;
   isGroup: boolean;
+  resolveGroupAuthor?: (userId: string) => {
+    displayName: string;
+    avatarUrl?: string;
+  } | null;
   getCurrentUser: () => ApiUser | null;
   onTimelineChange: (items: ChatTimelineItem[]) => void;
   onError?: (message: string) => void;
@@ -51,6 +55,11 @@ class ChatMessagesSession {
 
   private readonly isGroup: boolean;
 
+  private readonly resolveGroupAuthor?: (userId: string) => {
+    displayName: string;
+    avatarUrl?: string;
+  } | null;
+
   private readonly getCurrentUser: () => ApiUser | null;
 
   private readonly onTimelineChange: (items: ChatTimelineItem[]) => void;
@@ -71,6 +80,7 @@ class ChatMessagesSession {
     this.chatId = options.chatId;
     this.peerDisplayName = options.peerDisplayName;
     this.isGroup = options.isGroup;
+    this.resolveGroupAuthor = options.resolveGroupAuthor;
     this.getCurrentUser = options.getCurrentUser;
     this.onTimelineChange = options.onTimelineChange;
     this.onError = options.onError;
@@ -161,6 +171,18 @@ class ChatMessagesSession {
       this.ws.close();
       this.ws = null;
     }
+  }
+
+  refreshTimeline(): void {
+    if (this.destroyed) {
+      return;
+    }
+    const user = this.getCurrentUser();
+
+    if (!user) {
+      return;
+    }
+    this.flushTimeline(user);
   }
 
   private startPing(): void {
@@ -331,6 +353,7 @@ class ChatMessagesSession {
       currentUserId: user.id,
       peerDisplayName: this.peerDisplayName,
       isGroup: this.isGroup,
+      resolveGroupAuthor: this.resolveGroupAuthor,
     });
 
     this.onTimelineChange(items);

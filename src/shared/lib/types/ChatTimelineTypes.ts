@@ -6,14 +6,13 @@ type ChatTimelineItem =
   | {
       incoming: true;
       author: string;
+      authorAvatarUrl?: string;
       time: string;
       text: string;
       reaction?: string;
       reactionCount?: number;
       showReadReceipt?: boolean;
-      /** Id сообщения на сервере (дедуп / отладка). */
       serverMessageId?: string;
-      /** Превью картинки для file/sticker с image/* */
       mediaImageUrl?: string;
     }
   | {

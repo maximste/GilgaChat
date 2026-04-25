@@ -7,11 +7,11 @@ interface ChatTimelineRowVm {
   isOutgoing: boolean;
   dateLabel?: string;
   author?: string;
+  authorAvatarUrl?: string;
   time?: string;
   text?: string;
   reaction?: string;
   reactionCount?: number;
-  showReadReceipt?: boolean;
   imageCaption?: string;
   hasImage?: boolean;
   mediaImageUrl?: string;
@@ -38,11 +38,11 @@ function mapChatTimelineToRows(items: ChatTimelineItem[]): ChatTimelineRowVm[] {
         isIncoming: true,
         isOutgoing: false,
         author: item.author,
+        authorAvatarUrl: item.authorAvatarUrl,
         time: item.time,
         text: item.text,
         reaction: item.reaction,
         reactionCount: item.reactionCount,
-        showReadReceipt: item.showReadReceipt,
         mediaImageUrl: item.mediaImageUrl,
         hasImage: Boolean(item.mediaImageUrl),
       };

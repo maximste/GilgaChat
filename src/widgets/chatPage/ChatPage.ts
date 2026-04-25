@@ -1,4 +1,5 @@
 import { chatsController } from "@/app/controllers";
+import { resourceFileUrl } from "@/shared/config/api";
 import { ApiError } from "@/shared/lib/api";
 import type { ApiUser } from "@/shared/lib/api/types";
 import { ChatMessagesSession } from "@/shared/lib/chat";
@@ -69,6 +70,14 @@ class ChatPage extends Block<ChatPageBlockProps> {
 
   private messageSession: ChatMessagesSession | null = null;
 
+  private readonly groupMemberDirectory = new Map<
+    string,
+    {
+      displayName: string;
+      avatarUrl?: string;
+    }
+  >();
+
   private readonly onChatMessageSent = (event: Event): void => {
     const { text } = (event as CustomEvent<ChatMessageSentDetail>).detail;
 
@@ -138,6 +147,7 @@ class ChatPage extends Block<ChatPageBlockProps> {
       CHAT_MESSAGE_SENT_EVENT,
       this.onChatMessageSent as EventListener,
     );
+    void this.loadGroupMemberDirectory();
     this.ensureRemoteMessageSession();
   }
 
@@ -170,6 +180,8 @@ class ChatPage extends Block<ChatPageBlockProps> {
       chatId,
       peerDisplayName: this.props.peerName,
       isGroup: this.routeIsGroup,
+      resolveGroupAuthor: (userId) =>
+        this.groupMemberDirectory.get(userId) ?? null,
       getCurrentUser: () => deps.getProfileFromStore(),
       onTimelineChange: (items) => {
         this.setProps({
@@ -185,6 +197,32 @@ class ChatPage extends Block<ChatPageBlockProps> {
 
     this.messageSession = session;
     void session.start();
+  }
+
+  private async loadGroupMemberDirectory(): Promise<void> {
+    if (!this.routeIsGroup || this.routeChatId === null) {
+      return;
+    }
+    try {
+      const members = await chatsController.getChatUsers(this.routeChatId, {
+        limit: 500,
+      });
+
+      this.groupMemberDirectory.clear();
+      for (const member of members) {
+        const displayName =
+          member.display_name?.trim() || member.login || `User ${member.id}`;
+        const avatarPath = member.avatar?.trim();
+
+        this.groupMemberDirectory.set(String(member.id), {
+          displayName,
+          avatarUrl: avatarPath ? resourceFileUrl(avatarPath) : undefined,
+        });
+      }
+      this.messageSession?.refreshTimeline();
+    } catch {
+      // Quietly keep fallback labels if participant list is unavailable.
+    }
   }
 
   protected events = {
@@ -214,10 +252,20 @@ class ChatPage extends Block<ChatPageBlockProps> {
           getProfileFromStore: deps.getProfileFromStore,
           getChatUsers: (id) =>
             chatsController.getChatUsers(id, { limit: 500 }),
-          addUsersToChat: (id, userIds) =>
-            chatsController.addUsersToChat({ chatId: id, users: userIds }),
-          removeUsersFromChat: (id, userIds) =>
-            chatsController.removeUsersFromChat({ chatId: id, users: userIds }),
+          addUsersToChat: async (id, userIds) => {
+            await chatsController.addUsersToChat({
+              chatId: id,
+              users: userIds,
+            });
+            await this.loadGroupMemberDirectory();
+          },
+          removeUsersFromChat: async (id, userIds) => {
+            await chatsController.removeUsersFromChat({
+              chatId: id,
+              users: userIds,
+            });
+            await this.loadGroupMemberDirectory();
+          },
         });
 
         return;

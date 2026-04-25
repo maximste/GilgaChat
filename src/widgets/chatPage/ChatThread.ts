@@ -6,7 +6,6 @@ import template from "./ChatThread.hbs?raw";
 import "./ChatThread.scss";
 
 interface ChatThreadProps {
-  peerName: string;
   hasMessages: boolean;
   timelineRows: ChatTimelineRowVm[];
 }

@@ -73,6 +73,10 @@ function buildTimelineFromWsMessages(
     currentUserId: number;
     peerDisplayName: string;
     isGroup: boolean;
+    resolveGroupAuthor?: (userId: string) => {
+      displayName: string;
+      avatarUrl?: string;
+    } | null;
   },
 ): ChatTimelineItem[] {
   const me = String(options.currentUserId);
@@ -105,13 +109,17 @@ function buildTimelineFromWsMessages(
     const mediaImageUrl = mediaUrl(msg);
 
     if (incoming) {
+      const authorMeta = options.isGroup
+        ? (options.resolveGroupAuthor?.(msg.userId) ?? null)
+        : null;
       const author = options.isGroup
-        ? `User ${msg.userId}`
+        ? (authorMeta?.displayName ?? `User ${msg.userId}`)
         : options.peerDisplayName;
 
       rows.push({
         incoming: true,
         author,
+        authorAvatarUrl: authorMeta?.avatarUrl,
         time,
         text,
         serverMessageId: msg.id,
