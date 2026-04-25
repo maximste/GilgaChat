@@ -28,6 +28,16 @@ export default defineConfig([
     },
   },
 
+  {
+    files: ["**/*.{test,spec}.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.jest,
+      },
+    },
+  },
+
   // Основные правила для JS/TS файлов
   {
     files: ["**/*.{js,ts}"],
@@ -105,8 +115,22 @@ export default defineConfig([
     rules: {
       "import/no-unresolved": "off",
       "import/first": ["error"],
+      "import/exports-last": "error",
       "import/newline-after-import": ["warn"],
       "import/no-duplicates": ["warn", { "prefer-inline": false }],
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "ExportNamedDeclaration[declaration!=null]",
+          message:
+            "Объявляйте сущности отдельно, экспортируйте их в конце файла.",
+        },
+        {
+          selector:
+            "ExportDefaultDeclaration > :matches(FunctionDeclaration, ClassDeclaration)",
+          message: "Default export оформляйте в конце файла отдельной строкой.",
+        },
+      ],
     },
   },
 
