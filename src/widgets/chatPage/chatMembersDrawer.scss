@@ -20,6 +20,7 @@
   right: 0;
   bottom: 0;
   display: flex;
+  overflow: hidden;
   width: min(100%, 400px);
   max-width: 100vw;
   flex-direction: column;
@@ -35,9 +36,12 @@
 }
 
 .chat-members-drawer__head {
-  position: relative;
+  position: sticky;
+  z-index: 1;
+  top: 0;
   flex-shrink: 0;
   padding: $spacing-20 $spacing-24 $spacing-8;
+  background-color: $background-color-on-surface-black;
 }
 
 .chat-members-drawer__title {

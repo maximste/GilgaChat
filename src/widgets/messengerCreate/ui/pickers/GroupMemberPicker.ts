@@ -1,3 +1,4 @@
+import { resourceFileUrl } from "@/shared/config/api";
 import { ApiError } from "@/shared/lib/api";
 import type { ApiUser } from "@/shared/lib/api/types";
 import { escapeHtml } from "@/shared/lib/utils";
@@ -31,6 +32,7 @@ type MemberRowVm = {
   id: number;
   displayName: string;
   login: string;
+  avatarUrl?: string;
   picked: boolean;
 };
 
@@ -184,8 +186,12 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
       }
       rows.push({
         id: u.id,
-        displayName: escapeHtml(userDisplayName(u)),
-        login: escapeHtml(u.login),
+        displayName: userDisplayName(u),
+        login: u.login,
+        avatarUrl:
+          u.avatar && u.avatar.trim() && u.avatar.trim() !== "null"
+            ? resourceFileUrl(u.avatar.trim())
+            : undefined,
         picked: this.selected.has(u.id),
       });
     }
@@ -373,7 +379,43 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
       li.dataset.memberId = String(row.id);
       li.setAttribute("role", "option");
       li.setAttribute("aria-selected", row.picked ? "true" : "false");
-      li.innerHTML = `<span class="messenger-modal__user-dot messenger-modal__user-dot--gray" aria-hidden="true"></span><span class="messenger-modal__user-meta"><span class="messenger-modal__user-name">${row.displayName}</span><span class="messenger-modal__user-login">@${row.login}</span></span><span class="messenger-modal__check" aria-hidden="true">${row.picked ? "✓" : ""}</span>`;
+      const avatar = document.createElement("span");
+
+      avatar.className = "group-member-picker__user-avatar";
+      avatar.setAttribute("aria-hidden", "true");
+      if (row.avatarUrl) {
+        const image = document.createElement("img");
+
+        image.className = "group-member-picker__user-avatar-img";
+        image.src = row.avatarUrl;
+        image.alt = "";
+        image.loading = "lazy";
+        avatar.appendChild(image);
+      } else {
+        const icon = document.createElement("i");
+
+        icon.className = "fa-solid fa-user";
+        icon.setAttribute("aria-hidden", "true");
+        avatar.appendChild(icon);
+      }
+      const meta = document.createElement("span");
+
+      meta.className = "messenger-modal__user-meta";
+      const name = document.createElement("span");
+
+      name.className = "messenger-modal__user-name";
+      name.textContent = row.displayName;
+      const login = document.createElement("span");
+
+      login.className = "messenger-modal__user-login";
+      login.textContent = `@${row.login}`;
+      meta.append(name, login);
+      const check = document.createElement("span");
+
+      check.className = "messenger-modal__check";
+      check.setAttribute("aria-hidden", "true");
+      check.textContent = row.picked ? "✓" : "";
+      li.append(avatar, meta, check);
       ul.appendChild(li);
     }
     if (this.memberRows.length === 0) {

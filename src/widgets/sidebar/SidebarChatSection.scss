@@ -1,12 +1,17 @@
 @use "shared/styles/variables" as *;
 
 .messenger-sidebar__section {
-  margin-bottom: $spacing-12;
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  margin-bottom: 0;
 }
 
 .messenger-sidebar__section-head {
   display: flex;
   width: 100%;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
   padding: $spacing-8 0;
@@ -23,6 +28,12 @@
   &:hover {
     color: $text-color-primary;
   }
+}
+
+.messenger-sidebar__section-body {
+  overflow: hidden auto;
+  min-height: 0;
+  flex: 1;
 }
 
 .messenger-sidebar__section-head-text {

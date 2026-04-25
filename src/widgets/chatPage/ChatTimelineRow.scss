@@ -89,6 +89,7 @@
   color: $text-color-primary;
   font-size: $font-size-14;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .chat-page__reaction {
@@ -124,6 +125,7 @@
   margin: 0 0 $spacing-8;
   font-size: $font-size-14;
   line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .chat-page__bubble-img {
@@ -146,6 +148,7 @@
   margin: 0;
   font-size: $font-size-14;
   line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .chat-page__msg-out-meta {

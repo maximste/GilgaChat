@@ -23,6 +23,14 @@ const chatsController = {
 
     return id;
   },
+  async updateChatAvatar(chatId: number, avatarFile: File): Promise<void> {
+    const fd = new FormData();
+
+    fd.append("chatId", String(chatId));
+    fd.append("avatar", avatarFile, avatarFile.name);
+    await chatsApi.uploadChatAvatar(fd);
+    await this.loadChats();
+  },
   async deleteChat(data: DeleteChatRequest): Promise<void> {
     await chatsApi.delete(data);
     await this.loadChats();

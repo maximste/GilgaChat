@@ -1,3 +1,4 @@
+import { resourceFileUrl } from "@/shared/config/api";
 import type { ApiChatMember, ApiUser } from "@/shared/lib/api/types";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 import { showConfirmDialog } from "@/shared/ui/confirmDialog";
@@ -125,22 +126,53 @@ class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
       const li = document.createElement("li");
 
       li.className = "chat-members-panel__row";
+      const memberMain = document.createElement("div");
+
+      memberMain.className = "chat-members-panel__member-main";
+      const avatar = document.createElement("span");
+
+      avatar.className = "chat-members-panel__member-avatar";
+      const avatarPathRaw = u.avatar?.trim();
+      const hasAvatar =
+        Boolean(avatarPathRaw) &&
+        avatarPathRaw !== "null" &&
+        avatarPathRaw !== "undefined";
+
+      if (hasAvatar && avatarPathRaw) {
+        const image = document.createElement("img");
+
+        image.className = "chat-members-panel__member-avatar-img";
+        image.src = resourceFileUrl(avatarPathRaw);
+        image.alt = "";
+        image.loading = "lazy";
+        avatar.appendChild(image);
+      } else {
+        const icon = document.createElement("i");
+
+        icon.className = "fa-solid fa-user";
+        icon.setAttribute("aria-hidden", "true");
+        avatar.appendChild(icon);
+      }
+      const memberMeta = document.createElement("div");
+
+      memberMeta.className = "chat-members-panel__member-meta";
       const name = document.createElement("span");
 
-      name.appendChild(document.createTextNode(userDisplayName(u)));
-      const loginSpan = document.createElement("span");
+      name.className = "chat-members-panel__member-name";
+      name.textContent = userDisplayName(u);
+      const login = document.createElement("span");
 
-      loginSpan.className = "chat-members-panel__login";
-      loginSpan.textContent = ` @${u.login}`;
-      name.appendChild(loginSpan);
+      login.className = "chat-members-panel__login";
+      login.textContent = `@${u.login}`;
+      memberMeta.append(name, login);
+      memberMain.append(avatar, memberMeta);
       const removeBtn = document.createElement("button");
 
       removeBtn.type = "button";
       removeBtn.className = "chat-members-panel__remove-btn";
       removeBtn.textContent = "Удалить";
       removeBtn.dataset.userId = String(u.id);
-      li.appendChild(name);
-      li.appendChild(removeBtn);
+      li.append(memberMain, removeBtn);
       listHost.appendChild(li);
     }
   }
