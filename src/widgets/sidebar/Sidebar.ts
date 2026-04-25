@@ -55,8 +55,16 @@ class Sidebar extends Block<SidebarBlockProps> {
     click: this.handleChatListClick,
   };
 
-  constructor(props: SidebarProps) {
-    super(props as SidebarBlockProps);
+  constructor(props: Partial<SidebarProps> = {}) {
+    super({
+      appTitle: props.appTitle ?? "GilgaChat",
+      currentUser: props.currentUser ?? {
+        firstName: "Alex",
+        lastName: "Morgan",
+        status: "Playing games",
+      },
+      groups: props.groups ?? [],
+    } as SidebarBlockProps);
   }
 }
 export { Sidebar };
