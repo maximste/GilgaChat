@@ -1,7 +1,7 @@
 import { normalizeAppPath } from "./path/normalizePath";
 import { Route } from "./Route";
 
-export interface RouterOptions {
+interface RouterOptions {
   /** Сегмент base без завершающего слэша, например из `import.meta.env.BASE_URL`. */
   basePath?: string;
   /** Внутренний путь страницы 404 при неизвестном URL. */
@@ -13,7 +13,7 @@ export interface RouterOptions {
   resolvePath?: (pathname: string) => string;
 }
 
-export class Router {
+class Router {
   private static __instance: Router | undefined;
 
   private readonly routes: Route[] = [];
@@ -35,7 +35,6 @@ export class Router {
     if (Router.__instance) {
       return Router.__instance;
     }
-
     this._rootQuery = rootQuery;
     this.basePath = (options?.basePath ?? "").replace(/\/$/, "");
     this.notFoundPath = options?.notFoundPath ?? "";
@@ -55,7 +54,6 @@ export class Router {
     window.onpopstate = () => {
       this._onRoute(this.getLocationRoutePath());
     };
-
     this._onRoute(this.getLocationRoutePath());
   }
 
@@ -110,7 +108,6 @@ export class Router {
 
       return;
     }
-
     const route =
       this.getRoute(normalized) ??
       (this.notFoundPath
@@ -120,12 +117,11 @@ export class Router {
     if (!route) {
       return;
     }
-
     if (this._currentRoute && this._currentRoute !== route) {
       this._currentRoute.leave();
     }
-
     this._currentRoute = route;
     route.render();
   }
 }
+export { Router, type RouterOptions };

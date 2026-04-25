@@ -7,7 +7,6 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "@/shared/styles/global.scss";
 
 registerAppComponents();
-
 try {
   new App();
 } catch (err) {
@@ -17,6 +16,5 @@ try {
   if (app) {
     app.innerHTML = `<p class="app-error">App error: ${msg}</p>`;
   }
-
   console.error("[GilgaChat]", msg);
 }

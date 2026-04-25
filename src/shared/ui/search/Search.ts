@@ -3,7 +3,7 @@ import template from "./Search.hbs?raw";
 
 import "./Search.scss";
 
-export interface SearchProps {
+interface SearchProps {
   placeholder?: string;
   ariaLabel?: string;
   className?: string;
@@ -30,5 +30,5 @@ class Search extends Block<SearchBlockProps> {
     } as SearchBlockProps);
   }
 }
-
 export { Search };
+export { type SearchProps };

@@ -1,23 +1,24 @@
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./Sidebar.hbs?raw";
-import type { DirectMessageItem, GroupItem, SidebarCurrentUser } from "./types";
+import type { GroupItem, SidebarCurrentUser } from "./types";
 
 import "./Sidebar.scss";
 
-export interface SidebarProps {
+interface SidebarProps {
   appTitle: string;
   currentUser: SidebarCurrentUser;
-  directMessages: DirectMessageItem[];
   groups: GroupItem[];
 }
 
 type SidebarBlockProps = SidebarProps & BlockOwnProps;
 
 /** Всплывающее событие на корне сайдбара при выборе чата в списке */
-export const SIDEBAR_SELECT_CHAT_EVENT = "sidebar-select-chat" as const;
+const SIDEBAR_SELECT_CHAT_EVENT = "sidebar-select-chat" as const;
 
-export type SidebarSelectChatDetail = { chatId: string };
+type SidebarSelectChatDetail = {
+  chatId: string;
+};
 
 class Sidebar extends Block<SidebarBlockProps> {
   static componentName = "Sidebar";
@@ -30,7 +31,6 @@ class Sidebar extends Block<SidebarBlockProps> {
     if (!root) {
       return;
     }
-
     const item = (event.target as HTMLElement).closest<HTMLButtonElement>(
       ".messenger-sidebar__item",
     );
@@ -38,13 +38,11 @@ class Sidebar extends Block<SidebarBlockProps> {
     if (!item || !root.contains(item)) {
       return;
     }
-
     const chatId = item.dataset.chat;
 
     if (!chatId) {
       return;
     }
-
     root.dispatchEvent(
       new CustomEvent<SidebarSelectChatDetail>(SIDEBAR_SELECT_CHAT_EVENT, {
         bubbles: true,
@@ -61,5 +59,9 @@ class Sidebar extends Block<SidebarBlockProps> {
     super(props as SidebarBlockProps);
   }
 }
-
 export { Sidebar };
+export {
+  SIDEBAR_SELECT_CHAT_EVENT,
+  type SidebarProps,
+  type SidebarSelectChatDetail,
+};

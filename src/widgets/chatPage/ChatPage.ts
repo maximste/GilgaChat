@@ -1,6 +1,8 @@
 import { chatsController } from "@/app/controllers";
+import { resourceFileUrl } from "@/shared/config/api";
 import { ApiError } from "@/shared/lib/api";
 import type { ApiUser } from "@/shared/lib/api/types";
+import { ChatMessagesSession } from "@/shared/lib/chat";
 import { createDemoChatTimeline } from "@/shared/lib/mocks";
 import type { ChatTimelineItem } from "@/shared/lib/types/ChatTimelineTypes";
 import { mapChatTimelineToRows, timelineHasMessages } from "@/shared/lib/utils";
@@ -17,7 +19,7 @@ import { openChatGroupMembersDrawer } from "./openChatGroupMembersDrawer";
 
 import "./ChatPage.scss";
 
-export interface ChatPageProps {
+interface ChatPageProps {
   peerName?: string;
   chatId?: number;
   isGroup?: boolean;
@@ -27,7 +29,7 @@ export interface ChatPageProps {
 }
 
 /** Зависимости от экрана мессенджера (модалки, очистка выбора, поиск пользователей). */
-export type ChatPageHostDeps = {
+type ChatPageHostDeps = {
   /** Корень layout: отсюда ищется `[data-messenger-modals]` (оверлеи и выезжающие панели). */
   layoutRoot: HTMLElement;
   clearChatSelection: () => void;
@@ -44,7 +46,18 @@ type ChatPageBlockProps = ChatPageProps & {
   timelineRows: ReturnType<typeof mapChatTimelineToRows>;
 } & BlockOwnProps;
 
-export class ChatPage extends Block<ChatPageBlockProps> {
+function toErrorMessage(error: unknown): string {
+  if (error instanceof ApiError) {
+    return error.message;
+  }
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return String(error);
+}
+
+class ChatPage extends Block<ChatPageBlockProps> {
   protected template = template;
 
   private container: HTMLElement;
@@ -55,24 +68,40 @@ export class ChatPage extends Block<ChatPageBlockProps> {
 
   private readonly routeIsGroup: boolean;
 
+  private messageSession: ChatMessagesSession | null = null;
+
+  private readonly groupMemberDirectory = new Map<
+    string,
+    {
+      displayName: string;
+      avatarUrl?: string;
+    }
+  >();
+
+  private isGroupMemberDirectoryLoading = false;
+
+  private isGroupMemberDirectoryLoaded = false;
+
   private readonly onChatMessageSent = (event: Event): void => {
     const { text } = (event as CustomEvent<ChatMessageSentDetail>).detail;
 
     if (!text?.trim()) {
       return;
     }
+    if (this.routeChatId !== null && this.messageSession) {
+      this.messageSession.sendText(text.trim());
 
+      return;
+    }
     const time = new Date().toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "2-digit",
     });
-
     const newItem: ChatTimelineItem = {
       incoming: false,
       time,
       text: text.trim(),
     };
-
     const timeline = [...this.props.timeline, newItem];
 
     this.setProps({
@@ -88,7 +117,11 @@ export class ChatPage extends Block<ChatPageBlockProps> {
     hostDeps: ChatPageHostDeps | null = null,
   ) {
     const peerName = props.peerName ?? "Sarah Chen";
-    const timeline = props.timeline ?? createDemoChatTimeline(peerName);
+    const hasNumericChatId =
+      typeof props.chatId === "number" && !Number.isNaN(props.chatId);
+    const timeline =
+      props.timeline ??
+      (hasNumericChatId ? [] : createDemoChatTimeline(peerName));
     const hasMessages = timelineHasMessages(timeline);
     const timelineRows = mapChatTimelineToRows(timeline);
     const routeChatId =
@@ -107,7 +140,6 @@ export class ChatPage extends Block<ChatPageBlockProps> {
       hasMessages,
       timelineRows,
     } as ChatPageBlockProps);
-
     this.container = container;
     this.hostDeps = hostDeps;
     this.routeChatId = routeChatId;
@@ -119,6 +151,8 @@ export class ChatPage extends Block<ChatPageBlockProps> {
       CHAT_MESSAGE_SENT_EVENT,
       this.onChatMessageSent as EventListener,
     );
+    void this.loadGroupMemberDirectory();
+    this.ensureRemoteMessageSession();
   }
 
   protected componentWillUnmount(): void {
@@ -128,12 +162,99 @@ export class ChatPage extends Block<ChatPageBlockProps> {
     );
   }
 
+  public destroy(): void {
+    this.messageSession?.destroy();
+    this.messageSession = null;
+    super.destroy();
+  }
+
+  private ensureRemoteMessageSession(): void {
+    const deps = this.hostDeps;
+    const chatId = this.routeChatId;
+
+    if (!deps || chatId === null) {
+      return;
+    }
+    if (this.messageSession?.chatId === chatId) {
+      return;
+    }
+    this.messageSession?.destroy();
+    this.messageSession = null;
+    const session = new ChatMessagesSession({
+      chatId,
+      peerDisplayName: this.props.peerName,
+      isGroup: this.routeIsGroup,
+      resolveGroupAuthor: (userId) =>
+        this.groupMemberDirectory.get(userId) ?? null,
+      getCurrentUser: () => deps.getProfileFromStore(),
+      onTimelineChange: (items) => {
+        this.setProps({
+          timeline: items,
+          hasMessages: timelineHasMessages(items),
+          timelineRows: mapChatTimelineToRows(items),
+        });
+      },
+      onError: (message) => {
+        showErrorToast(message);
+      },
+    });
+
+    this.messageSession = session;
+    void session.start();
+  }
+
+  private async loadGroupMemberDirectory(force = false): Promise<void> {
+    if (!this.routeIsGroup || this.routeChatId === null) {
+      return;
+    }
+    if (!force) {
+      if (
+        this.isGroupMemberDirectoryLoading ||
+        this.isGroupMemberDirectoryLoaded
+      ) {
+        return;
+      }
+    } else if (this.isGroupMemberDirectoryLoading) {
+      return;
+    }
+
+    this.isGroupMemberDirectoryLoading = true;
+    try {
+      const members = await chatsController.getChatUsers(this.routeChatId, {
+        limit: 500,
+      });
+
+      this.groupMemberDirectory.clear();
+      for (const member of members) {
+        const displayName =
+          member.display_name?.trim() || member.login || `User ${member.id}`;
+        const avatarPathRaw = member.avatar?.trim();
+        const avatarPath =
+          avatarPathRaw &&
+          avatarPathRaw !== "null" &&
+          avatarPathRaw !== "undefined"
+            ? avatarPathRaw
+            : undefined;
+
+        this.groupMemberDirectory.set(String(member.id), {
+          displayName,
+          avatarUrl: avatarPath ? resourceFileUrl(avatarPath) : undefined,
+        });
+      }
+      this.isGroupMemberDirectoryLoaded = true;
+      this.messageSession?.refreshTimeline();
+    } catch {
+      // Quietly keep fallback labels if participant list is unavailable.
+    } finally {
+      this.isGroupMemberDirectoryLoading = false;
+    }
+  }
+
   protected events = {
     click: (event: Event) => {
       const target = (event.target as HTMLElement).closest(
         "[data-chat-action]",
       );
-
       const action = target?.getAttribute("data-chat-action");
       const chatId = this.routeChatId;
       const deps = this.hostDeps;
@@ -141,12 +262,10 @@ export class ChatPage extends Block<ChatPageBlockProps> {
       if (!action || chatId === null || !deps) {
         return;
       }
-
       if (action === "group-members") {
         if (!this.routeIsGroup) {
           return;
         }
-
         const modalsHost =
           deps.layoutRoot.querySelector<HTMLElement>(
             "[data-messenger-modals]",
@@ -158,15 +277,24 @@ export class ChatPage extends Block<ChatPageBlockProps> {
           getProfileFromStore: deps.getProfileFromStore,
           getChatUsers: (id) =>
             chatsController.getChatUsers(id, { limit: 500 }),
-          addUsersToChat: (id, userIds) =>
-            chatsController.addUsersToChat({ chatId: id, users: userIds }),
-          removeUsersFromChat: (id, userIds) =>
-            chatsController.removeUsersFromChat({ chatId: id, users: userIds }),
+          addUsersToChat: async (id, userIds) => {
+            await chatsController.addUsersToChat({
+              chatId: id,
+              users: userIds,
+            });
+            await this.loadGroupMemberDirectory(true);
+          },
+          removeUsersFromChat: async (id, userIds) => {
+            await chatsController.removeUsersFromChat({
+              chatId: id,
+              users: userIds,
+            });
+            await this.loadGroupMemberDirectory(true);
+          },
         });
 
         return;
       }
-
       if (action === "delete-chat") {
         void (async () => {
           const ok = await showConfirmDialog({
@@ -180,19 +308,13 @@ export class ChatPage extends Block<ChatPageBlockProps> {
           if (!ok) {
             return;
           }
-
           try {
             await chatsController.deleteChat({ chatId });
             deps.clearChatSelection();
-          } catch (e: unknown) {
-            const msg =
-              e instanceof ApiError
-                ? e.message
-                : e instanceof Error
-                  ? e.message
-                  : String(e);
+          } catch (error: unknown) {
+            const errorMessage = toErrorMessage(error);
 
-            showErrorToast(msg);
+            showErrorToast(errorMessage);
           }
         })();
       }
@@ -208,3 +330,4 @@ export class ChatPage extends Block<ChatPageBlockProps> {
     }
   }
 }
+export { ChatPage, type ChatPageHostDeps, type ChatPageProps };

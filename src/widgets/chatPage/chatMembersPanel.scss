@@ -8,9 +8,9 @@
   gap: $spacing-16;
 
   &__scroll {
+    overflow: hidden auto;
     min-height: 0;
     flex: 1;
-    overflow: hidden auto;
   }
 
   &__section-title {

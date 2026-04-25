@@ -18,7 +18,7 @@ const EMPTY_PROFILE: ProfilePageProps = {
   phone: "",
 };
 
-export function mapProfilePageState(state: Indexed): ProfilePageProps {
+function mapProfilePageState(state: Indexed): ProfilePageProps {
   const profile = (state.user as UserState | undefined)?.profile;
 
   if (!profile) {
@@ -37,3 +37,5 @@ export function mapProfilePageState(state: Indexed): ProfilePageProps {
     avatarUrl: profile.avatar ? resourceFileUrl(profile.avatar) : undefined,
   };
 }
+
+export { mapProfilePageState };

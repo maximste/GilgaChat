@@ -1,5 +1,4 @@
 export {
-  type DirectMessageItem,
   type GroupItem,
   MessengerLayout,
   type MessengerLayoutProps,

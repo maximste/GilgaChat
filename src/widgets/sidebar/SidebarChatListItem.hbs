@@ -1,19 +1,11 @@
 <button type="button" class="messenger-sidebar__item" data-chat="{{chatId}}">
-  {{#if isDmVariant}}
-    {{{SidebarAvatar variant="user" size="list"}}}
-    <div class="messenger-sidebar__item-info">
-      {{{SidebarPrimaryLine text=primaryLineText wrapClassName="messenger-sidebar__item-name" statusType=statusType}}}
-      {{{SidebarSecondaryLine text=previewLine}}}
-    </div>
+  {{#if avatarUrl}}
+    {{{SidebarAvatar variant="user" size="list" avatarUrl=avatarUrl}}}
   {{else}}
-    {{#if avatarUrl}}
-      {{{SidebarAvatar variant="user" size="list" avatarUrl=avatarUrl}}}
-    {{else}}
-      {{{SidebarAvatar variant="icon" size="list" iconClass=iconClass}}}
-    {{/if}}
-    <div class="messenger-sidebar__item-info">
-      {{{SidebarPrimaryLine text=primaryLineText wrapClassName="messenger-sidebar__item-name"}}}
-      {{{SidebarSecondaryLine text=previewLine}}}
-    </div>
+    {{{SidebarAvatar variant="icon" size="list" iconClass=iconClass}}}
   {{/if}}
+  <div class="messenger-sidebar__item-info">
+    {{{SidebarPrimaryLine text=primaryLineText wrapClassName="messenger-sidebar__item-name"}}}
+    {{{SidebarSecondaryLine text=previewLine}}}
+  </div>
 </button>

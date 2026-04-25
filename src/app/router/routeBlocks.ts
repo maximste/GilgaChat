@@ -3,20 +3,13 @@ import { AuthForm } from "@/features/auth";
 import { RegisterForm } from "@/features/registration";
 import { setupMessengerChatPage } from "@/pages/messenger";
 import { ApiError } from "@/shared/lib/api";
-import { connect } from "@/shared/ui/block";
 import { showErrorToast } from "@/shared/ui/toast";
 import { MainLayout } from "@/widgets/mainLayout";
 import { MessengerLayout } from "@/widgets/messengerLayout";
 
-import { mapMessengerLayoutState } from "../store";
 import { getAppRouter } from "./routerHolder";
 
-const ConnectedMessengerLayout = connect(mapMessengerLayoutState)(
-  MessengerLayout,
-);
-
-// @ts-expect-error TS2515 — база из `connect` (конкретный Block с template); TS обрезает тип до абстрактного Block.
-export class MessengerRouteBlock extends ConnectedMessengerLayout {
+class MessengerRouteBlock extends MessengerLayout {
   protected componentDidMount(): void {
     super.componentDidMount();
     const root = this.element();
@@ -26,8 +19,7 @@ export class MessengerRouteBlock extends ConnectedMessengerLayout {
     }
   }
 }
-
-export class AuthScreenBlock extends MainLayout {
+class AuthScreenBlock extends MainLayout {
   constructor() {
     super({
       content: "",
@@ -41,7 +33,6 @@ export class AuthScreenBlock extends MainLayout {
     if (!(slot instanceof HTMLElement)) {
       return;
     }
-
     const form = new AuthForm({
       title: "Welcome back",
       subtitle: "Sign in to continue to GilgaChat",
@@ -62,8 +53,7 @@ export class AuthScreenBlock extends MainLayout {
     }
   }
 }
-
-export class RegisterScreenBlock extends MainLayout {
+class RegisterScreenBlock extends MainLayout {
   constructor() {
     super({
       content: "",
@@ -77,7 +67,6 @@ export class RegisterScreenBlock extends MainLayout {
     if (!(slot instanceof HTMLElement)) {
       return;
     }
-
     const form = new RegisterForm({
       title: "Create Account",
       subtitle: "Sign up to get started",
@@ -98,3 +87,4 @@ export class RegisterScreenBlock extends MainLayout {
     }
   }
 }
+export { AuthScreenBlock, MessengerRouteBlock, RegisterScreenBlock };

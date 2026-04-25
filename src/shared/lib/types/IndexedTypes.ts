@@ -1,3 +1,5 @@
-export type Indexed<T = unknown> = {
+type Indexed<T = unknown> = {
   [key: string]: T;
 };
+
+export { type Indexed };

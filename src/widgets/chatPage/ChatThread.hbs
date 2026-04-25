@@ -14,15 +14,9 @@
         showReadReceipt=showReadReceipt
         imageCaption=imageCaption
         hasImage=hasImage
+        mediaImageUrl=mediaImageUrl
       }}}
     {{/each}}
-
-    <div class="chat-page__typing" aria-live="polite">
-      <span class="chat-page__typing-dots" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </span>
-      <span class="chat-page__typing-text">{{peerName}} is typing...</span>
-    </div>
   {{else}}
     <div class="chat-page__empty">
       {{{NoChatStub title="Нет сообщений" description="Напишите первое сообщение в поле ниже."}}}

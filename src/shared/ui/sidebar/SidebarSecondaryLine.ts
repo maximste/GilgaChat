@@ -3,7 +3,7 @@ import template from "./SidebarSecondaryLine.hbs?raw";
 
 import "./SidebarSecondaryLine.scss";
 
-export interface SidebarSecondaryLineProps {
+interface SidebarSecondaryLineProps {
   text: string;
 }
 
@@ -18,5 +18,5 @@ class SidebarSecondaryLine extends Block<SidebarSecondaryLineBlockProps> {
     super(props as SidebarSecondaryLineBlockProps);
   }
 }
-
 export { SidebarSecondaryLine };
+export { type SidebarSecondaryLineProps };
