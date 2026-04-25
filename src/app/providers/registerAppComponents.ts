@@ -1,4 +1,5 @@
-import { registerComponent } from "@/shared/ui/block";
+import { mapMessengerLayoutState } from "@/app/store";
+import { connect, registerComponent } from "@/shared/ui/block";
 import { ChatFooter } from "@/widgets/chatPage/ChatFooter";
 import { ChatHeader } from "@/widgets/chatPage/ChatHeader";
 import { ChatThread } from "@/widgets/chatPage/ChatThread";
@@ -13,6 +14,8 @@ import {
   SidebarUserPanel,
 } from "@/widgets/sidebar";
 
+const ConnectedSidebar = connect(mapMessengerLayoutState)(Sidebar);
+
 /** Регистрация Handlebars-хелперов для вложенных Block на уровне приложения. */
 function registerAppComponents(): void {
   registerComponent(ChatHeader);
@@ -21,7 +24,7 @@ function registerAppComponents(): void {
   registerComponent(ChatTimelineRow);
   registerComponent(MessageComposer);
   registerComponent(NoChatStub);
-  registerComponent(Sidebar);
+  registerComponent(ConnectedSidebar);
   registerComponent(SidebarHeader);
   registerComponent(SidebarChatSection);
   registerComponent(SidebarChatListItem);
