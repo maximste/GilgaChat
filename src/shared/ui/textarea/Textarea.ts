@@ -19,5 +19,4 @@ class Textarea extends Block<TextareaBlockProps> {
     } as TextareaBlockProps);
   }
 }
-
 export { Textarea };

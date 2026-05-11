@@ -11,7 +11,7 @@ import template from "./EditProfileForm.hbs?raw";
 
 import "./EditProfileForm.scss";
 
-export interface EditProfileFormProps {
+interface EditProfileFormProps {
   login: string;
   displayName: string;
   email: string;
@@ -22,9 +22,9 @@ export interface EditProfileFormProps {
   newPassword?: string;
 }
 
-export type EditProfileFormSavePayload = EditProfileFormProps;
+type EditProfileFormSavePayload = EditProfileFormProps;
 
-export interface EditProfileFormCallbacks {
+interface EditProfileFormCallbacks {
   onCancel: () => void;
   onSave?: (data: EditProfileFormSavePayload) => void | Promise<void>;
 }
@@ -203,7 +203,7 @@ function buildBlockProps(
   };
 }
 
-export class EditProfileForm extends Block<EditProfileFormBlockProps> {
+class EditProfileForm extends Block<EditProfileFormBlockProps> {
   protected template = template;
 
   private container: HTMLElement;
@@ -218,7 +218,6 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
         if (!(form instanceof HTMLFormElement)) {
           return;
         }
-
         const data: EditProfileFormSavePayload = {
           login: values.login.trim(),
           displayName: values.display_name.trim(),
@@ -266,3 +265,9 @@ export class EditProfileForm extends Block<EditProfileFormBlockProps> {
     }
   }
 }
+export {
+  EditProfileForm,
+  type EditProfileFormCallbacks,
+  type EditProfileFormProps,
+  type EditProfileFormSavePayload,
+};

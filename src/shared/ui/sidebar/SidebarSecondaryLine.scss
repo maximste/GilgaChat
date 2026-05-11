@@ -1,7 +1,11 @@
 @use "shared/styles/variables" as *;
 
 .messenger-sidebar__item-meta {
+  display: block;
   overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   color: $text-color-secondary;
   font-size: $font-size-12;
   line-height: 1.3;

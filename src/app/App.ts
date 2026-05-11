@@ -7,11 +7,10 @@ function showError(message: string): void {
   if (app) {
     app.innerHTML = `<p class="app-error">App error: ${message}</p>`;
   }
-
   console.error("[GilgaChat]", message);
 }
 
-export class App {
+class App {
   constructor() {
     const run = async (): Promise<void> => {
       try {
@@ -39,3 +38,4 @@ export class App {
     }
   }
 }
+export { App };

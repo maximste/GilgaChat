@@ -4,6 +4,7 @@
 .messenger-sidebar {
   position: relative;
   display: flex;
+  overflow: hidden;
   width: 280px;
   min-width: 280px;
   min-height: 0;
@@ -13,9 +14,10 @@
   background-color: $background-color-on-surface-black;
 }
 
-.messenger-sidebar__nav {
+.messenger-sidebar__scroll {
+  display: flex;
+  overflow: hidden;
   min-height: 0;
   flex: 1;
   padding: 0 $spacing-12 $spacing-12;
-  overflow-y: auto;
 }

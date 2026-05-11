@@ -3,7 +3,7 @@ import template from "./IconButton.hbs?raw";
 
 import "./IconButton.scss";
 
-export interface IconButtonProps {
+interface IconButtonProps {
   /** Классы иконки Font Awesome, например `fa-solid fa-paperclip` */
   icon: string;
   /** Обязательная подпись для доступности */
@@ -29,5 +29,5 @@ class IconButton extends Block<IconButtonBlockProps> {
     } as IconButtonBlockProps);
   }
 }
-
 export { IconButton };
+export { type IconButtonProps };

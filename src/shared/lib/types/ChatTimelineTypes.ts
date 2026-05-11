@@ -1,14 +1,19 @@
 /** Элемент ленты чата: разделитель даты или сообщение (входящее / исходящее) */
-export type ChatTimelineItem =
-  | { dateLabel: string }
+type ChatTimelineItem =
+  | {
+      dateLabel: string;
+    }
   | {
       incoming: true;
       author: string;
+      authorAvatarUrl?: string;
       time: string;
       text: string;
       reaction?: string;
       reactionCount?: number;
       showReadReceipt?: boolean;
+      serverMessageId?: string;
+      mediaImageUrl?: string;
     }
   | {
       incoming: false;
@@ -16,4 +21,8 @@ export type ChatTimelineItem =
       text?: string;
       imageCaption?: string;
       hasImage?: boolean;
+      serverMessageId?: string;
+      mediaImageUrl?: string;
     };
+
+export { type ChatTimelineItem };

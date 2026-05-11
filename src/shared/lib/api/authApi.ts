@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from "./apiClient";
+import { apiGet, apiPost, apiRequest } from "./apiClient";
 import type {
   ApiUser,
   SignInRequest,
@@ -6,19 +6,25 @@ import type {
   SignUpResponse,
 } from "./types";
 
-export const authApi = {
+const authApi = {
   signIn(data: SignInRequest): Promise<unknown> {
     return apiPost("/auth/signin", data);
   },
-
+  /**
+   * Регистрация без cookie: иначе Safari/другой браузер может послать протухшую
+   * сессию на ya-praktikum.tech и API ответит «Cookie is not valid».
+   * Сессию после успешного ответа поднимает `signIn` в `authController.signUp`.
+   */
   signUp(data: SignUpRequest): Promise<SignUpResponse> {
-    return apiPost<SignUpResponse>("/auth/signup", data);
+    return apiRequest<SignUpResponse>("/auth/signup", {
+      method: "POST",
+      data,
+      withCredentials: false,
+    });
   },
-
   logout(): Promise<unknown> {
     return apiPost("/auth/logout", {});
   },
-
   async getUser(): Promise<ApiUser> {
     const raw = await apiGet<unknown>("/auth/user");
 
@@ -29,3 +35,5 @@ export const authApi = {
     return raw as ApiUser;
   },
 };
+
+export { authApi };

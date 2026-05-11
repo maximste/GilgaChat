@@ -8,8 +8,10 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+coverage
 dist
 .eslintcache
+.stylelintcache
 dist-ssr
 *.local
 
@@ -26,3 +28,4 @@ dist-ssr
 
 .env
 file.env
+.cursor/rules/

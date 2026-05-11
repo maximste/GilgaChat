@@ -1,3 +1,4 @@
+import { resourceFileUrl } from "@/shared/config/api";
 import type { ApiChatMember, ApiUser } from "@/shared/lib/api/types";
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 import { showConfirmDialog } from "@/shared/ui/confirmDialog";
@@ -10,7 +11,7 @@ import template from "./ChatMembersDrawer.hbs?raw";
 import "./chatMembersDrawer.scss";
 import "./chatMembersPanel.scss";
 
-export type ChatMembersDrawerServices = {
+type ChatMembersDrawerServices = {
   chatId: number;
   searchUsersByLogin: (login: string) => Promise<unknown>;
   getProfileFromStore: () => ApiUser | null;
@@ -24,7 +25,7 @@ type ChatMembersDrawerProps = BlockOwnProps;
 /**
  * Выезжающая панель справа: участники группы, поиск и добавление.
  */
-export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
+class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
   protected template = template;
 
   private readonly services: ChatMembersDrawerServices;
@@ -48,7 +49,6 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
     const addBtn = this.refs.addBtn as HTMLButtonElement | undefined;
     const pickerHost = this.refs.pickerMount as HTMLElement | undefined;
     const listHost = this.refs.listHost as HTMLElement | undefined;
-
     const picker = new GroupMemberPicker({
       searchUsersByLogin: this.services.searchUsersByLogin,
       getProfileFromStore: this.services.getProfileFromStore,
@@ -61,23 +61,18 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
     });
 
     this.picker = picker;
-
     const pickerEl = picker.element();
 
     if (pickerHost && pickerEl) {
       pickerHost.appendChild(pickerEl);
     }
-
     document.addEventListener("keydown", this.onDocumentKeydown);
-
     if (listHost) {
       listHost.addEventListener("click", this.onListClick);
     }
-
     if (addBtn) {
       addBtn.addEventListener("click", this.onAddClick);
     }
-
     const backdrop = this.refs.backdrop as HTMLElement | undefined;
 
     requestAnimationFrame(() => {
@@ -85,17 +80,14 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
         backdrop?.classList.add("chat-members-drawer-backdrop--open");
       });
     });
-
     void this.loadMembers();
   }
 
   protected componentWillUnmount(): void {
     document.removeEventListener("keydown", this.onDocumentKeydown);
-
     const listHost = this.refs.listHost as HTMLElement | undefined;
 
     listHost?.removeEventListener("click", this.onListClick);
-
     const addBtn = this.refs.addBtn as HTMLButtonElement | undefined;
 
     addBtn?.removeEventListener("click", this.onAddClick);
@@ -106,11 +98,9 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
     if (e.key !== "Escape") {
       return;
     }
-
     if (document.querySelector(".confirm-dialog-backdrop")) {
       return;
     }
-
     e.stopPropagation();
     this.beginClose();
   };
@@ -121,9 +111,7 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
     if (!listHost) {
       return;
     }
-
     listHost.replaceChildren();
-
     if (this.members.length === 0) {
       const empty = document.createElement("p");
 
@@ -134,30 +122,57 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
 
       return;
     }
-
     for (const u of this.members) {
       const li = document.createElement("li");
 
       li.className = "chat-members-panel__row";
+      const memberMain = document.createElement("div");
 
+      memberMain.className = "chat-members-panel__member-main";
+      const avatar = document.createElement("span");
+
+      avatar.className = "chat-members-panel__member-avatar";
+      const avatarPathRaw = u.avatar?.trim();
+      const hasAvatar =
+        Boolean(avatarPathRaw) &&
+        avatarPathRaw !== "null" &&
+        avatarPathRaw !== "undefined";
+
+      if (hasAvatar && avatarPathRaw) {
+        const image = document.createElement("img");
+
+        image.className = "chat-members-panel__member-avatar-img";
+        image.src = resourceFileUrl(avatarPathRaw);
+        image.alt = "";
+        image.loading = "lazy";
+        avatar.appendChild(image);
+      } else {
+        const icon = document.createElement("i");
+
+        icon.className = "fa-solid fa-user";
+        icon.setAttribute("aria-hidden", "true");
+        avatar.appendChild(icon);
+      }
+      const memberMeta = document.createElement("div");
+
+      memberMeta.className = "chat-members-panel__member-meta";
       const name = document.createElement("span");
 
-      name.appendChild(document.createTextNode(userDisplayName(u)));
-      const loginSpan = document.createElement("span");
+      name.className = "chat-members-panel__member-name";
+      name.textContent = userDisplayName(u);
+      const login = document.createElement("span");
 
-      loginSpan.className = "chat-members-panel__login";
-      loginSpan.textContent = ` @${u.login}`;
-      name.appendChild(loginSpan);
-
+      login.className = "chat-members-panel__login";
+      login.textContent = `@${u.login}`;
+      memberMeta.append(name, login);
+      memberMain.append(avatar, memberMeta);
       const removeBtn = document.createElement("button");
 
       removeBtn.type = "button";
       removeBtn.className = "chat-members-panel__remove-btn";
       removeBtn.textContent = "Удалить";
       removeBtn.dataset.userId = String(u.id);
-
-      li.appendChild(name);
-      li.appendChild(removeBtn);
+      li.append(memberMain, removeBtn);
       listHost.appendChild(li);
     }
   }
@@ -171,10 +186,8 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
       showErrorToast(msg);
       this.members = [];
     }
-
     this.renderMemberList();
     this.picker?.refreshAfterExcludeChange();
-
     const addBtn = this.refs.addBtn as HTMLButtonElement | undefined;
 
     if (addBtn && this.picker) {
@@ -189,13 +202,11 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
     if (!btn?.dataset.userId) {
       return;
     }
-
     const id = Number(btn.dataset.userId);
 
     if (Number.isNaN(id)) {
       return;
     }
-
     const confirmed = await showConfirmDialog({
       title: "Удалить участника?",
       message: "Пользователь будет исключён из этого чата.",
@@ -207,7 +218,6 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
     if (!confirmed) {
       return;
     }
-
     try {
       await this.services.removeUsersFromChat(this.services.chatId, [id]);
       await this.loadMembers();
@@ -225,13 +235,11 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
     if (!picker) {
       return;
     }
-
     const ids = picker.getSelectedUserIds();
 
     if (ids.length === 0) {
       return;
     }
-
     try {
       await this.services.addUsersToChat(this.services.chatId, ids);
       picker.clearSelection();
@@ -248,7 +256,6 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
     if (this.pickerReleased) {
       return;
     }
-
     this.pickerReleased = true;
     this.picker?.destroy();
     this.picker = undefined;
@@ -258,31 +265,25 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
     if (this.isClosing) {
       return;
     }
-
     this.isClosing = true;
     this.releasePicker();
-
     const backdrop = this.refs.backdrop as HTMLElement | undefined;
     const panel = this.refs.panel as HTMLElement | undefined;
     const root = this.element();
 
     backdrop?.classList.remove("chat-members-drawer-backdrop--open");
-
     const finish = (): void => {
       if (this.teardownDone) {
         return;
       }
-
       this.teardownDone = true;
       root?.remove();
       this.destroy();
     };
-
     const onTransitionEnd = (e: TransitionEvent): void => {
       if (e.target !== panel || e.propertyName !== "transform") {
         return;
       }
-
       panel.removeEventListener("transitionend", onTransitionEnd);
       finish();
     };
@@ -290,7 +291,6 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
     if (panel) {
       panel.addEventListener("transitionend", onTransitionEnd);
     }
-
     window.setTimeout(finish, 400);
   }
 
@@ -312,3 +312,4 @@ export class ChatMembersDrawer extends Block<ChatMembersDrawerProps> {
     }
   }
 }
+export { ChatMembersDrawer, type ChatMembersDrawerServices };

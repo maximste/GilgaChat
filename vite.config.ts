@@ -1,4 +1,5 @@
 import { copyFileSync, existsSync } from 'node:fs';
+import type { IncomingMessage } from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig, type Connect, type Plugin } from 'vite';
@@ -76,12 +77,22 @@ function createSpaFallbackMiddleware(baseRaw: string): Connect.NextHandleFunctio
       ? pathname.slice(baseNoSlash.length) || '/'
       : pathname;
 
+    /**
+    * Это middleware для SPA fallback в dev: 
+    * для «неизвестных» путей он подменяет req.url на index.html, чтобы при прямом заходе 
+    * на /messenger/... отдалась одностраничка, а не 404.
+    * Цепочка такая: сначала проверяют пути, которые нельзя превращать в index.html. 
+    * Для них вызывают next() и выходят — запрос идёт дальше по обычной цепочке
+    * Vite (модули, HMR, статика, прокси).
+    */
     if (
       afterBase === '/' ||
       afterBase === '' ||
       afterBase.startsWith('/@') ||
       afterBase.startsWith('/node_modules/') ||
-      afterBase.startsWith('/src/')
+      afterBase.startsWith('/src/') ||
+      afterBase.startsWith('/api/') ||
+      afterBase.startsWith('/ws/')
     ) {
       next();
 
@@ -104,6 +115,66 @@ function createSpaFallbackMiddleware(baseRaw: string): Connect.NextHandleFunctio
   };
 }
 
+const PRACTICUM_ORIGIN = 'https://ya-praktikum.tech';
+
+/**
+ * Бэкенд отдаёт Set-Cookie с Domain=ya-praktikum.tech и Secure.
+ * Запросы идут на http://localhost — без правки браузер не сохраняет cookie, getUser → 401.
+ */
+function rewritePracticumSetCookieHeaders(proxyRes: IncomingMessage): void {
+  const raw = proxyRes.headers['set-cookie'];
+
+  if (raw == null) {
+    return;
+  }
+
+  const cookies = Array.isArray(raw) ? raw : [raw];
+
+  proxyRes.headers['set-cookie'] = cookies.map((cookie) => {
+    let c = cookie;
+
+    c = c.replace(/;\s*Domain=[^;]*/gi, '');
+    c = c.replace(/;\s*Secure\b/gi, '');
+    c = c.replace(/;\s*SameSite=None\b/gi, '; SameSite=Lax');
+
+    return c;
+  });
+}
+
+function practicumApiProxy(): {
+  target: string;
+  changeOrigin: boolean;
+  secure: boolean;
+  configure(proxy: {
+    on: (ev: string, fn: (res: IncomingMessage) => void) => void;
+  }): void;
+} {
+  return {
+    target: PRACTICUM_ORIGIN,
+    changeOrigin: true,
+    secure: true,
+    configure(proxy) {
+      proxy.on('proxyRes', (proxyRes) => {
+        rewritePracticumSetCookieHeaders(proxyRes);
+      });
+    },
+  };
+}
+
+function practicumWsProxy(): {
+  target: string;
+  changeOrigin: boolean;
+  secure: boolean;
+  ws: boolean;
+} {
+  return {
+    target: PRACTICUM_ORIGIN,
+    changeOrigin: true,
+    secure: true,
+    ws: true,
+  };
+}
+
 export default defineConfig({
   base: process.env.BASE_PATH || '/',
   plugins: [spaReloadSupportPlugin()],
@@ -122,9 +193,17 @@ export default defineConfig({
   server: {
     open: true,
     port: PORT,
+    proxy: {
+      '/api': practicumApiProxy(),
+      '/ws': practicumWsProxy(),
+    },
   },
   preview: {
     port: PORT,
+    proxy: {
+      '/api': practicumApiProxy(),
+      '/ws': practicumWsProxy(),
+    },
   },
   build: {
     rollupOptions: {

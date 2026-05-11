@@ -4,7 +4,7 @@ import template from "./NoChatStub.hbs?raw";
 
 import "./NoChatStub.scss";
 
-export interface NoChatStubProps {
+interface NoChatStubProps {
   title: string;
   description?: string;
   /** Растянуть заглушку по высоте колонки (главная область мессенджера) */
@@ -13,7 +13,7 @@ export interface NoChatStubProps {
 
 type NoChatStubBlockProps = NoChatStubProps & BlockOwnProps;
 
-export class NoChatStub extends Block<NoChatStubBlockProps> {
+class NoChatStub extends Block<NoChatStubBlockProps> {
   static componentName = "NoChatStub";
 
   protected template = template;
@@ -22,3 +22,4 @@ export class NoChatStub extends Block<NoChatStubBlockProps> {
     super(props as NoChatStubBlockProps);
   }
 }
+export { NoChatStub, type NoChatStubProps };

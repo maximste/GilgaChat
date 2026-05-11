@@ -13,7 +13,7 @@ const DEBOUNCE_MS = 320;
 
 type CreateDmFormProps = BlockOwnProps;
 
-export type CreateDmFormServices = {
+type CreateDmFormServices = {
   searchUsersByLogin: (login: string) => Promise<unknown>;
   openDmWithUser: (user: ApiUser) => Promise<number>;
   onDone: (chatId: number) => void;
@@ -42,7 +42,10 @@ class CreateDmForm extends Block<CreateDmFormProps> {
 
   private searchInputEl: HTMLInputElement | null = null;
 
-  private listUi: { showHintOnly: boolean; listHint: string } = {
+  private listUi: {
+    showHintOnly: boolean;
+    listHint: string;
+  } = {
     showHintOnly: true,
     listHint: "Type a login to search (API /user/search).",
   };
@@ -62,7 +65,6 @@ class CreateDmForm extends Block<CreateDmFormProps> {
       this.searchInputEl = input;
       input.addEventListener("input", this.onSearchInput);
     }
-
     this.applyListFromSearch("", []);
     (this.refs.searchInput as HTMLInputElement | undefined)?.focus();
     this.shell.setSubmitDisabled(true);
@@ -73,7 +75,6 @@ class CreateDmForm extends Block<CreateDmFormProps> {
       clearTimeout(this.searchTimer);
       this.searchTimer = null;
     }
-
     this.searchInputEl?.removeEventListener("input", this.onSearchInput);
     this.searchInputEl = null;
   }
@@ -93,7 +94,6 @@ class CreateDmForm extends Block<CreateDmFormProps> {
     if (!mount) {
       return null;
     }
-
     let ul = mount.querySelector<HTMLUListElement>(
       "ul.dm-user-pick-results__ul",
     );
@@ -115,9 +115,7 @@ class CreateDmForm extends Block<CreateDmFormProps> {
     if (!ul) {
       return;
     }
-
     ul.replaceChildren();
-
     if (this.listUi.showHintOnly) {
       const li = document.createElement("li");
 
@@ -127,7 +125,6 @@ class CreateDmForm extends Block<CreateDmFormProps> {
 
       return;
     }
-
     for (const row of this.userRows) {
       const li = document.createElement("li");
 
@@ -137,7 +134,6 @@ class CreateDmForm extends Block<CreateDmFormProps> {
       li.innerHTML = `<span class="messenger-modal__user-dot messenger-modal__user-dot--gray" aria-hidden="true"></span><span class="messenger-modal__user-meta"><span class="messenger-modal__user-name">${row.displayName}</span><span class="messenger-modal__user-login">@${row.login}</span></span>`;
       ul.appendChild(li);
     }
-
     if (this.userRows.length === 0) {
       const li = document.createElement("li");
 
@@ -161,7 +157,6 @@ class CreateDmForm extends Block<CreateDmFormProps> {
 
       return;
     }
-
     this.lastResults = apiUsers;
     this.listUi = { showHintOnly: false, listHint: "" };
     this.userRows = this.mapUserRows(apiUsers);
@@ -176,9 +171,7 @@ class CreateDmForm extends Block<CreateDmFormProps> {
     if (!this.selectedUser) {
       return;
     }
-
     this.shell.setSubmitDisabled(true);
-
     try {
       const chatId = await this.services.openDmWithUser(this.selectedUser);
 
@@ -196,11 +189,9 @@ class CreateDmForm extends Block<CreateDmFormProps> {
     if (!target) {
       return;
     }
-
     if (this.searchTimer) {
       clearTimeout(this.searchTimer);
     }
-
     const value = target.value;
 
     this.searchTimer = setTimeout(() => {
@@ -211,7 +202,6 @@ class CreateDmForm extends Block<CreateDmFormProps> {
 
         return;
       }
-
       void this.services
         .searchUsersByLogin(login)
         .then((response) => {
@@ -228,7 +218,6 @@ class CreateDmForm extends Block<CreateDmFormProps> {
   private readonly onRootClick = (event: Event): void => {
     const root = event.currentTarget as HTMLElement;
     const target = event.target as HTMLElement;
-
     const row = target.closest<HTMLElement>("[data-user-id]");
 
     if (row && root.contains(row)) {
@@ -238,7 +227,6 @@ class CreateDmForm extends Block<CreateDmFormProps> {
       if (!user) {
         return;
       }
-
       this.selectedUser = user;
       this.userRows = this.mapUserRows(this.lastResults);
       this.syncListDom();
@@ -250,5 +238,5 @@ class CreateDmForm extends Block<CreateDmFormProps> {
     click: this.onRootClick,
   };
 }
-
 export { CreateDmForm };
+export { type CreateDmFormServices };

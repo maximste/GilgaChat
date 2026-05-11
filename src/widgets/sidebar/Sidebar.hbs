@@ -1,8 +1,7 @@
-<aside class="messenger-sidebar">
+<div class="messenger-sidebar">
   {{{SidebarHeader appTitle=appTitle}}}
-  <nav class="messenger-sidebar__nav">
-    {{{SidebarChatSection sectionData="dm" title="DIRECT MESSAGES" items=directMessages}}}
+  <div class="messenger-sidebar__scroll">
     {{{SidebarChatSection sectionData="groups" title="GROUPS" items=groups}}}
-  </nav>
+  </div>
   {{{SidebarUserPanel currentUser=currentUser}}}
-</aside>
+</div>

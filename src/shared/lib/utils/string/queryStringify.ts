@@ -1,13 +1,12 @@
-export type QueryStringData = Record<
+type QueryStringData = Record<
   string,
   string | number | boolean | null | undefined
 >;
 
-export function queryStringify(data: QueryStringData): string {
+function queryStringify(data: QueryStringData): string {
   if (typeof data !== "object" || data === null) {
     throw new Error("Data must be a non-null object");
   }
-
   const keys = Object.keys(data);
 
   if (keys.length === 0) {
@@ -20,12 +19,12 @@ export function queryStringify(data: QueryStringData): string {
     if (value === undefined || value === null) {
       return result;
     }
-
     const encodedKey = encodeURIComponent(key);
     const encodedValue = encodeURIComponent(String(value));
-
     const separator = index < keys.length - 1 ? "&" : "";
 
     return `${result}${encodedKey}=${encodedValue}${separator}`;
   }, "?");
 }
+
+export { type QueryStringData, queryStringify };

@@ -15,7 +15,6 @@ const authFormValidators: Record<string, FieldValidator> = {
   login: (v) => validateLogin(v),
   password: (v) => validatePassword(v),
 };
-
 const registerFormValidators: Record<string, FieldValidator> = {
   login: (v) => validateLogin(v),
   email: (v) => validateEmail(v),
@@ -26,7 +25,6 @@ const registerFormValidators: Record<string, FieldValidator> = {
   display_name: (v) => validatePersonalName(v),
   phone: (v) => validatePhone(v),
 };
-
 const editProfileFormValidators: Record<string, FieldValidator> = {
   login: (v) => validateLogin(v),
   display_name: (v) => validatePersonalName(v),
@@ -37,7 +35,6 @@ const editProfileFormValidators: Record<string, FieldValidator> = {
   old_password: (v, all) => validateEditOldPassword(v, all),
   new_password: (v, all) => validateEditNewPassword(v, all),
 };
-
 const messageFormValidators: Record<string, FieldValidator> = {
   message: (v) => validateMessage(v),
 };

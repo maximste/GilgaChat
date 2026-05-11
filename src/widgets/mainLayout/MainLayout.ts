@@ -4,7 +4,7 @@ import template from "./MainLayout.hbs?raw";
 
 import "./MainLayout.scss";
 
-export interface MainLayoutProps {
+interface MainLayoutProps {
   content?: string;
 }
 
@@ -20,5 +20,5 @@ class MainLayout extends Block<MainLayoutBlockProps> {
     } as MainLayoutBlockProps);
   }
 }
-
 export { MainLayout };
+export { type MainLayoutProps };

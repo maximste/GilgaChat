@@ -2,7 +2,7 @@
  * Нормализует внутренний путь приложения: ведущий `/`, корень как `/`,
  * регистр не влияет (`/Settings` и `/settings` — один маршрут).
  */
-export function normalizeAppPath(pathname: string): string {
+function normalizeAppPath(pathname: string): string {
   const trimmed = pathname.trim().toLowerCase();
 
   if (trimmed === "" || trimmed === "/") {
@@ -11,3 +11,5 @@ export function normalizeAppPath(pathname: string): string {
 
   return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
 }
+
+export { normalizeAppPath };

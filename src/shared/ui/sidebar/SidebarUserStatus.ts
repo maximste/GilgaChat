@@ -4,7 +4,7 @@ import template from "./SidebarUserStatus.hbs?raw";
 
 import "./SidebarUserStatus.scss";
 
-export interface SidebarUserStatusProps {
+interface SidebarUserStatusProps {
   text: string;
   statusDot?: SidebarStatusType;
 }
@@ -25,5 +25,5 @@ class SidebarUserStatus extends Block<SidebarUserStatusBlockProps> {
     } as SidebarUserStatusBlockProps);
   }
 }
-
 export { SidebarUserStatus };
+export { type SidebarUserStatusProps };

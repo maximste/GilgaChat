@@ -35,13 +35,11 @@ function setFieldErrorDom(
   ) {
     return;
   }
-
   const fieldRoot = control.closest(".form-field");
 
   if (!fieldRoot) {
     return;
   }
-
   let errorEl = fieldRoot.querySelector<HTMLElement>(".form-field__error");
 
   if (!message) {
@@ -51,14 +49,12 @@ function setFieldErrorDom(
 
     return;
   }
-
   if (!errorEl) {
     errorEl = document.createElement("p");
     errorEl.className = "form-field__error";
     errorEl.setAttribute("role", "alert");
     fieldRoot.appendChild(errorEl);
   }
-
   errorEl.textContent = message;
   fieldRoot.classList.add("form-field--error");
   control.setAttribute("aria-invalid", "true");
@@ -74,7 +70,15 @@ function collectFilledFields(values: ValuesBag): Record<string, string> {
 function validateAllFormFields(
   form: HTMLFormElement,
   validators: Record<string, FieldValidator>,
-): { ok: true; values: ValuesBag } | { ok: false; values: ValuesBag } {
+):
+  | {
+      ok: true;
+      values: ValuesBag;
+    }
+  | {
+      ok: false;
+      values: ValuesBag;
+    } {
   const names = Object.keys(validators);
   const values = readLiveValues(form, names);
   let hasError = false;
@@ -85,7 +89,6 @@ function validateAllFormFields(
     const msg = fn(raw, values);
 
     setFieldErrorDom(form, name, msg);
-
     if (msg) hasError = true;
   }
 
@@ -105,15 +108,12 @@ function runFieldValidatorOnFocusOut(
   ) {
     return;
   }
-
   const name = target.name;
 
   if (!name || !validators[name]) return;
-
   const form = target.form;
 
   if (!form) return;
-
   const names = Object.keys(validators);
   const values = readLiveValues(form, names);
   const msg = validators[name](values[name] ?? "", values);
@@ -127,17 +127,14 @@ function handleValidatedSubmit(
   onValid?: (values: ValuesBag, filled: Record<string, string>) => void,
 ): void {
   event.preventDefault();
-
   const form = (event as SubmitEvent).target;
 
   if (!(form instanceof HTMLFormElement)) {
     return;
   }
-
   const result = validateAllFormFields(form, validators);
 
   if (!result.ok) return;
-
   const filled = collectFilledFields(result.values);
 
   onValid?.(result.values, filled);

@@ -5,7 +5,7 @@ import template from "./FormField.hbs?raw";
 
 import "./FormField.scss";
 
-export interface FormFieldProps {
+interface FormFieldProps {
   input: InputProps;
   label: LabelProps;
   className?: string;
@@ -37,5 +37,5 @@ class FormField extends Block<FormFieldBlockProps> {
     super(withIconInputClass(props) as FormFieldBlockProps);
   }
 }
-
 export { FormField };
+export { type FormFieldProps };

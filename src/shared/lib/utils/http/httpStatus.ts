@@ -2,7 +2,7 @@
  * Стандартные коды ответа HTTP (избегаем «магических чисел» в сравнениях).
  * Объект вместо `enum` — совместимо с `erasableSyntaxOnly` в tsconfig.
  */
-export const HttpStatus = {
+const HttpStatus = {
   Ok: 200,
   Created: 201,
   NoContent: 204,
@@ -15,4 +15,6 @@ export const HttpStatus = {
   InternalServerError: 500,
 } as const;
 
-export type HttpStatusCode = (typeof HttpStatus)[keyof typeof HttpStatus];
+type HttpStatusCode = (typeof HttpStatus)[keyof typeof HttpStatus];
+
+export { HttpStatus, type HttpStatusCode };

@@ -4,7 +4,7 @@ import template from "./ChatFooter.hbs?raw";
 
 import "./ChatFooter.scss";
 
-export interface ChatFooterProps {
+interface ChatFooterProps {
   peerName: string;
 }
 
@@ -19,5 +19,5 @@ class ChatFooter extends Block<ChatFooterBlockProps> {
     super(props as ChatFooterBlockProps);
   }
 }
-
 export { ChatFooter };
+export { type ChatFooterProps };

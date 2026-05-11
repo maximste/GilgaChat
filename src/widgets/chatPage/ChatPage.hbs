@@ -1,5 +1,11 @@
 <div class="chat-page">
-  {{{ChatHeader peerName=peerName showStatusDot=showStatusDot showGroupMemberActions=showGroupMemberActions}}}
-  {{{ChatThread peerName=peerName hasMessages=hasMessages timelineRows=timelineRows}}}
+  {{{ChatHeader peerName=peerName avatarUrl=avatarUrl showStatusDot=showStatusDot showGroupMemberActions=showGroupMemberActions canChangeAvatar=canChangeAvatar}}}
+  <input
+    type="file"
+    data-chat-avatar-input
+    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+    hidden
+  />
+  {{{ChatThread hasMessages=hasMessages timelineRows=timelineRows}}}
   {{{ChatFooter peerName=peerName}}}
 </div>

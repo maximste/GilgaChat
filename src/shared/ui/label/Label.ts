@@ -14,5 +14,4 @@ class Label extends Block<LabelBlockProps> {
     super(props);
   }
 }
-
 export { Label };

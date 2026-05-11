@@ -15,13 +15,14 @@ function getStack(): HTMLElement {
   return el;
 }
 
-export function showErrorToast(
+function showErrorToast(
   message: string,
-  options?: { durationMs?: number },
+  options?: {
+    durationMs?: number;
+  },
 ): void {
   const durationMs = options?.durationMs ?? 6000;
   const stack = getStack();
-
   const toast = new ErrorToast(
     { message },
     {
@@ -33,10 +34,11 @@ export function showErrorToast(
       },
     },
   );
-
   const el = toast.element();
 
   if (el) {
     stack.appendChild(el);
   }
 }
+
+export { showErrorToast };

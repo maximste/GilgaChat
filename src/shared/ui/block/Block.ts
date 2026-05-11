@@ -32,9 +32,7 @@ type EventListType = Partial<
  * (иначе хелперы дописывали бы в тот же массив при следующем compile — рост стека/утечки),
  * снова compile; если старый корень ещё в документе — replaceWith новым.
  */
-export default abstract class Block<
-  Props extends BlockOwnProps = BlockOwnProps,
-> {
+abstract class Block<Props extends BlockOwnProps = BlockOwnProps> {
   protected abstract template: string;
 
   protected props = {} as Props;
@@ -119,7 +117,6 @@ export default abstract class Block<
       [...this.children].reverse().forEach((child) => {
         child.unmountComponent();
       });
-
       this.componentWillUnmount();
       this.removeListeners();
     }
@@ -151,11 +148,9 @@ export default abstract class Block<
     if (prevRoot) {
       this.unmountComponent();
     }
-
     // Перед новым проходом Handlebars — пустые коллекции; иначе registerHelper только push-ит в root.
     this.props.__children = [];
     this.props.__refs = {};
-
     const fragment = this.compile();
 
     if (!fragment) {
@@ -163,11 +158,9 @@ export default abstract class Block<
 
       return;
     }
-
     if (prevRoot?.isConnected) {
       prevRoot.replaceWith(fragment);
     }
-
     this.domElement = fragment;
     this.mountComponent();
   }
@@ -187,12 +180,10 @@ export default abstract class Block<
 
     if (this.props.__children) {
       this.children = this.props.__children.map((child) => child.component);
-
       this.props.__children.forEach((child) => {
         child.embed(fragment);
       });
     }
-
     const defaultRefs = this.props?.__refs ?? {};
 
     this.refs = Array.from(fragment.querySelectorAll("[ref]")).reduce<
@@ -211,5 +202,5 @@ export default abstract class Block<
     return templateElement.content.firstElementChild;
   }
 }
-
 export { Block, type BlockOwnProps };
+export default Block;

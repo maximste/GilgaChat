@@ -1,5 +1,5 @@
 import { apiAbsolutePath } from "@/shared/config/api";
-import { type HTTPRequestOptions,HTTPTransport } from "@/shared/lib/utils";
+import { type HTTPRequestOptions, HTTPTransport } from "@/shared/lib/utils";
 
 import { ApiError, parseReasonFromXhrResponseText } from "./ApiError";
 
@@ -16,7 +16,6 @@ function toApiError(err: unknown): ApiError {
   if (err instanceof ApiError) {
     return err;
   }
-
   const p = err as RejectionPayload;
   const status = typeof p.status === "number" ? p.status : 0;
   const body = typeof p.response === "string" ? p.response : "";
@@ -27,40 +26,36 @@ function toApiError(err: unknown): ApiError {
   return new ApiError(status, message, reason);
 }
 
-export async function apiRequest<T = unknown>(
+async function apiRequest<T = unknown>(
   path: string,
   options: HTTPRequestOptions & {
     method: NonNullable<HTTPRequestOptions["method"]>;
   },
 ): Promise<T> {
   const url = apiAbsolutePath(path);
+  const withCredentials = options.withCredentials ?? true;
 
   try {
     return (await transport.request(url, {
       ...options,
-      withCredentials: true,
+      withCredentials,
     })) as T;
   } catch (e) {
     throw toApiError(e);
   }
 }
 
-export const apiGet = <T = unknown>(
-  path: string,
-  data?: HTTPRequestOptions["data"],
-) => apiRequest<T>(path, { method: "GET", data });
-
-export const apiPost = <T = unknown>(
+const apiGet = <T = unknown>(path: string, data?: HTTPRequestOptions["data"]) =>
+  apiRequest<T>(path, { method: "GET", data });
+const apiPost = <T = unknown>(
   path: string,
   data?: HTTPRequestOptions["data"],
 ) => apiRequest<T>(path, { method: "POST", data });
-
-export const apiPut = <T = unknown>(
-  path: string,
-  data?: HTTPRequestOptions["data"],
-) => apiRequest<T>(path, { method: "PUT", data });
-
-export const apiDelete = <T = unknown>(
+const apiPut = <T = unknown>(path: string, data?: HTTPRequestOptions["data"]) =>
+  apiRequest<T>(path, { method: "PUT", data });
+const apiDelete = <T = unknown>(
   path: string,
   data?: HTTPRequestOptions["data"],
 ) => apiRequest<T>(path, { method: "DELETE", data });
+
+export { apiDelete, apiGet, apiPost, apiPut, apiRequest };

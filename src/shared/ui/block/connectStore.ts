@@ -37,7 +37,7 @@ function mergeSliceWithOwnProps<
  * Начальные пропсы дополняются из `mapStateToProps`, при изменении стора вызывается
  * `setProps` только если срез по содержимому изменился (`isEqual`). В `destroy` подписка снимается.
  */
-export function connect<Slice extends StoreSlice>(
+function connect<Slice extends StoreSlice>(
   mapStateToProps: MapStateToProps<Slice>,
 ) {
   return function connectComponent<Props extends BlockOwnProps & Slice>(
@@ -77,3 +77,5 @@ export function connect<Slice extends StoreSlice>(
     return ConnectedBlock;
   };
 }
+
+export { connect };

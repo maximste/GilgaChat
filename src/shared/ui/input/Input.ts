@@ -14,5 +14,4 @@ class Input extends Block<InputBlockProps> {
     super(props);
   }
 }
-
 export { Input };

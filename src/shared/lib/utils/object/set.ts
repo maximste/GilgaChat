@@ -9,17 +9,14 @@ function set(
   if (typeof path !== "string") {
     throw new Error("path must be string");
   }
-
   if (!isPlainObject(object)) {
     return object;
   }
-
   const keys = path.split(".").filter((segment) => segment.length > 0);
 
   if (keys.length === 0) {
     return object;
   }
-
   const patch = keys.reduceRight<unknown>(
     (acc, key) => ({ [key]: acc }),
     value,

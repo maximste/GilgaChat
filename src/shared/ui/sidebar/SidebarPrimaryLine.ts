@@ -3,9 +3,9 @@ import template from "./SidebarPrimaryLine.hbs?raw";
 
 import "./SidebarPrimaryLine.scss";
 
-export type SidebarStatusType = "green" | "yellow" | "gray";
+type SidebarStatusType = "green" | "yellow" | "gray";
 
-export interface SidebarPrimaryLineProps {
+interface SidebarPrimaryLineProps {
   text: string;
   wrapClassName:
     | `messenger-sidebar__item-name`
@@ -24,5 +24,5 @@ class SidebarPrimaryLine extends Block<SidebarPrimaryLineBlockProps> {
     super(props as SidebarPrimaryLineBlockProps);
   }
 }
-
 export { SidebarPrimaryLine };
+export { type SidebarPrimaryLineProps, type SidebarStatusType };

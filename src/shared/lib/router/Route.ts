@@ -7,13 +7,13 @@ import { normalizeAppPath } from "./path/normalizePath";
  * Аргументы конструктора не фиксируем (`connect`, экраны без пропсов, частичные пропсы).
  */
 /** `any[]`: у страниц разные конструкторы (`connect`, пропсы, без аргументов). */
-export type BlockPageConstructor = new (...args: any[]) => Block<BlockOwnProps>;
+type BlockPageConstructor = new (...args: any[]) => Block<BlockOwnProps>;
 
-export interface RouteProps {
+interface RouteProps {
   rootQuery: string;
 }
 
-export class Route {
+class Route {
   private _pathname: string;
 
   private readonly _blockClass: BlockPageConstructor;
@@ -50,7 +50,6 @@ export class Route {
     if (!this._block) {
       this._block = new this._blockClass();
     }
-
     Route.mountBlockInRoot(this._props.rootQuery, this._block);
   }
 
@@ -64,13 +63,12 @@ export class Route {
     if (!root) {
       throw new Error(`Root element not found: ${rootQuery}`);
     }
-
     const el = block.element();
 
     if (!el) {
       return;
     }
-
     root.replaceChildren(el);
   }
 }
+export { type BlockPageConstructor, Route, type RouteProps };

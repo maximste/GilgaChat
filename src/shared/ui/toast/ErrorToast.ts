@@ -6,7 +6,7 @@ import "./toast.scss";
 
 const OUT_MS = 200;
 
-export type ErrorToastProps = {
+type ErrorToastProps = {
   message: string;
 } & BlockOwnProps;
 
@@ -18,7 +18,7 @@ type ErrorToastOptions = {
 /**
  * Одноразовый тост об ошибке: таймер, кнопка закрытия, анимация исчезновения.
  */
-export class ErrorToast extends Block<ErrorToastProps> {
+class ErrorToast extends Block<ErrorToastProps> {
   protected template = template;
 
   private readonly toastOptions: ErrorToastOptions;
@@ -49,14 +49,11 @@ export class ErrorToast extends Block<ErrorToastProps> {
     if (this.settled) {
       return;
     }
-
     this.settled = true;
-
     if (this.timerId !== undefined) {
       window.clearTimeout(this.timerId);
       this.timerId = undefined;
     }
-
     const el = this.element();
 
     if (!el) {
@@ -65,7 +62,6 @@ export class ErrorToast extends Block<ErrorToastProps> {
 
       return;
     }
-
     el.classList.add("gilga-toast--out");
     window.setTimeout(() => {
       el.remove();
@@ -84,3 +80,4 @@ export class ErrorToast extends Block<ErrorToastProps> {
     },
   };
 }
+export { ErrorToast, type ErrorToastProps };

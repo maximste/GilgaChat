@@ -1,22 +1,21 @@
 import { Block, type BlockOwnProps } from "@/shared/ui/block";
 
 import template from "./SidebarChatSection.hbs?raw";
-import type { DirectMessageItem, GroupItem } from "./types";
+import type { GroupItem } from "./types";
 
 import "./SidebarChatSection.scss";
 
-export type SidebarChatSectionKind = "dm" | "groups";
+type SidebarChatSectionKind = "groups";
 
-export interface SidebarChatSectionProps {
-  /** Совпадает с `data-section` у заголовка (`dm` | `groups`) */
+interface SidebarChatSectionProps {
+  /** Совпадает с `data-section` у заголовка */
   sectionData: SidebarChatSectionKind;
   title: string;
-  items: DirectMessageItem[] | GroupItem[];
+  items: GroupItem[];
 }
 
 type SidebarChatSectionBlockProps = SidebarChatSectionProps & {
   chatIdPrefix: string;
-  isDmVariant: boolean;
 } & BlockOwnProps;
 
 class SidebarChatSection extends Block<SidebarChatSectionBlockProps> {
@@ -34,7 +33,6 @@ class SidebarChatSection extends Block<SidebarChatSectionBlockProps> {
       if (!head || !root?.contains(head)) {
         return;
       }
-
       const wasExpanded = head.getAttribute("aria-expanded") === "true";
 
       head.setAttribute("aria-expanded", String(!wasExpanded));
@@ -46,15 +44,13 @@ class SidebarChatSection extends Block<SidebarChatSectionBlockProps> {
   };
 
   constructor(props: SidebarChatSectionProps) {
-    const isDmVariant = props.sectionData === "dm";
-    const chatIdPrefix = isDmVariant ? "dm-" : "group-";
+    const chatIdPrefix = "group-";
 
     super({
       ...props,
       chatIdPrefix,
-      isDmVariant,
     } as SidebarChatSectionBlockProps);
   }
 }
-
 export { SidebarChatSection };
+export { type SidebarChatSectionKind, type SidebarChatSectionProps };

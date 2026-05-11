@@ -6,23 +6,30 @@
   {{else}}
     {{#if isIncoming}}
       <article class="chat-page__msg chat-page__msg--in">
+        <div class="chat-page__msg-avatar" aria-hidden="true">
+          {{#if authorAvatarUrl}}
+            <img class="chat-page__msg-avatar-img" src="{{authorAvatarUrl}}" alt="" loading="lazy" />
+          {{else}}
+            <i class="fa-solid fa-user"></i>
+          {{/if}}
+        </div>
         <div class="chat-page__msg-in-body">
           <div class="chat-page__msg-meta">
             <span class="chat-page__msg-author">{{author}}</span>
             <span class="chat-page__msg-time">{{time}}</span>
           </div>
           <p class="chat-page__msg-text">{{text}}</p>
+          {{#if mediaImageUrl}}
+            <div class="chat-page__msg-in-media">
+              <img class="chat-page__msg-in-img" src="{{mediaImageUrl}}" alt="" loading="lazy" />
+            </div>
+          {{/if}}
           {{#if reaction}}
             <div class="chat-page__reaction" aria-label="Реакция">
               <span>{{reaction}}</span>
               {{#if reactionCount}}
                 <span class="chat-page__reaction-count">{{reactionCount}}</span>
               {{/if}}
-            </div>
-          {{/if}}
-          {{#if showReadReceipt}}
-            <div class="chat-page__read chat-page__read--in" aria-hidden="true">
-              <i class="fa-solid fa-check-double"></i>
             </div>
           {{/if}}
         </div>
@@ -35,7 +42,16 @@
               <p class="chat-page__bubble-caption">{{imageCaption}}</p>
             {{/if}}
             {{#if hasImage}}
-              <div class="chat-page__bubble-img" role="img" aria-label="Вложение"></div>
+              {{#if mediaImageUrl}}
+                <img
+                  class="chat-page__bubble-img chat-page__bubble-img--photo"
+                  src="{{mediaImageUrl}}"
+                  alt=""
+                  loading="lazy"
+                />
+              {{else}}
+                <div class="chat-page__bubble-img" role="img" aria-label="Вложение"></div>
+              {{/if}}
             {{/if}}
             {{#if text}}
               <p class="chat-page__msg-text">{{text}}</p>
@@ -43,9 +59,6 @@
           </div>
           <div class="chat-page__msg-out-meta">
             <span class="chat-page__msg-time">{{time}}</span>
-            <span class="chat-page__read" aria-hidden="true">
-              <i class="fa-solid fa-check-double"></i>
-            </span>
           </div>
         </div>
       </article>

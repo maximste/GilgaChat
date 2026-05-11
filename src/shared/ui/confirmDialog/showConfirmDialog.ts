@@ -1,6 +1,6 @@
 import { ConfirmDialog } from "./ConfirmDialog";
 
-export type ShowConfirmDialogOptions = {
+type ShowConfirmDialogOptions = {
   title: string;
   message: string;
   confirmLabel?: string;
@@ -9,7 +9,7 @@ export type ShowConfirmDialogOptions = {
   container?: HTMLElement;
 };
 
-export function showConfirmDialog(
+function showConfirmDialog(
   options: ShowConfirmDialogOptions,
 ): Promise<boolean> {
   const {
@@ -20,7 +20,6 @@ export function showConfirmDialog(
     isDanger = false,
     container = document.body,
   } = options;
-
   const titleId = `confirm-dialog-title-${Math.random().toString(36).slice(2, 11)}`;
 
   return new Promise((resolve) => {
@@ -39,7 +38,6 @@ export function showConfirmDialog(
         },
       },
     );
-
     const el = dialog.element();
 
     if (el) {
@@ -47,3 +45,5 @@ export function showConfirmDialog(
     }
   });
 }
+
+export { showConfirmDialog, type ShowConfirmDialogOptions };

@@ -18,4 +18,4 @@ export {
   SidebarUserPanel,
   type SidebarUserPanelProps,
 } from "./SidebarUserPanel";
-export type { DirectMessageItem, GroupItem, SidebarCurrentUser } from "./types";
+export type { GroupItem, SidebarCurrentUser } from "./types";

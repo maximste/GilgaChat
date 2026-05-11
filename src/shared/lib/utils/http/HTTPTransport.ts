@@ -10,7 +10,7 @@ const METHODS = {
 
 type HttpMethod = (typeof METHODS)[keyof typeof METHODS];
 
-export type RequestBodyData =
+type RequestBodyData =
   | Record<string, unknown>
   | FormData
   | string
@@ -19,7 +19,7 @@ export type RequestBodyData =
   | ArrayBufferView
   | URLSearchParams;
 
-export interface HTTPRequestOptions {
+interface HTTPRequestOptions {
   headers?: Record<string, string>;
   method?: HttpMethod;
   data?: RequestBodyData;
@@ -29,7 +29,7 @@ export interface HTTPRequestOptions {
 }
 
 /** Один HTTP-глагол: URL, опции без обязательного `method` (подставляется фабрикой). */
-export type HTTPMethodFn = <R = unknown>(
+type HTTPMethodFn = <R = unknown>(
   url: string,
   options?: Partial<HTTPRequestOptions>,
 ) => Promise<R>;
@@ -62,7 +62,6 @@ class HTTPTransport {
       withCredentials,
       timeout: optTimeout,
     } = options;
-
     const timeout = optTimeout ?? 5000;
 
     return new Promise((resolve, reject) => {
@@ -71,10 +70,8 @@ class HTTPTransport {
 
         return;
       }
-
       const xhr = new XMLHttpRequest();
       const isGet = method === METHODS.GET;
-
       const urlWithQuery =
         isGet && data && typeof data === "object" && !(data instanceof FormData)
           ? `${url}${queryStringify(data as QueryStringData)}`
@@ -82,15 +79,12 @@ class HTTPTransport {
 
       xhr.open(method, urlWithQuery);
       xhr.withCredentials = withCredentials ?? false;
-
       if (responseType) {
         xhr.responseType = responseType;
       }
-
       Object.keys(headers).forEach((key) => {
         xhr.setRequestHeader(key, headers[key]);
       });
-
       xhr.onload = function () {
         if (
           xhr.status >= HttpStatus.Ok &&
@@ -113,7 +107,6 @@ class HTTPTransport {
               response = xhr.responseText;
             }
           }
-
           resolve(response as R);
         } else {
           reject({
@@ -124,28 +117,23 @@ class HTTPTransport {
           });
         }
       };
-
       xhr.onabort = () =>
         reject({
           reason: "Request aborted",
           request: xhr,
         });
-
       xhr.onerror = () =>
         reject({
           reason: "Network error",
           request: xhr,
         });
-
       xhr.timeout = timeout;
-
       xhr.ontimeout = () =>
         reject({
           reason: "Request timeout",
           timeout: timeout,
           request: xhr,
         });
-
       if (isGet || !data) {
         xhr.send();
       } else if (data instanceof FormData) {
@@ -161,5 +149,5 @@ class HTTPTransport {
     });
   }
 }
-
 export { HTTPTransport };
+export { type HTTPMethodFn, type HTTPRequestOptions, type RequestBodyData };

@@ -1,3 +1,4 @@
+import { resourceFileUrl } from "@/shared/config/api";
 import { ApiError } from "@/shared/lib/api";
 import type { ApiUser } from "@/shared/lib/api/types";
 import { escapeHtml } from "@/shared/lib/utils";
@@ -14,7 +15,7 @@ const DEBOUNCE_MS = 320;
 
 type GroupMemberPickerProps = BlockOwnProps;
 
-export type GroupMemberPickerServices = {
+type GroupMemberPickerServices = {
   searchUsersByLogin: (login: string) => Promise<unknown>;
   getProfileFromStore: () => ApiUser | null;
   onSelectionChange: () => void;
@@ -22,12 +23,16 @@ export type GroupMemberPickerServices = {
   getExcludeUserIds?: () => number[];
 };
 
-type ChipVm = { id: number; label: string };
+type ChipVm = {
+  id: number;
+  label: string;
+};
 
 type MemberRowVm = {
   id: number;
   displayName: string;
   login: string;
+  avatarUrl?: string;
   picked: boolean;
 };
 
@@ -78,11 +83,9 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     panel.addEventListener("click", this.onDropdownPanelClick);
     document.body.appendChild(panel);
     this.dropdownPanelEl = panel;
-
     document.addEventListener("pointerdown", this.onDocPointerDown, true);
     window.addEventListener("scroll", this.onWindowScrollOrResize, true);
     window.addEventListener("resize", this.onWindowScrollOrResize);
-
     const searchInput = this.refs.memberSearchInput as
       | HTMLInputElement
       | undefined;
@@ -95,7 +98,6 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
       searchInput.addEventListener("focusout", this.onSearchFocusOut);
       searchInput.addEventListener("keydown", this.onSearchKeydown);
     }
-
     this.pushResults({ memberRows: [] });
     this.updateMembersLabel();
   }
@@ -105,17 +107,14 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
       clearTimeout(this.searchTimer);
       this.searchTimer = null;
     }
-
     document.removeEventListener("pointerdown", this.onDocPointerDown, true);
     window.removeEventListener("scroll", this.onWindowScrollOrResize, true);
     window.removeEventListener("resize", this.onWindowScrollOrResize);
-
     this.memberSearchEl?.removeEventListener("input", this.onMemberSearchInput);
     this.memberSearchEl?.removeEventListener("focus", this.onSearchFocus);
     this.memberSearchEl?.removeEventListener("focusout", this.onSearchFocusOut);
     this.memberSearchEl?.removeEventListener("keydown", this.onSearchKeydown);
     this.memberSearchEl = null;
-
     this.dropdownPanelEl?.removeEventListener(
       "click",
       this.onDropdownPanelClick,
@@ -142,11 +141,9 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
       clearTimeout(this.searchTimer);
       this.searchTimer = null;
     }
-
     if (this.memberSearchEl) {
       this.memberSearchEl.value = "";
     }
-
     this.lastMemberResults = [];
     this.listUi = {
       showMemberHintOnly: true,
@@ -184,15 +181,17 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
       if (self !== null && u.id === self) {
         continue;
       }
-
       if (exclude.has(u.id)) {
         continue;
       }
-
       rows.push({
         id: u.id,
-        displayName: escapeHtml(userDisplayName(u)),
-        login: escapeHtml(u.login),
+        displayName: userDisplayName(u),
+        login: u.login,
+        avatarUrl:
+          u.avatar && u.avatar.trim() && u.avatar.trim() !== "null"
+            ? resourceFileUrl(u.avatar.trim())
+            : undefined,
         picked: this.selected.has(u.id),
       });
     }
@@ -226,14 +225,12 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     if (!input || !panel || panel.hidden) {
       return;
     }
-
     const r = input.getBoundingClientRect();
     const gap = 4;
     const margin = 8;
     const maxPanelH = Math.min(window.innerHeight * 0.4, 280);
     let top = r.bottom + gap;
     let maxHeight = maxPanelH;
-
     const spaceBelow = window.innerHeight - top - margin;
     const spaceAbove = r.top - margin;
 
@@ -243,7 +240,6 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     } else {
       maxHeight = Math.min(maxPanelH, spaceBelow);
     }
-
     panel.style.left = `${r.left}px`;
     panel.style.top = `${top}px`;
     panel.style.width = `${r.width}px`;
@@ -256,7 +252,6 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     if (!panel) {
       return;
     }
-
     if (this.dropdownOpen) {
       panel.hidden = false;
       this.positionDropdownPanel();
@@ -266,7 +261,6 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     } else {
       panel.hidden = true;
     }
-
     this.updateSearchAriaExpanded();
   }
 
@@ -285,7 +279,6 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     ) {
       return;
     }
-
     this.dropdownOpen = false;
     this.syncDropdownShell();
   };
@@ -294,11 +287,9 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     if (e.key !== "Escape") {
       return;
     }
-
     if (!this.dropdownOpen || this.dropdownPanelEl?.hidden) {
       return;
     }
-
     e.stopPropagation();
     this.dropdownOpen = false;
     this.syncDropdownShell();
@@ -308,14 +299,12 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     if (!this.dropdownOpen) {
       return;
     }
-
     const t = e.target as Node;
     const pickerRoot = this.element();
 
     if (pickerRoot?.contains(t) || this.dropdownPanelEl?.contains(t)) {
       return;
     }
-
     this.dropdownOpen = false;
     this.syncDropdownShell();
   };
@@ -336,9 +325,7 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     if (!host) {
       return;
     }
-
     host.replaceChildren();
-
     for (const c of this.buildChips()) {
       const span = document.createElement("span");
 
@@ -354,7 +341,6 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     if (!mount) {
       return null;
     }
-
     let ul = mount.querySelector<HTMLUListElement>(
       "ul.group-member-pick-results__ul",
     );
@@ -376,9 +362,7 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     if (!ul) {
       return;
     }
-
     ul.replaceChildren();
-
     if (this.listUi.showMemberHintOnly) {
       const li = document.createElement("li");
 
@@ -388,7 +372,6 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
 
       return;
     }
-
     for (const row of this.memberRows) {
       const li = document.createElement("li");
 
@@ -396,10 +379,45 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
       li.dataset.memberId = String(row.id);
       li.setAttribute("role", "option");
       li.setAttribute("aria-selected", row.picked ? "true" : "false");
-      li.innerHTML = `<span class="messenger-modal__user-dot messenger-modal__user-dot--gray" aria-hidden="true"></span><span class="messenger-modal__user-meta"><span class="messenger-modal__user-name">${row.displayName}</span><span class="messenger-modal__user-login">@${row.login}</span></span><span class="messenger-modal__check" aria-hidden="true">${row.picked ? "✓" : ""}</span>`;
+      const avatar = document.createElement("span");
+
+      avatar.className = "group-member-picker__user-avatar";
+      avatar.setAttribute("aria-hidden", "true");
+      if (row.avatarUrl) {
+        const image = document.createElement("img");
+
+        image.className = "group-member-picker__user-avatar-img";
+        image.src = row.avatarUrl;
+        image.alt = "";
+        image.loading = "lazy";
+        avatar.appendChild(image);
+      } else {
+        const icon = document.createElement("i");
+
+        icon.className = "fa-solid fa-user";
+        icon.setAttribute("aria-hidden", "true");
+        avatar.appendChild(icon);
+      }
+      const meta = document.createElement("span");
+
+      meta.className = "messenger-modal__user-meta";
+      const name = document.createElement("span");
+
+      name.className = "messenger-modal__user-name";
+      name.textContent = row.displayName;
+      const login = document.createElement("span");
+
+      login.className = "messenger-modal__user-login";
+      login.textContent = `@${row.login}`;
+      meta.append(name, login);
+      const check = document.createElement("span");
+
+      check.className = "messenger-modal__check";
+      check.setAttribute("aria-hidden", "true");
+      check.textContent = row.picked ? "✓" : "";
+      li.append(avatar, meta, check);
       ul.appendChild(li);
     }
-
     if (this.memberRows.length === 0) {
       const li = document.createElement("li");
 
@@ -416,13 +434,11 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     if (!user || Number.isNaN(id)) {
       return;
     }
-
     if (this.selected.has(id)) {
       this.selected.delete(id);
     } else {
       this.selected.set(id, user);
     }
-
     this.pushResults({
       memberRows: this.buildMemberRows(this.lastMemberResults),
     });
@@ -447,20 +463,16 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     if (patch.showMemberHintOnly !== undefined) {
       this.listUi.showMemberHintOnly = patch.showMemberHintOnly;
     }
-
     if (patch.memberListHint !== undefined) {
       this.listUi.memberListHint = patch.memberListHint;
     }
-
     if (patch.memberRows !== undefined) {
       this.memberRows = patch.memberRows;
     }
-
     this.renderChips();
     this.syncResultsMountDom();
     this.updateMembersLabel();
     this.services.onSelectionChange();
-
     if (this.dropdownOpen) {
       this.syncDropdownShell();
     }
@@ -479,7 +491,6 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
 
       return;
     }
-
     void this.services
       .searchUsersByLogin(login)
       .then((response) => {
@@ -502,11 +513,9 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     if (!target) {
       return;
     }
-
     if (this.searchTimer) {
       clearTimeout(this.searchTimer);
     }
-
     const value = target.value;
 
     this.searchTimer = setTimeout(() => {
@@ -516,7 +525,6 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
 
   private readonly onRootClick = (event: Event): void => {
     const target = event.target as HTMLElement;
-
     const removeChip = target.closest<HTMLButtonElement>("[data-chip-remove]");
 
     if (removeChip) {
@@ -533,5 +541,5 @@ class GroupMemberPicker extends Block<GroupMemberPickerProps> {
     click: this.onRootClick,
   };
 }
-
 export { GroupMemberPicker };
+export { type GroupMemberPickerServices };

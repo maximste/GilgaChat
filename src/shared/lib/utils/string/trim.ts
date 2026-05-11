@@ -2,7 +2,6 @@ function trim(str: string, chars?: string): string {
   if (chars === undefined) {
     return str.trim();
   }
-
   const toTrim = new Set(chars);
   let start = 0;
   let end = str.length;

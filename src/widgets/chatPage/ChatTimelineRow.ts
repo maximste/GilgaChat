@@ -16,5 +16,4 @@ class ChatTimelineRow extends Block<ChatTimelineRowBlockProps> {
     super(props as ChatTimelineRowBlockProps);
   }
 }
-
 export { ChatTimelineRow };

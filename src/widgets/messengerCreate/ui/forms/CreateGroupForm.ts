@@ -10,7 +10,7 @@ import template from "./CreateGroupForm.hbs?raw";
 
 type CreateGroupFormProps = BlockOwnProps;
 
-export type CreateGroupFormServices = {
+type CreateGroupFormServices = {
   createGroupWithMembers: (options: {
     title: string;
     userIds: number[];
@@ -50,7 +50,6 @@ class CreateGroupForm extends Block<CreateGroupFormProps> {
       this.avatar = new AvatarFilePicker();
       avatarHost.appendChild(this.avatar.element()!);
     }
-
     if (pickerHost) {
       this.picker = new GroupMemberPicker({
         searchUsersByLogin: this.services.searchUsersByLogin,
@@ -59,7 +58,6 @@ class CreateGroupForm extends Block<CreateGroupFormProps> {
       });
       pickerHost.appendChild(this.picker.element()!);
     }
-
     (this.refs.nameInput as HTMLInputElement | undefined)?.focus();
     this.syncSubmitButton();
   }
@@ -89,9 +87,7 @@ class CreateGroupForm extends Block<CreateGroupFormProps> {
     if (!title || userIds.length === 0) {
       return;
     }
-
     this.shell.setSubmitDisabled(true);
-
     try {
       const chatId = await this.services.createGroupWithMembers({
         title,
@@ -120,5 +116,5 @@ class CreateGroupForm extends Block<CreateGroupFormProps> {
     input: this.onRootInput,
   };
 }
-
 export { CreateGroupForm };
+export { type CreateGroupFormServices };

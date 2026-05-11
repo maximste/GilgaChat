@@ -5,9 +5,8 @@ import template from "./SidebarChatListItem.hbs?raw";
 
 import "./SidebarChatListItem.scss";
 
-export interface SidebarChatListItemProps {
+interface SidebarChatListItemProps {
   chatId?: string;
-  isDmVariant: boolean;
   chatIdPrefix: string;
   index: number | string;
   firstName?: string;
@@ -31,9 +30,7 @@ class SidebarChatListItem extends Block<SidebarChatListItemBlockProps> {
   protected template = template;
 
   constructor(props: SidebarChatListItemProps) {
-    const primaryLineText = props.isDmVariant
-      ? `${props.lastName ?? ""} ${props.firstName ?? ""}`.trim()
-      : (props.name ?? "");
+    const primaryLineText = props.name ?? "";
 
     super({
       ...props,
@@ -43,5 +40,5 @@ class SidebarChatListItem extends Block<SidebarChatListItemBlockProps> {
     } as SidebarChatListItemBlockProps);
   }
 }
-
 export { SidebarChatListItem };
+export { type SidebarChatListItemProps };

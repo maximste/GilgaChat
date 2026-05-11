@@ -5,8 +5,7 @@ import template from "./ChatThread.hbs?raw";
 
 import "./ChatThread.scss";
 
-export interface ChatThreadProps {
-  peerName: string;
+interface ChatThreadProps {
   hasMessages: boolean;
   timelineRows: ChatTimelineRowVm[];
 }
@@ -22,5 +21,5 @@ class ChatThread extends Block<ChatThreadBlockProps> {
     super(props as ChatThreadBlockProps);
   }
 }
-
 export { ChatThread };
+export { type ChatThreadProps };

@@ -6,7 +6,7 @@ import type { SidebarCurrentUser } from "./types";
 
 import "./SidebarUserPanel.scss";
 
-export interface SidebarUserPanelProps {
+interface SidebarUserPanelProps {
   currentUser: SidebarCurrentUser;
   settingsHref?: string;
   settingsAriaLabel?: string;
@@ -38,5 +38,5 @@ class SidebarUserPanel extends Block<SidebarUserPanelBlockProps> {
     } as SidebarUserPanelBlockProps);
   }
 }
-
 export { SidebarUserPanel };
+export { type SidebarUserPanelProps };

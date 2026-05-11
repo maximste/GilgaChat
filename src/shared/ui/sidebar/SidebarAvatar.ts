@@ -3,10 +3,11 @@ import template from "./SidebarAvatar.hbs?raw";
 
 import "./SidebarAvatar.scss";
 
-export type SidebarAvatarSize = "list" | "panel";
-export type SidebarAvatarVariant = "user" | "icon";
+type SidebarAvatarSize = "list" | "panel";
 
-export interface SidebarAvatarProps {
+type SidebarAvatarVariant = "user" | "icon";
+
+interface SidebarAvatarProps {
   variant: SidebarAvatarVariant;
   size: SidebarAvatarSize;
   /** Для variant=user: URL фото; иначе плейсхолдер. */
@@ -28,7 +29,6 @@ function resolveAvatarClass(
   if (size === "panel") {
     return "messenger-sidebar__user-avatar";
   }
-
   if (variant === "user") {
     return "messenger-sidebar__item-avatar messenger-sidebar__item-avatar--user";
   }
@@ -51,5 +51,9 @@ class SidebarAvatar extends Block<SidebarAvatarBlockProps> {
     } as SidebarAvatarBlockProps);
   }
 }
-
 export { SidebarAvatar };
+export {
+  type SidebarAvatarProps,
+  type SidebarAvatarSize,
+  type SidebarAvatarVariant,
+};

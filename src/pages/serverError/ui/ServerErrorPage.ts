@@ -5,9 +5,11 @@ import template from "./ServerErrorPage.hbs?raw";
 
 import "./ServerErrorPage.scss";
 
-type ServerErrorPageBlockProps = BlockOwnProps & { homeHref: string };
+type ServerErrorPageBlockProps = BlockOwnProps & {
+  homeHref: string;
+};
 
-export class ServerErrorPage extends Block<ServerErrorPageBlockProps> {
+class ServerErrorPage extends Block<ServerErrorPageBlockProps> {
   protected template = template;
 
   protected events = {
@@ -26,3 +28,4 @@ export class ServerErrorPage extends Block<ServerErrorPageBlockProps> {
     } as ServerErrorPageBlockProps);
   }
 }
+export { ServerErrorPage };

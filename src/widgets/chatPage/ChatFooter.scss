@@ -1,6 +1,9 @@
 @use "shared/styles/variables" as *;
 
 .chat-page__footer {
+  position: sticky;
+  z-index: 1;
+  bottom: 0;
   flex-shrink: 0;
   padding: $spacing-12 $spacing-16;
   border-top: 1px solid $border-color-dark;
